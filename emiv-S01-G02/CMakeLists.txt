@@ -1,3 +1,8 @@
+# Gruppe 02
+# Serie 01
+# Matthias Boehm, 895778
+# Hannes Georg, 850360
+
 cmake_minimum_required(VERSION 2.4)
 
 PROJECT(MultInf)
