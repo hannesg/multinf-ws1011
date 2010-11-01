@@ -40,6 +40,16 @@ inline unsigned char Image::GetPixel(const int &x, const int &y, const int &ch) 
 
 int Image::LoadPPM(const std::string &filename) {
 	
+	ifstream in;
+
+	/* Open file */
+	in.open(filename.c_str());
+
+	if(!in)) {
+		return -1;
+	}
+
+
 	
 	return 0;
 }
@@ -48,10 +58,11 @@ int Image::SavePPM(const std::string &filename) {
 	
 	ofstream out;
 	
+	/* Open file */
 	out.open(filename.c_str());
 	
-	if(out.bad()) {
-		return 1;
+	if(!out) {
+		return -1;
 	}
 	
 	out << "P6" << endl;
