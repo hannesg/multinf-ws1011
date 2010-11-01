@@ -99,7 +99,7 @@ namespace Graphics2D {
        *
        * implement in subclass
        */
-      virtual int SavePPM(const std::string &filename) = 0;
+      virtual int SavePPM(const std::string &filename) const = 0;
 
       /**
        * @brief get pointer of image data
