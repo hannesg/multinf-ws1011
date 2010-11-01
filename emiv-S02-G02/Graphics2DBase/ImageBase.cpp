@@ -1,5 +1,4 @@
 #include <string.h>
-// #include <Graphics2DBase/ImageBase.hh>
 #include "ImageBase.hh"
 
 namespace Graphics2D {

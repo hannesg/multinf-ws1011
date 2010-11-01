@@ -1,7 +1,6 @@
 #ifndef __IMAGE_HH
 #define __IMAGE_HH
 
-// #include <Graphics2DBase/ImageBase.hh>
 #include "ImageBase.hh"
 #include "Image.hh"
 

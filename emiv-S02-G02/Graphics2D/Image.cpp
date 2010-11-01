@@ -1,6 +1,6 @@
 
-#include "Image.hh"
 #include <fstream>
+#include "Image.hh"
 
 using namespace std;
 
@@ -50,7 +50,7 @@ int Image::SavePPM(const std::string &filename) {
 	
 	out.open(filename.c_str());
 	
-	if(!out.is_open()) {
+	if(out.bad()) {
 		return 1;
 	}
 	
