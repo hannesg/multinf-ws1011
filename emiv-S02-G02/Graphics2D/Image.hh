@@ -1,3 +1,10 @@
+/*
+Gruppe: 02
+Serie 02
+Matthias Boehm, 895778
+Hannes Georg, 850360
+*/
+
 #ifndef __IMAGE_HH
 #define __IMAGE_HH
 

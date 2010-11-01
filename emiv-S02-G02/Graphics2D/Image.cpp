@@ -1,3 +1,9 @@
+/*
+Gruppe: 02
+Serie 02
+Matthias Boehm, 895778
+Hannes Georg, 850360
+*/
 
 #include <fstream>
 #include <string.h>

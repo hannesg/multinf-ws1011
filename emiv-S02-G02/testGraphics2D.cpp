@@ -1,6 +1,6 @@
 /*
 Gruppe: 02
-Serie 01
+Serie 02
 Matthias Boehm, 895778
 Hannes Georg, 850360
 */
