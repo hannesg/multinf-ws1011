@@ -2,9 +2,23 @@
 #include "Image.hh"
 #include <fstream>
 
+using namespace std;
+
 namespace Graphics2D {
 
-using namespace std;
+Image::Image() : ImageBase() {
+}
+
+Image::Image(const Image &other) : ImageBase(other) {
+}
+
+Image &Image::operator = (const Image &other) {
+	ImageBase::operator =(other);
+	return *this;
+}
+
+Image::~Image() {
+}
 
 void Image::FillZero() {
 	for(int i = 0; i < width_; i++) {
@@ -34,7 +48,7 @@ int Image::SavePPM(const std::string &filename) {
 	
 	ofstream out;
 	
-	out.open(filename);
+	out.open(filename.c_str());
 	
 	if(!out.is_open()) {
 		return 1;

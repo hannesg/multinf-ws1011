@@ -10,6 +10,11 @@ namespace Graphics2D {
 class Image : public ImageBase
 {
 public:
+	Image();
+	Image(const Image &other);
+	Image &operator =(const Image &other);
+	virtual ~Image();
+
 	virtual void FillZero();
 	
 	virtual inline unsigned char GetPixel(const int &x, const int &y, const int &ch) const;
