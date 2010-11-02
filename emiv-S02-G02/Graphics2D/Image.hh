@@ -25,8 +25,8 @@ public:
 
 	virtual void FillZero();
 	
-	virtual inline unsigned char GetPixel(const int &x, const int &y, const int &ch) const;
-	virtual inline void SetPixel(const int &x, const int &y, const int &ch, const unsigned char &value);
+	virtual unsigned char GetPixel(const int &x, const int &y, const int &ch) const;
+	virtual void SetPixel(const int &x, const int &y, const int &ch, const unsigned char &value);
 	
 	/* Laedt Bilddatei. Rueckgabewert 0, wenn Erfolg, -1, sonst */
 	virtual int LoadPPM(const std::string &filename);

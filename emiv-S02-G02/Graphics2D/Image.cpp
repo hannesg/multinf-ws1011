@@ -37,12 +37,20 @@ void Image::FillZero() {
 	}
 }
 
-inline void Image::SetPixel(const int &x, const int &y, const int &ch, const unsigned char &value) {
-	data_[(width_*y + x)*3+ch] = value;
+void Image::SetPixel(const int &x, const int &y, const int &ch, const unsigned char &value) {
+	if(x >= 0 && x < width_ && y >= 0 && y < height_ && ch >= 0 && ch < 3) {
+		data_[(width_*y + x)*3+ch] = value;
+	} else {
+		throw "Index out of range! ";
+	}
 }
 
-inline unsigned char Image::GetPixel(const int &x, const int &y, const int &ch) const {
-	return data_[(width_*y + x)*3+ch];
+unsigned char Image::GetPixel(const int &x, const int &y, const int &ch) const {
+	if(x >= 0 && x < width_ && y >= 0 && y < height_ && ch >= 0 && ch < 3) {
+		return data_[(width_*y + x)*3+ch];
+	} else {
+		throw "Index out of range! ";
+	}
 }
 
 int Image::LoadPPM(const std::string &filename) {
