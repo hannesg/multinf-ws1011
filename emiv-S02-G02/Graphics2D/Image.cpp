@@ -140,9 +140,7 @@ bool Image::readHeader(ifstream &in, bool &Binary, int &width, int &height, int 
 
 	/* Zweite Zeile */
 
-	in.getline(line, maxLineLength);
-
-	if(line[0] == '#') {
+	if(in.peek() == '#') {
 		/* Kommentar, noch eine Zeile einlesen */
 		in.getline(line, maxLineLength);
 	}
@@ -152,14 +150,16 @@ bool Image::readHeader(ifstream &in, bool &Binary, int &width, int &height, int 
 	}
 
 	/* Drei Zahlen einlesen */
-	cin >> width >> height >> max;
+	in >> width >> height >> max;
 
-	/* Noch einen Absatz einlesen??? */
+	/* Noch einen Absatz einlesen */
 	in.getline(line, maxLineLength);
 
 	if(!in || in.eof()) {
 		return false;
 	}
+
+	// cout << "Header read! " << Binary << " " << width << " " << height << " " << max << endl;
 
 	return true;
 }
