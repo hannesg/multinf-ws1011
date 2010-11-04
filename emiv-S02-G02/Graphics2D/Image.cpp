@@ -28,6 +28,7 @@ Image::~Image() {
 }
 
 void Image::FillZero() {
+	/* Alle Pixel durchgehen und jeden Channel auf 0 setzen */
 	for(unsigned int i = 0; i < width_; i++) {
 		for(unsigned int j = 0; j < height_; j++) {
 			SetPixel(i, j, 0, 0);
@@ -38,6 +39,7 @@ void Image::FillZero() {
 }
 
 void Image::SetPixel(const int &x, const int &y, const int &ch, const unsigned char &value) {
+	/* Gueltige Parameter? */
 	if(x >= 0 && x < width_ && y >= 0 && y < height_ && ch >= 0 && ch < 3) {
 		data_[(width_*y + x)*3+ch] = value;
 	} else {
@@ -46,6 +48,7 @@ void Image::SetPixel(const int &x, const int &y, const int &ch, const unsigned c
 }
 
 unsigned char Image::GetPixel(const int &x, const int &y, const int &ch) const {
+	/* Gueltige Parameter? */
 	if(x >= 0 && x < width_ && y >= 0 && y < height_ && ch >= 0 && ch < 3) {
 		return data_[(width_*y + x)*3+ch];
 	} else {
@@ -137,6 +140,7 @@ bool Image::readHeader(ifstream &in, bool &Binary, int &width, int &height, unsi
 		return false;
 	}
 
+	/* Welches Format? */
 	if(strcmp(line, "P3") == 0) {
 		Binary = false;
 	} else if(strcmp(line, "P6") == 0) {
@@ -160,14 +164,13 @@ bool Image::readHeader(ifstream &in, bool &Binary, int &width, int &height, unsi
 	/* Drei Zahlen einlesen */
 	in >> width >> height >> max;
 
-	/* Noch einen Absatz einlesen */
+	/* Noch bis zur naechsten Zeile, wo die Daten anfangen, 
+	   lesen */
 	in.getline(line, maxLineLength);
 
 	if(!in || in.eof()) {
 		return false;
 	}
-
-	// cout << "Header read! " << Binary << " " << width << " " << height << " " << max << endl;
 
 	return true;
 }
