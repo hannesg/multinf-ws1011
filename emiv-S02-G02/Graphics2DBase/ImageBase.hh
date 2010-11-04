@@ -112,7 +112,7 @@ namespace Graphics2D {
        * @brief get pointer of image data
        *
        * A pixel can be accessed  by
-       * GetData()[row * getHeight() + col * Channelcount + Channel]
+       * GetData()[(row * getWidth() + col) * Channelcount + Channel]
        * (ChannelCount is 3)
        *
        * @return pointer to first pixel of image
