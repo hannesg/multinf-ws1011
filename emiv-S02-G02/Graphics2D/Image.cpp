@@ -200,7 +200,17 @@ int Image::SavePPM(const std::string &filename) const {
 	
 	/* Daten schreiben */
 	
-	out << data_;
+	/* An Hannes: Folgendes funktioniert nicht, da beim ersten '\0'-Zeichen abgebrochen wird 
+	   (da data_ als "C" character-String behandelt wird, die ja mit '\0' enden) */
+	// out << data_;
+
+	for(int y = 0; y < height_; y++) {
+		for(int x = 0; x < width_; x++) {
+			for(int k = 0; k < 3; k++) {
+				out.put(GetPixel(x, y, k));
+			}
+		}
+	}
 
 	out.close();
 	
