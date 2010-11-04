@@ -59,7 +59,7 @@ namespace Graphics2D {
     }
   }
 
-  bool ImageBase::Valid() {
+  bool ImageBase::Valid() const{
     return data_ != NULL;
   }
   

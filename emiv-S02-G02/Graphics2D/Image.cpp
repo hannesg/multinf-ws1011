@@ -13,14 +13,14 @@ using namespace std;
 
 namespace Graphics2D {
 
-Image::Image() : ImageBase() {
+Image::Image() : ImageBase::ImageBase() {
 }
 
-Image::Image(const Image &other) : ImageBase(other) {
+Image::Image(const Image &other) : ImageBase::ImageBase(other) {
 }
 
-Image &Image::operator = (const Image &other) {
-	ImageBase::operator =(other);
+Image &Image::operator=(const Image &other) {
+	ImageBase::operator=(other);
 	return *this;
 }
 
@@ -28,8 +28,8 @@ Image::~Image() {
 }
 
 void Image::FillZero() {
-	for(int i = 0; i < width_; i++) {
-		for(int j = 0; j < height_; j++) {
+	for(unsigned int i = 0; i < width_; i++) {
+		for(unsigned int j = 0; j < height_; j++) {
 			SetPixel(i, j, 0, 0);
 			SetPixel(i, j, 1, 0);
 			SetPixel(i, j, 2, 0);
@@ -70,7 +70,7 @@ int Image::LoadPPM(const std::string &filename) {
 	bool Binary;
 	int width;
 	int height;
-	int max;
+	unsigned int max;
 
 	if(!readHeader(in, Binary, width, height, max)) {
 		in.close();
@@ -83,8 +83,8 @@ int Image::LoadPPM(const std::string &filename) {
 	/* in ist jetzt auf der Position des ersten Daten-Bytes */
 
 	/* Datei lesen */
-	for(int y = 0; y < height_; y++) {
-		for(int x = 0; x < width_; x++) {
+	for(unsigned int y = 0; y < height_; y++) {
+		for(unsigned int x = 0; x < width_; x++) {
 			for(int i = 0; i < 3; i++) {
 				/* Fehler? */
 				if(!in || in.eof()) {
@@ -125,7 +125,7 @@ int Image::LoadPPM(const std::string &filename) {
 	return 0;
 }
 
-bool Image::readHeader(ifstream &in, bool &Binary, int &width, int &height, int &max) const
+bool Image::readHeader(ifstream &in, bool &Binary, int &width, int &height, unsigned int &max) const
 {
 	const int maxLineLength = 100;
 	char line[maxLineLength]; 
@@ -174,6 +174,11 @@ bool Image::readHeader(ifstream &in, bool &Binary, int &width, int &height, int 
 
 int Image::SavePPM(const std::string &filename) const {
 	
+	if( !this->Valid() ){
+		/* keine Daten zum schreiben */
+		return 1;
+	}
+
 	ofstream out;
 	
 	/* Open file (binary!!!) */
@@ -192,6 +197,8 @@ int Image::SavePPM(const std::string &filename) const {
 	
 	/* Daten schreiben */
 	
+	out << data_;
+
 	out.close();
 	
 	return 0;

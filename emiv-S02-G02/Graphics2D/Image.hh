@@ -37,7 +37,7 @@ public:
 
 private:
 	/* Liest den Header einer PPM-Datei */
-	bool readHeader(ifstream &in, bool &Binary, int &width, int &height, int &max) const;
+	bool readHeader(ifstream &in, bool &Binary, int &width, int &height, unsigned int &max) const;
 };
 		
 		

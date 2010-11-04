@@ -63,7 +63,7 @@ namespace Graphics2D {
        * @brief checks if image is initialized
        * @return true if image is initialized
        */
-      bool Valid();
+      bool Valid() const;
       
       /**
        * @brief set every pixel in image to r=g=b=0, black
