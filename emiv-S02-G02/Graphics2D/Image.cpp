@@ -101,6 +101,12 @@ int Image::LoadPPM(const std::string &filename) {
 					/* Binaere Eingabe */
 					c = in.get();
 
+					/* Fehler? */
+					if(!in) {
+						in.close();
+						return -1;
+					}
+
 				} else {
 					/* ASCII-Eingabe */
 
@@ -131,7 +137,7 @@ int Image::LoadPPM(const std::string &filename) {
 bool Image::readHeader(ifstream &in, bool &Binary, int &width, int &height, unsigned int &max) const
 {
 	const int maxLineLength = 100;
-	char line[maxLineLength]; 
+	char line[maxLineLength+1]; 
 
 	/* Erste Zeile */
 	in.getline(line, maxLineLength);
@@ -204,6 +210,7 @@ int Image::SavePPM(const std::string &filename) const {
 	   (da data_ als "C" character-String behandelt wird, die ja mit '\0' enden) */
 	// out << data_;
 
+	/* Alle Pixel Stueck fuer Stueck ausgeben */
 	for(int y = 0; y < height_; y++) {
 		for(int x = 0; x < width_; x++) {
 			for(int k = 0; k < 3; k++) {
