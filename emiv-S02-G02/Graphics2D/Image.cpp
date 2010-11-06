@@ -141,6 +141,13 @@ bool Image::readHeader(ifstream &in, bool &Binary, int &width, int &height, unsi
 
 	/* Erste Zeile */
 	in.getline(line, maxLineLength);
+	/* remove windows line ending. 
+	 * benoetigt, wenn die Datei von einem Windows-System stammt, da die
+	 * Datei im BINARY Mode geoeffnet wird, und daher das '\r' mitgelesen wird
+	 * (Windows line ending: "\r\n", unix line ending: "\n") */
+	if(line[strlen(line)-1] == '\r') {
+		line[strlen(line)-1] = '\0';
+	}
 
 	if(!in || in.eof()) {
 		return false;
@@ -170,7 +177,7 @@ bool Image::readHeader(ifstream &in, bool &Binary, int &width, int &height, unsi
 	/* Drei Zahlen einlesen */
 	in >> width >> height >> max;
 
-	/* Noch bis zur naechsten Zeile, wo die Daten anfangen, 
+	/* Noch bis zum Anfang der naechsten Zeile, wo die Daten anfangen, 
 	   lesen */
 	in.getline(line, maxLineLength);
 
