@@ -7,6 +7,7 @@ Hannes Georg, 850360
 
 #include <fstream>
 #include <string.h>
+#include <stdexcept>
 #include "Image.hh"
 
 using namespace std;
@@ -43,7 +44,7 @@ void Image::SetPixel(const int &x, const int &y, const int &ch, const unsigned c
 	if(x >= 0 && x < width_ && y >= 0 && y < height_ && ch >= 0 && ch < 3) {
 		data_[(width_*y + x)*3+ch] = value;
 	} else {
-		throw "Index out of range! ";
+		throw out_of_range("Index out of range");
 	}
 }
 
@@ -52,7 +53,7 @@ unsigned char Image::GetPixel(const int &x, const int &y, const int &ch) const {
 	if(x >= 0 && x < width_ && y >= 0 && y < height_ && ch >= 0 && ch < 3) {
 		return data_[(width_*y + x)*3+ch];
 	} else {
-		throw "Index out of range! ";
+		throw out_of_range("Index out of range");
 	}
 }
 
@@ -213,11 +214,8 @@ int Image::SavePPM(const std::string &filename) const {
 	
 	/* Daten schreiben */
 	
-	/* An Hannes: Folgendes funktioniert nicht, da beim ersten '\0'-Zeichen abgebrochen wird 
-	   (da data_ als "C" character-String behandelt wird, die ja mit '\0' enden) */
-	// out << data_;
-
-	/* Alle Pixel Stueck fuer Stueck ausgeben */
+	/* Alle Pixel Stueck fuer Stueck ausgeben (nicht einfach out << data_ verwenden, 
+	 * da sonst beim ersten '\0'-Zeichen aufgehoehrt wird) */
 	for(int y = 0; y < height_; y++) {
 		for(int x = 0; x < width_; x++) {
 			for(int k = 0; k < 3; k++) {
