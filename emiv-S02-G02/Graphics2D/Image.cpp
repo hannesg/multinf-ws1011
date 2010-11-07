@@ -216,13 +216,9 @@ int Image::SavePPM(const std::string &filename) const {
 	
 	/* Alle Pixel Stueck fuer Stueck ausgeben (nicht einfach out << data_ verwenden, 
 	 * da sonst beim ersten '\0'-Zeichen aufgehoehrt wird) */
-	for(int y = 0; y < height_; y++) {
-		for(int x = 0; x < width_; x++) {
-			for(int k = 0; k < 3; k++) {
-				out.put(GetPixel(x, y, k));
-			}
-		}
-	}
+	/* oder einfach write mit Längenangabe */
+	out.write((const char*) data_,height_*width_*3);
+
 
 	out.close();
 	
