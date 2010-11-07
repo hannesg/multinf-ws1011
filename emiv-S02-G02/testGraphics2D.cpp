@@ -12,14 +12,6 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-	/*cout << "Hello, world! " << endl;
-	cout << "What is your name? " << endl;
-	
-	string name;
-	cin >> name;
-	
-	cout << "Hello " << name << "! " << endl;*/
-
 	Graphics2D::Image img;
 
 	if( argc != 3 ){
