@@ -3,7 +3,7 @@
 
 namespace Graphics2D {
 
-void PrimitiveBase::SetCoordinates(vector<Coordinate> points) {
+void PrimitiveBase::SetCoordinates(const vector<Coordinate> &points) {
 	/* ermittele die Anzahl der erlaubten Punkte. Nutzt Polymorphie aus: 
 	 * die richtige Funktion der möglichen Subklassen wird automatisch 
 	 * aufgerufen. */

@@ -9,7 +9,7 @@ PrimitiveLine::PrimitiveLine() {
 	points_.push_back(Coordinate(0, 0));
 }
 
-PrimitiveLine::PrimitiveLine(Coordinate c1, Coordinate c2) {
+PrimitiveLine::PrimitiveLine(const Coordinate &c1, const Coordinate &c2) {
 	points_.push_back(c1);
 	points_.push_back(c2);
 }

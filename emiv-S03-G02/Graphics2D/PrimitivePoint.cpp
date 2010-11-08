@@ -7,7 +7,7 @@ using namespace std;
 
 namespace Graphics2D {
 
-void PrimitivePoint::SetCoordinate(Coordinate coor) 
+void PrimitivePoint::SetCoordinate(const Coordinate &coor) 
 {
 	/* delete previous point */
 	points_.pop_back();
@@ -25,7 +25,7 @@ void PrimitivePoint::Draw(ImageBase *img) const {
 	img->SetPixel(c.GetX(), c.GetY(), 2, color_.GetB());
 }
 
-void PrimitivePoint::Init(Coordinate coor, Color c)
+void PrimitivePoint::Init(const Coordinate &coor, const Color &c)
 {
 	color_ = c;
 	points_.push_back(coor);

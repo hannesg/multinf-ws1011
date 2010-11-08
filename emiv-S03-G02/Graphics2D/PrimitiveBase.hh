@@ -20,7 +20,7 @@ public:
 	/* get and set coordinates. Attention: SetCoordinates is virtual, 
 	 * because it might be overwritten by subclasses */
 	vector<Coordinate> GetCoordinates() const { return points_; }
-	virtual void SetCoordinates(vector<Coordinate> points);
+	virtual void SetCoordinates(const vector<Coordinate> &points);
 		
 	/* Draws the primitive into the image */
 	virtual void Draw(ImageBase *im) const = 0;
@@ -36,7 +36,7 @@ protected:
 
 	/* virtual function that returns the allowed number of points
 	 * that can be given to "SetCoordinates()". Must be overwritten
-	 * by every subclass, that needs to specify how many points are 
+	 * by every subclass that needs to specify how many points are 
 	 * allowed (Points, Lines, ...). If it is not implemented in a 
 	 * subclass, no check occurs, because in this case, the followig
 	 * function is called, which returns ANY_NUMBER_ALLOWED. */

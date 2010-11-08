@@ -15,17 +15,17 @@ public:
 	 * to the function "SetCoordinates()" */
 	PrimitivePoint() { Init(Coordinate(0, 0), Color(0, 0, 0)); }
 
-	PrimitivePoint(Coordinate coor) { Init(coor, Color(0, 0, 0)); }
-	PrimitivePoint(Coordinate coor, Color c) { Init(coor, c); }
+	PrimitivePoint(const Coordinate &coor) { Init(coor, Color(0, 0, 0)); }
+	PrimitivePoint(const Coordinate &coor, const Color &c) { Init(coor, c); }
 
 	PrimitivePoint(int x, int y) { Init(Coordinate(x, y), Color(0, 0, 0)); }
-	PrimitivePoint(int x, int y, Color c) { Init(Coordinate(x, y), c); }
+	PrimitivePoint(int x, int y, const Color &c) { Init(Coordinate(x, y), c); }
 
 	/* overwrite Draw function */
 	virtual void Draw(ImageBase *img) const;
 	
 	/* special setters/getters */
-	void SetCoordinate(Coordinate c);
+	void SetCoordinate(const Coordinate &c);
 	Coordinate GetCoordinate() const { return points_.front(); }
 
 private:
@@ -33,7 +33,7 @@ private:
 	virtual int GetNumberOfPointsAllowed() { return 1; }
 
 	/* initialization, called from constructors */
-	void Init(Coordinate coor, Color c);
+	void Init(const Coordinate &coor, const Color &c);
 
 };
 
