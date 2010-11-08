@@ -177,7 +177,7 @@ bool Image::readHeader(ifstream &in, bool &Binary, int &width, int &height, unsi
 
 	/* Zweite Zeile */
 
-	if(in.peek() == '#') {
+	while(in.peek() == '#') {
 		/* Kommentar, noch eine Zeile einlesen */
 		in.getline(line, maxLineLength);
 	}
