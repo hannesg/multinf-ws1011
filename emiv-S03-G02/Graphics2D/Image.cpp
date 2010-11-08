@@ -29,6 +29,9 @@ Image::~Image() {
 }
 
 void Image::FillZero() {
+	if(!Valid()) {
+		throw exception();
+	}
 	/* Alle Pixel durchgehen und jeden Channel auf 0 setzen */
 	for(unsigned int i = 0; i < width_; i++) {
 		for(unsigned int j = 0; j < height_; j++) {
@@ -40,6 +43,9 @@ void Image::FillZero() {
 }
 
 void Image::SetPixel(const int &x, const int &y, const int &ch, const unsigned char &value) {
+	if(!Valid()) {
+		throw exception();
+	}
 	/* Gueltige Parameter? */
 	if(x >= 0 && x < width_ && y >= 0 && y < height_ && ch >= 0 && ch < 3) {
 		data_[(width_*y + x)*3+ch] = value;
@@ -49,6 +55,9 @@ void Image::SetPixel(const int &x, const int &y, const int &ch, const unsigned c
 }
 
 unsigned char Image::GetPixel(const int &x, const int &y, const int &ch) const {
+	if(!Valid()) {
+		throw exception();
+	}
 	/* Gueltige Parameter? */
 	if(x >= 0 && x < width_ && y >= 0 && y < height_ && ch >= 0 && ch < 3) {
 		return data_[(width_*y + x)*3+ch];
@@ -130,6 +139,8 @@ int Image::LoadPPM(const std::string &filename) {
 			}
 		}
 	}
+
+	in.close();
 
 	/* Erfolg */
 	return 0;
