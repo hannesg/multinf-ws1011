@@ -80,7 +80,7 @@ namespace Graphics2D {
        *
        * implement in subclass
        */
-      virtual inline unsigned char GetPixel(const int &x, const int &y, const int &ch) const = 0;
+      virtual unsigned char GetPixel(const int &x, const int &y, const int &ch) const = 0;
       
       /**
        * @brief set value of a specific pixel's color channel
@@ -91,7 +91,7 @@ namespace Graphics2D {
        *
        * implement in subclass
        */
-      virtual inline void SetPixel(const int &x, const int &y, const int &ch, const unsigned char &value) = 0;
+      virtual void SetPixel(const int &x, const int &y, const int &ch, const unsigned char &value) = 0;
 
       /**
        * @brief load image from *.ppm file and set data, width, height
