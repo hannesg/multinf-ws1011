@@ -13,19 +13,35 @@ namespace Graphics2D {
 class PrimitiveBase {
 	
 public:	
-	PrimitiveBase() : num_points_(-1) { }
+	/* get and set colors */
 	Color GetColor() const { return color_; }
 	void SetColor(Color c) { color_ = c; }
 	
-	vector<Coordinate> GetCoordinates() { return coor_; }
-	virtual void SetCoordinates(vector<Coordinate> cs);
+	/* get and set coordinates. Attention: SetCoordinates is virtual, 
+	 * because it might be overwritten by subclasses */
+	vector<Coordinate> GetCoordinates() const { return points_; }
+	virtual void SetCoordinates(vector<Coordinate> points);
 		
+	/* Draws the primitive into the image */
 	virtual void Draw(ImageBase *im) const = 0;
 	
 protected:
-	vector<Coordinate> coor_;
+	/* coordinates */
+	vector<Coordinate> points_;
+	/* color */
 	Color color_;
-	const int num_points_;
+
+	/* constant that showes, that every number of points is allowed */
+	static const int ANY_NUMBER_ALLOWED = -1;
+
+	/* virtual function that returns the allowed number of points
+	 * that can be given to "SetCoordinates()". Must be overwritten
+	 * by every subclass, that needs to specify how many points are 
+	 * allowed (Points, Lines, ...). If it is not implemented in a 
+	 * subclass, no check occurs, because in this case, the followig
+	 * function is called, which returns ANY_NUMBER_ALLOWED. */
+	virtual int GetNumberOfPointsAllowed() const { return ANY_NUMBER_ALLOWED; }
+
 };
 
 }
