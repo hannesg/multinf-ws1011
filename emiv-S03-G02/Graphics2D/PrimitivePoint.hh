@@ -28,6 +28,10 @@ public:
 	void SetCoordinate(const Coordinate &c);
 	Coordinate GetCoordinate() const { return points_.front(); }
 
+	/* further getters, for convenience */
+	int GetX() const { return GetCoordinate().GetX(); }
+	int GetY() const { return GetCoordinate().GetY(); }
+
 private:
 	/* how many points are allowed? */
 	virtual int GetNumberOfPointsAllowed() { return 1; }
@@ -36,6 +40,9 @@ private:
 	void Init(const Coordinate &coor, const Color &c);
 
 };
+
+/* overloaded function for displaying a PrimitivePoint */
+ostream& operator<<(ostream& os, const PrimitivePoint &p);
 
 }
 

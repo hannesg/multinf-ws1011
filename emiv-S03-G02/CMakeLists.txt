@@ -19,5 +19,7 @@ add_subdirectory(Graphics2D)
 add_subdirectory(Graphics2DBase)
 
 add_executable(testGraphics2D testGraphics2D.cpp)
+add_executable(testPrimitivePoint testPrimitivePoint.cpp)
 
 target_link_libraries(testGraphics2D Graphics2DBase Graphics2D)
+target_link_libraries(testPrimitivePoint Graphics2DBase Graphics2D)

@@ -31,4 +31,12 @@ void PrimitivePoint::Init(const Coordinate &coor, const Color &c)
 	points_.push_back(coor);
 }
 
+ostream& operator<<(ostream& os, const PrimitivePoint &p)
+{
+    os << "(" << p.GetX() << ", " << p.GetY() << ")";
+    return os;
+}
+
+
+
 } 
