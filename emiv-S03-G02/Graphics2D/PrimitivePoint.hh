@@ -18,6 +18,7 @@ public:
 	PrimitivePoint(const Coordinate &coor) { Init(coor, Color(0, 0, 0)); }
 	PrimitivePoint(const Coordinate &coor, const Color &c) { Init(coor, c); }
 
+	/* further constructors, for convenience */
 	PrimitivePoint(int x, int y) { Init(Coordinate(x, y), Color(0, 0, 0)); }
 	PrimitivePoint(int x, int y, const Color &c) { Init(Coordinate(x, y), c); }
 
