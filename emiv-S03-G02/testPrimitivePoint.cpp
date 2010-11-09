@@ -2,6 +2,7 @@
 #include <iostream>
 #include <Image.hh>
 #include <PrimitivePoint.hh>
+#include <PrimitiveLine.hh>
 
 using namespace std;
 using namespace Graphics2D;
@@ -36,6 +37,21 @@ void paintSomePoints(Image &img) {
 
 
 }
+
+void paintSomeLines(Image &img){
+	PrimitiveLine line(Coordinate(0,10),Coordinate(50,50));
+	line.SetColor(Color::black());
+	line.Draw(&img);
+
+	PrimitiveLine line2(Coordinate(50,10),Coordinate(0,50));
+	line2.SetColor(Color::blue());
+	line2.Draw(&img);
+
+	PrimitiveLine line3(Coordinate(50,80),Coordinate(50,0));
+	line3.SetColor(Color::red());
+	line3.Draw(&img);
+}
+
 
 int main(int argc, char *argv[]) {
 
@@ -80,6 +96,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	paintSomePoints(img);
+	paintSomeLines(img);
 
 	if(img.SavePPM(argv[OutputFileIndex]) != 0) {
 		cerr << "Cannot save file! " << endl;

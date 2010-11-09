@@ -18,8 +18,8 @@ public:
 	inline void SetY(int y) { y_ = y; }
 
 	/* getters */
-	inline int GetX() { return (int)x_; }
-	inline int GetY() { return (int)y_; }
+	inline int GetX() const { return (int)x_; };
+	inline int GetY() const { return (int)y_; };
 
 private:
 	float x_, y_;

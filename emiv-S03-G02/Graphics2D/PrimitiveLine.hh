@@ -2,8 +2,6 @@
 #define __PRIMITIVE_LINE_HH
 
 #include "PrimitiveBase.hh"
-#include "ImageBase.hh"
-
 namespace Graphics2D {
 
 class PrimitiveLine : public PrimitiveBase
@@ -29,12 +27,12 @@ protected:
 	/* Anzahl der erlaubten Punkte */
 	virtual int GetNumberOfPointsAllowed() const { return 2; }
 
+	static void DrawLine(ImageBase *img, const Coordinate &c1, const Coordinate &c2,const Color &color);
+
+	static void DrawLineBresenham(ImageBase *img, const Coordinate &to,const Color &color,const char orthant, const Coordinate &offset);
+	static Coordinate DrawLineTranslateCoordinates(const Coordinate &base, const int x , const int y ,const char orthant);
+
 };
 
 }
-
-
-
-
-
 #endif

@@ -2,7 +2,7 @@
 #define __PRIMITIVE_BASE
 
 #include <vector>
-#include "ImageBase.hh"
+#include "Image.hh"
 #include "Color.hh"
 #include "Coordinate.hh"
 
