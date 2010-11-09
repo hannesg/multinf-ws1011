@@ -20,9 +20,14 @@ void PrimitivePoint::SetCoordinate(const Coordinate &coor)
 void PrimitivePoint::Draw(ImageBase *img) const {
 	
 	Coordinate c = points_.front();
-	img->SetPixel(c.GetX(), c.GetY(), 0, color_.GetR());
-	img->SetPixel(c.GetX(), c.GetY(), 1, color_.GetG());
-	img->SetPixel(c.GetX(), c.GetY(), 2, color_.GetB());
+	int x = c.GetX();
+	int y = c.GetY();
+
+	if(x >= 0 && y >= 0 && x < img->GetWidth() && y < img->GetHeight()) {
+		img->SetPixel(x, y, 0, color_.GetR());
+		img->SetPixel(x, y, 1, color_.GetG());
+		img->SetPixel(x, y, 2, color_.GetB());
+	}
 }
 
 void PrimitivePoint::Init(const Coordinate &coor, const Color &c)

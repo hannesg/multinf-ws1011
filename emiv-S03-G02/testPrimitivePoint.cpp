@@ -22,17 +22,16 @@ void paintSomePoints(Image &img) {
 		PrimitivePoint(5, 5, Color::black()), 
 		PrimitivePoint(5, 5, Color::yellow()), 
 		PrimitivePoint(img.GetWidth()-1, img.GetHeight()-1, Color::black()), 
+		PrimitivePoint(0, img.GetHeight()-1), 
+		PrimitivePoint(img.GetWidth()-1, 0), 
 		/* testen, was passiert, wenn Punkt nicht im Bild! */
-		PrimitivePoint(img.GetWidth(), 0, Color::black())
+		PrimitivePoint(img.GetWidth(), 0, Color::black()), 
+		PrimitivePoint(-1, 0, Color::black())
 	};
 
 	/* Testpunkte zeichnen */
 	for(int i = 0; i < sizeof(ps)/sizeof(PrimitivePoint); i++) {
-		try {
-			ps[i].Draw(&img);
-		} catch(exception e) {
-			cerr << "Point " << ps[i] << " not in image! " << endl;
-		}
+		ps[i].Draw(&img);
 	}
 
 
