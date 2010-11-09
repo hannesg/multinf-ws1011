@@ -39,6 +39,8 @@ public:
 	static Color red() { return Color(255, 0, 0, "red"); }
 	static Color green() { return Color(0, 255, 0, "green"); }
 	static Color blue() { return Color(0, 0, 255, "blue"); }
+	static Color white() { return Color(255, 255, 255, "white"); }
+	static Color yellow() { return Color(255, 255, 0, "yellow"); }
 
 private:
 	unsigned char r_, g_, b_;
