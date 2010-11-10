@@ -17,7 +17,7 @@ void PrimitiveLine::Init(const Coordinate &c1, const Coordinate &c2, const Color
 
 void PrimitiveLine::Draw(ImageBase *img) const
 {
-	PrimitiveLine::DrawLine(img,points_[0],points_[1],color_);
+	DrawLine(img,points_[0],points_[1]);
 }
 
 Coordinate PrimitiveLine::DrawLineTranslateCoordinates(const Coordinate &base, const int x , const int y ,const char orthant) const {
@@ -42,7 +42,7 @@ Coordinate PrimitiveLine::DrawLineTranslateCoordinates(const Coordinate &base, c
  * Die Lage der Punkte wird nicht geprüft, sondern davon ausgegangen, dass dies schon passiert ist.
  * Die Angabe des Orthanden und der Basis dient der Translation der Koordinaten.
  */
-void PrimitiveLine::DrawLineBresenham(ImageBase *img, const Coordinate &to,const Color &color,const char orthant, const Coordinate &offset) const {
+void PrimitiveLine::DrawLineBresenham(ImageBase *img, const Coordinate &to,const char orthant, const Coordinate &offset) const {
 	int deltaX = to.GetX();
 	int deltaY = to.GetY();
 	int e= 2*deltaY - deltaX;
@@ -50,10 +50,10 @@ void PrimitiveLine::DrawLineBresenham(ImageBase *img, const Coordinate &to,const
 	int y = 0;
 	Coordinate coord;
 	while( x <= deltaX ){
-		coord = PrimitiveLine::DrawLineTranslateCoordinates(offset,x,y,orthant);
-		img->SetPixel(coord.GetX(),coord.GetY(),0,color.GetR());
-		img->SetPixel(coord.GetX(),coord.GetY(),1,color.GetG());
-		img->SetPixel(coord.GetX(),coord.GetY(),2,color.GetB());
+		coord = DrawLineTranslateCoordinates(offset,x,y,orthant);
+		img->SetPixel(coord.GetX(),coord.GetY(),0,GetColor().GetR());
+		img->SetPixel(coord.GetX(),coord.GetY(),1,GetColor().GetG());
+		img->SetPixel(coord.GetX(),coord.GetY(),2,GetColor().GetB());
 		if( e > 0 ){
 			y++;
 			e += 2*(deltaY - deltaX);
@@ -66,7 +66,7 @@ void PrimitiveLine::DrawLineBresenham(ImageBase *img, const Coordinate &to,const
 /*
  * Diese Funktion bereitet die Parameter für die Bresenhamfunktion vor.
  */
-void PrimitiveLine::DrawLine(ImageBase *img, const Coordinate &c1, const Coordinate &c2,const Color &color) const {
+void PrimitiveLine::DrawLine(ImageBase *img, const Coordinate &c1, const Coordinate &c2) const {
 	int dX = (c2.GetX() - c1.GetX());
 	int dY = (c2.GetY() - c1.GetY());
 	char orthant = 0;
@@ -84,7 +84,7 @@ void PrimitiveLine::DrawLine(ImageBase *img, const Coordinate &c1, const Coordin
 		dX = dY;
 		dY = z;
 	}
-	DrawLineBresenham(img,Coordinate(dX,dY),color,orthant,c1);
+	DrawLineBresenham(img,Coordinate(dX,dY),orthant,c1);
 }
 
 

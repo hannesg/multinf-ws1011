@@ -40,9 +40,9 @@ private:
 	/* Initialization function, called from constructors */
 	void Init(const Coordinate &c1, const Coordinate &c2, const Color &c);
 
-	void DrawLine(ImageBase *img, const Coordinate &c1, const Coordinate &c2,const Color &color) const;
+	void DrawLine(ImageBase *img, const Coordinate &c1, const Coordinate &c2) const;
 
-	void DrawLineBresenham(ImageBase *img, const Coordinate &to,const Color &color,const char orthant, const Coordinate &offset) const;
+	void DrawLineBresenham(ImageBase *img, const Coordinate &to,const char orthant, const Coordinate &offset) const;
 	Coordinate DrawLineTranslateCoordinates(const Coordinate &base, const int x , const int y ,const char orthant) const;
 
 };
