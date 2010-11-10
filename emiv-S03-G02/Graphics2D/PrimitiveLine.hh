@@ -25,6 +25,7 @@ public:
 
 	/* creates a line from (x1, y1) to (x2, y2), for convenience  */
 	PrimitiveLine(int x1, int y1, int x2, int y2) { Init(Coordinate(x1, y1), Coordinate(x2, y2), Color::black()); }
+	PrimitiveLine(int x1, int y1, int x2, int y2, const Color &c) { Init(Coordinate(x1, y1), Coordinate(x2, y2), c); }
 
 
 	/* Draw-Funktion */
