@@ -27,10 +27,11 @@ protected:
 	/* Anzahl der erlaubten Punkte */
 	virtual int GetNumberOfPointsAllowed() const { return 2; }
 
-	static void DrawLine(ImageBase *img, const Coordinate &c1, const Coordinate &c2,const Color &color);
+private:
+	void DrawLine(ImageBase *img, const Coordinate &c1, const Coordinate &c2,const Color &color) const;
 
-	static void DrawLineBresenham(ImageBase *img, const Coordinate &to,const Color &color,const char orthant, const Coordinate &offset);
-	static Coordinate DrawLineTranslateCoordinates(const Coordinate &base, const int x , const int y ,const char orthant);
+	void DrawLineBresenham(ImageBase *img, const Coordinate &to,const Color &color,const char orthant, const Coordinate &offset) const;
+	Coordinate DrawLineTranslateCoordinates(const Coordinate &base, const int x , const int y ,const char orthant) const;
 
 };
 
