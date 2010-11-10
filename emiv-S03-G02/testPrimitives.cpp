@@ -59,6 +59,7 @@ void paintSomeLines(Image &img){
 	int ty = dy+ly;
 
 	PrimitiveLine lines[] = {
+		/* Beispiele */
 		PrimitiveLine(Coordinate(0,10),Coordinate(50,50), Color::black()), 
 		PrimitiveLine(Coordinate(50,10),Coordinate(0,50), Color::red()), 
 		PrimitiveLine(Coordinate(50,80),Coordinate(50,0), Color::blue()), 
@@ -76,31 +77,35 @@ void paintSomeLines(Image &img){
 		PrimitiveLine(x+tx, y-ty, x-tx, y-ty, Color::red()), 
 
 		/* Verschiedene Laengen ausprobieren */
-		// PrimitiveLin
+		/* Laenge 0 */
+		PrimitiveLine(5, 5, 5, 5, Color::blue()), 
+		/* Laenge 1 */
+		PrimitiveLine(6, 6, 7, 7, Color::red()), 
+		PrimitiveLine(8, 8, 9, 8, Color::yellow()), 
 
 		/* Was ist, wenn Anfangs- und/oder Endpunkt nicht im Bild? */
 
 		/* Alle moeglichen Steigungen ausprobieren */
 		/* Waagerecht */
-		PrimitiveLine(x+dx,   y,      x+dx+lx,     y), 
-		PrimitiveLine(x+dx,   y+dy/2, x+dx+lx,     y+dy/2+ly/2), 
-		PrimitiveLine(x+dx,   y+dy,   x+dx+lx,     y+dy+ly), 
-		PrimitiveLine(x+dx/2, y+dy,   x+dx/2+lx/2, y+dy+ly), 
+		PrimitiveLine(x+dx,   y,      x+dx+lx,     y, Color::red()), 
+		PrimitiveLine(x+dx,   y+dy/2, x+dx+lx,     y+dy/2+ly/2, Color::red()), 
+		PrimitiveLine(x+dx,   y+dy,   x+dx+lx,     y+dy+ly, Color::red()), 
+		PrimitiveLine(x+dx/2, y+dy,   x+dx/2+lx/2, y+dy+ly, Color::red()), 
 		/* Horizontal */
-		PrimitiveLine(x,      y+dy,   x,           y+dy+ly), 
-		PrimitiveLine(x-dx/2, y+dy,   x-dx/2-lx/2, y+dy+ly), 
-		PrimitiveLine(x-dx,   y+dy,   x-dx-lx,     y+dy+ly), 
-		PrimitiveLine(x-dx,   y+dy/2, x-dx-lx,     y+dy/2+ly/2), 
+		PrimitiveLine(x,      y+dy,   x,           y+dy+ly, Color::green()), 
+		PrimitiveLine(x-dx/2, y+dy,   x-dx/2-lx/2, y+dy+ly, Color::green()), 
+		PrimitiveLine(x-dx,   y+dy,   x-dx-lx,     y+dy+ly, Color::green()), 
+		PrimitiveLine(x-dx,   y+dy/2, x-dx-lx,     y+dy/2+ly/2, Color::green()), 
 		/* Waagerecht 2 */
-		PrimitiveLine(x-dx,   y,      x-dx-lx,     y), 
-		PrimitiveLine(x-dx,   y-dy/2, x-dx-lx,     y-dy/2-ly/2), 
-		PrimitiveLine(x-dx,   y-dy,   x-dx-lx,     y-dy-ly), 
-		PrimitiveLine(x-dx/2, y-dy,   x-dx/2-lx/2, y-dy-ly), 
+		PrimitiveLine(x-dx,   y,      x-dx-lx,     y, Color::yellow()), 
+		PrimitiveLine(x-dx,   y-dy/2, x-dx-lx,     y-dy/2-ly/2, Color::yellow()), 
+		PrimitiveLine(x-dx,   y-dy,   x-dx-lx,     y-dy-ly, Color::yellow()), 
+		PrimitiveLine(x-dx/2, y-dy,   x-dx/2-lx/2, y-dy-ly, Color::yellow()), 
 		/* Horizontal 2 */
-		PrimitiveLine(x,      y-dy,   x,           y-dy-ly), 
-		PrimitiveLine(x+dx/2, y-dy,   x+dx/2+lx/2, y-dy-ly), 
-		PrimitiveLine(x+dx,   y-dy,   x+dx+lx,     y-dy-ly), 
-		PrimitiveLine(x+dx,   y-dy/2, x+dx+lx,     y-dy/2-ly/2)
+		PrimitiveLine(x,      y-dy,   x,           y-dy-ly, Color::blue()), 
+		PrimitiveLine(x+dx/2, y-dy,   x+dx/2+lx/2, y-dy-ly, Color::blue()), 
+		PrimitiveLine(x+dx,   y-dy,   x+dx+lx,     y-dy-ly, Color::blue()), 
+		PrimitiveLine(x+dx,   y-dy/2, x+dx+lx,     y-dy/2-ly/2, Color::blue())
 
 		
 	};
