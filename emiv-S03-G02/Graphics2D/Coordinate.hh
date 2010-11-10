@@ -1,3 +1,9 @@
+/*
+Gruppe: 02
+Serie 03
+Matthias Boehm, 895778
+Hannes Georg, 850360
+*/
 #ifndef __COORDINATE_HH
 #define __COORDINATE_HH
 
