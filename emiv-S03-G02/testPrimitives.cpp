@@ -84,6 +84,9 @@ void paintSomeLines(Image &img){
 		PrimitiveLine(8, 8, 9, 8, Color::yellow()), 
 
 		/* Was ist, wenn Anfangs- und/oder Endpunkt nicht im Bild? */
+		PrimitiveLine(-1, -1, -50, -50), 
+		PrimitiveLine(img.GetWidth()/2, img.GetHeight()-10, img.GetWidth()/2, img.GetHeight()+10), 
+		PrimitiveLine(-10, 30, 30, -10), 
 
 		/* Alle moeglichen Steigungen ausprobieren */
 		/* Waagerecht */

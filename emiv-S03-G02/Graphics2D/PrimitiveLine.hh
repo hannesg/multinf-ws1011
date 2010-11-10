@@ -40,9 +40,13 @@ private:
 	/* Initialization function, called from constructors */
 	void Init(const Coordinate &c1, const Coordinate &c2, const Color &c);
 
+	/* Hilfsfunktion zum Zeichnen einer Geraden */
 	void DrawLine(ImageBase *img, const Coordinate &c1, const Coordinate &c2) const;
 
+	/* Implementiert Bresenham-Algorithmus */
 	void DrawLineBresenham(ImageBase *img, const Coordinate &to,const char orthant, const Coordinate &offset) const;
+
+	/* Fuehrt die Ruecktransformation von durch den Bresenham-Algorithmus bestimmten Koordinaten durch */
 	Coordinate DrawLineTranslateCoordinates(const Coordinate &base, const int x , const int y ,const char orthant) const;
 
 };

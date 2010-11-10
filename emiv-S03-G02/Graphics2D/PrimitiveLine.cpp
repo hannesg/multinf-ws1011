@@ -20,8 +20,10 @@ void PrimitiveLine::Draw(ImageBase *img) const
 	DrawLine(img,points_[0],points_[1]);
 }
 
+/* Fuehrt die Ruecktransformation von durch den Bresenham-Algorithmus bestimmten Koordinaten durch */
 Coordinate PrimitiveLine::DrawLineTranslateCoordinates(const Coordinate &base, const int x , const int y ,const char orthant) const {
 	Coordinate result(x,y);
+
 	if( orthant & 1 ){
 		result.SetX(y);
 		result.SetY(x);
@@ -50,10 +52,19 @@ void PrimitiveLine::DrawLineBresenham(ImageBase *img, const Coordinate &to,const
 	int y = 0;
 	Coordinate coord;
 	while( x <= deltaX ){
+		/* Ruecktransformation der Koordinaten */
 		coord = DrawLineTranslateCoordinates(offset,x,y,orthant);
-		img->SetPixel(coord.GetX(),coord.GetY(),0,GetColor().GetR());
-		img->SetPixel(coord.GetX(),coord.GetY(),1,GetColor().GetG());
-		img->SetPixel(coord.GetX(),coord.GetY(),2,GetColor().GetB());
+
+		/* Pixel zeichnen (wenn Koordinaten im Bild) */
+		if(coord.GetX() >= 0 && coord.GetX() < img->GetWidth() 
+			&& coord.GetY() >= 0 && coord.GetY() < img->GetHeight()) {
+			img->SetPixel(coord.GetX(),coord.GetY(),0,GetColor().GetR());
+			img->SetPixel(coord.GetX(),coord.GetY(),1,GetColor().GetG());
+			img->SetPixel(coord.GetX(),coord.GetY(),2,GetColor().GetB());
+		}
+
+		/* Gemaess Bresenham-Algorithmus bestimmen, ob das Pixel rechts vom 
+		 * vorigen Pixel oder rechtsoben vom vorigen Pixel gesetzt werden muss */
 		if( e > 0 ){
 			y++;
 			e += 2*(deltaY - deltaX);
@@ -70,6 +81,8 @@ void PrimitiveLine::DrawLine(ImageBase *img, const Coordinate &c1, const Coordin
 	int dX = (c2.GetX() - c1.GetX());
 	int dY = (c2.GetY() - c1.GetY());
 	char orthant = 0;
+	/* Transformationen bestimmen und Informationen darueber fuer die Ruecktransformation 
+	 * in orthant speichern */
 	if( dY < 0 ){
 		orthant |= 4;
 		dY = -dY;
