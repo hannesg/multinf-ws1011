@@ -45,17 +45,69 @@ void paintSomePoints(Image &img) {
 }
 
 void paintSomeLines(Image &img){
-	PrimitiveLine line(Coordinate(0,10),Coordinate(50,50));
-	line.SetColor(Color::black());
-	line.Draw(&img);
 
-	PrimitiveLine line2(Coordinate(50,10),Coordinate(0,50));
-	line2.SetColor(Color::blue());
-	line2.Draw(&img);
+	int x = 100;
+	int y = 50;
 
-	PrimitiveLine line3(Coordinate(50,80),Coordinate(50,0));
-	line3.SetColor(Color::red());
-	line3.Draw(&img);
+	int dx = 10;
+	int dy = 10;
+
+	int lx = 30;
+	int ly = 30;
+
+	int tx = dx+lx;
+	int ty = dy+ly;
+
+	PrimitiveLine lines[] = {
+		PrimitiveLine(Coordinate(0,10),Coordinate(50,50), Color::black()), 
+		PrimitiveLine(Coordinate(50,10),Coordinate(0,50), Color::red()), 
+		PrimitiveLine(Coordinate(50,80),Coordinate(50,0), Color::blue()), 
+
+		/* Inneres Quadrat */
+		PrimitiveLine(x-dx, y-dy, x-dx, y+dy, Color::red()), 
+		PrimitiveLine(x-dx, y+dy, x+dx, y+dy, Color::red()), 
+		PrimitiveLine(x+dx, y+dy, x+dx, y-dy, Color::red()), 
+		PrimitiveLine(x+dx, y-dy, x-dx, y-dy, Color::red()), 
+
+		/* Auesseres Quadrat */
+		PrimitiveLine(x-tx, y-ty, x-tx, y+ty, Color::red()), 
+		PrimitiveLine(x-tx, y+ty, x+tx, y+ty, Color::red()), 
+		PrimitiveLine(x+tx, y+ty, x+tx, y-ty, Color::red()), 
+		PrimitiveLine(x+tx, y-ty, x-tx, y-ty, Color::red()), 
+
+		/* Verschiedene Laengen ausprobieren */
+		// PrimitiveLin
+
+		/* Was ist, wenn Anfangs- und/oder Endpunkt nicht im Bild? */
+
+		/* Alle moeglichen Steigungen ausprobieren */
+		/* Waagerecht */
+		PrimitiveLine(x+dx,   y,      x+dx+lx,     y), 
+		PrimitiveLine(x+dx,   y+dy/2, x+dx+lx,     y+dy/2+ly/2), 
+		PrimitiveLine(x+dx,   y+dy,   x+dx+lx,     y+dy+ly), 
+		PrimitiveLine(x+dx/2, y+dy,   x+dx/2+lx/2, y+dy+ly), 
+		/* Horizontal */
+		PrimitiveLine(x,      y+dy,   x,           y+dy+ly), 
+		PrimitiveLine(x-dx/2, y+dy,   x-dx/2-lx/2, y+dy+ly), 
+		PrimitiveLine(x-dx,   y+dy,   x-dx-lx,     y+dy+ly), 
+		PrimitiveLine(x-dx,   y+dy/2, x-dx-lx,     y+dy/2+ly/2), 
+		/* Waagerecht 2 */
+		PrimitiveLine(x-dx,   y,      x-dx-lx,     y), 
+		PrimitiveLine(x-dx,   y-dy/2, x-dx-lx,     y-dy/2-ly/2), 
+		PrimitiveLine(x-dx,   y-dy,   x-dx-lx,     y-dy-ly), 
+		PrimitiveLine(x-dx/2, y-dy,   x-dx/2-lx/2, y-dy-ly), 
+		/* Horizontal 2 */
+		PrimitiveLine(x,      y-dy,   x,           y-dy-ly), 
+		PrimitiveLine(x+dx/2, y-dy,   x+dx/2+lx/2, y-dy-ly), 
+		PrimitiveLine(x+dx,   y-dy,   x+dx+lx,     y-dy-ly), 
+		PrimitiveLine(x+dx,   y-dy/2, x+dx+lx,     y-dy/2-ly/2)
+
+		
+	};
+
+	for(int i = 0; i < sizeof(lines)/sizeof(PrimitiveLine); i++) {
+		lines[i].Draw(&img);
+	}
 }
 
 
