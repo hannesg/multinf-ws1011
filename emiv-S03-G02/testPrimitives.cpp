@@ -161,9 +161,11 @@ int main(int argc, char *argv[]) {
 		OutputFileIndex = 1;
 	}
 
+	/* Fuere Tests durch */
 	paintSomePoints(img);
 	paintSomeLines(img);
 
+	/* Speichere Bild */
 	if(img.SavePPM(argv[OutputFileIndex]) != 0) {
 		cerr << "Cannot save file! " << endl;
 		return 1;

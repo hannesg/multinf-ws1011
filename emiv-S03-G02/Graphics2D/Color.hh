@@ -23,7 +23,7 @@ public:
 		name_ = "black";
 	}
 
-	Color(unsigned char r, unsigned char g, unsigned char b) : r_(r), g_(g), b_(b), name_("") { }
+	Color(unsigned char r, unsigned char g, unsigned char b) : r_(r), g_(g), b_(b), name_("undefined") { }
 
 	Color(unsigned char r, unsigned char g, unsigned char b, 
 		string name) : r_(r), g_(g), b_(b), name_(name) { }

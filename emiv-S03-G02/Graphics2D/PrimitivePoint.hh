@@ -42,7 +42,7 @@ public:
 
 private:
 	/* how many points are allowed? */
-	virtual int GetNumberOfPointsAllowed() { return 1; }
+	virtual int GetNumberOfPointsAllowed() const { return 1; }
 
 	/* initialization, called from constructors */
 	void Init(const Coordinate &coor, const Color &c);
