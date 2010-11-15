@@ -4,7 +4,7 @@
 #include <Graphics2DBase/Canvas2D.hh>
 
 namespace Graphics2D {
-  Canvas2D::Canvas2D *Canvas2D::instance_ = NULL;
+  Canvas2D *Canvas2D::instance_ = NULL;
 
   Canvas2D::Canvas2D() {
     painter_ = NULL;
