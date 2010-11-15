@@ -47,7 +47,7 @@ void Image::SetPixel(const int &x, const int &y, const int &ch, const unsigned c
 		throw exception();
 	}
 	/* Gueltige Parameter? */
-	if(x >= 0 && x < width_ && y >= 0 && y < height_ && ch >= 0 && ch < 3) {
+	if(x >= 0 && y >= 0 && ch >= 0 && ch < 3 && (unsigned)x < width_ && (unsigned)y < height_) {
 		data_[(width_*y + x)*3+ch] = value;
 	} else {
 		throw out_of_range("Index out of range");
@@ -59,7 +59,7 @@ unsigned char Image::GetPixel(const int &x, const int &y, const int &ch) const {
 		throw exception();
 	}
 	/* Gueltige Parameter? */
-	if(x >= 0 && x < width_ && y >= 0 && y < height_ && ch >= 0 && ch < 3) {
+	if(x >= 0 && y >= 0 && ch >= 0 && ch < 3 && (unsigned)x < width_ &&  (unsigned)y < height_) {
 		return data_[(width_*y + x)*3+ch];
 	} else {
 		throw out_of_range("Index out of range");
@@ -227,9 +227,9 @@ int Image::SavePPM(const std::string &filename) const {
 	
 	/* Alle Pixel Stueck fuer Stueck ausgeben (nicht einfach out << data_ verwenden, 
 	 * da sonst beim ersten '\0'-Zeichen aufgehoehrt wird) */
-	for(int y = 0; y < height_; y++) {
-		for(int x = 0; x < width_; x++) {
-			for(int k = 0; k < 3; k++) {
+	for(unsigned int y = 0; y < height_; y++) {
+		for(unsigned int x = 0; x < width_; x++) {
+			for(unsigned int k = 0; k < 3; k++) {
 				out.put(GetPixel(x, y, k));
 			}
 		}

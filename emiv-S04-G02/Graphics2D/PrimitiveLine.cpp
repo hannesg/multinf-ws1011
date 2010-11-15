@@ -56,8 +56,8 @@ void PrimitiveLine::DrawLineBresenham(ImageBase *img, const Coordinate &to,const
 		coord = DrawLineTranslateCoordinates(offset,x,y,orthant);
 
 		/* Pixel zeichnen (wenn Koordinaten im Bild) */
-		if(coord.GetX() >= 0 && coord.GetX() < img->GetWidth() 
-			&& coord.GetY() >= 0 && coord.GetY() < img->GetHeight()) {
+		if(coord.GetX() >= 0 && (unsigned)coord.GetX() < img->GetWidth() 
+			&& coord.GetY() >= 0 && (unsigned)coord.GetY() < img->GetHeight()) {
 			img->SetPixel(coord.GetX(),coord.GetY(),0,GetColor().GetR());
 			img->SetPixel(coord.GetX(),coord.GetY(),1,GetColor().GetG());
 			img->SetPixel(coord.GetX(),coord.GetY(),2,GetColor().GetB());

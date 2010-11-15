@@ -37,7 +37,7 @@ void paintSomePoints(Image &img) {
 	};
 
 	/* Testpunkte zeichnen */
-	for(int i = 0; i < sizeof(ps)/sizeof(PrimitivePoint); i++) {
+	for(unsigned int i = 0; i < sizeof(ps)/sizeof(PrimitivePoint); i++) {
 		ps[i].Draw(&img);
 	}
 
@@ -113,7 +113,7 @@ void paintSomeLines(Image &img){
 		
 	};
 
-	for(int i = 0; i < sizeof(lines)/sizeof(PrimitiveLine); i++) {
+	for(unsigned int i = 0; i < sizeof(lines)/sizeof(PrimitiveLine); i++) {
 		lines[i].Draw(&img);
 	}
 }
@@ -142,8 +142,8 @@ int main(int argc, char *argv[]) {
 		img.Init(WIDTH, HEIGHT);
 
 		/* Weiss machen */
-		for(int i = 0; i < img.GetWidth(); i++) {
-			for(int j = 0; j < img.GetHeight(); j++) {
+		for(unsigned int i = 0; i < img.GetWidth(); i++) {
+			for(unsigned int j = 0; j < img.GetHeight(); j++) {
 				img.SetPixel(i, j, 0, 255);
 				img.SetPixel(i, j, 1, 255);
 				img.SetPixel(i, j, 2, 255);

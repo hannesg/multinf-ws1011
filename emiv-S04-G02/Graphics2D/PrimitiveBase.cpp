@@ -12,7 +12,7 @@ void PrimitiveBase::SetCoordinates(const vector<Coordinate> &points) {
 	/* if checking enabled (num_of_points_allowed != ANY_NUMBER_ALLOWED) and 
 	 * argument points has not the expected size -> Error!
 	 */
-	if(num_of_points_allowed != ANY_NUMBER_ALLOWED && points.size() != num_of_points_allowed) {
+	if(num_of_points_allowed != ANY_NUMBER_ALLOWED && points.size() != (unsigned)num_of_points_allowed) {
 		throw exception();
 	}
 

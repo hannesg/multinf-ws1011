@@ -28,7 +28,7 @@ void PrimitivePoint::Draw(ImageBase *img) const {
 	int x = c.GetX();
 	int y = c.GetY();
 
-	if(x >= 0 && y >= 0 && x < img->GetWidth() && y < img->GetHeight()) {
+	if(x >= 0 && y >= 0 && (unsigned)x < img->GetWidth() && (unsigned)y < img->GetHeight()) {
 		img->SetPixel(x, y, 0, color_.GetR());
 		img->SetPixel(x, y, 1, color_.GetG());
 		img->SetPixel(x, y, 2, color_.GetB());
