@@ -8,12 +8,13 @@ Hannes Georg, 850360
 #include <iostream>
 #include "Painter.hh"
 #include "PrimitiveLine.hh"
+#include "PointModusController.hh"
 
 using namespace std;
 
 namespace Graphics2D {
 
-Painter::Painter() {
+Painter::Painter() : pointModusController_(*this) {
 	currentColor_ = Color::black();
 
 	// Zum Test
@@ -23,8 +24,11 @@ Painter::Painter() {
 	AddPrimitive(l1);
 	AddPrimitive(l2);
 
+	// Vorgegebenen Modus setzen (hier pointModus)
+	currentController_ = &pointModusController_;
+
 	// Modus am Start ist Punkte zeichnen
-	currentModus_ = POINT;
+	SetModus(POINT);
 }
 
 Painter::~Painter() {
@@ -106,14 +110,23 @@ string Painter::GetString() {
 
 void Painter::MouseDown(int x, int y) {
 	cerr << "MouseDown " << x << " " << y << endl;
+
+	// Weiterleiten 
+	currentController_->MouseDown(x, y);
 }
 
 void Painter::MouseUp(int x, int y) {
 	cerr << "MouseUp " << x << " " << y << endl;
+
+	// Weiterleiten 
+	currentController_->MouseUp(x, y);
 }
 
 void Painter::MouseMove(int x, int y) {
 	cerr << "MouseMove " << x << " " << y << endl;
+
+	// Weiterleiten 
+	currentController_->MouseMove(x, y);
 }
 
 void Painter::KeyPressed(unsigned char ch, int x, int y) {
@@ -132,10 +145,10 @@ void Painter::KeyPressed(unsigned char ch, int x, int y) {
 		currentColor_ = Color::blue();
 		break;
 	case 'p':
-		currentModus_ = POINT;
+		SetModus(POINT);
 		break;
 	case 'l':
-		currentModus_ = LINE;
+		SetModus(LINE);
 		break;
 	case 'h':
 		PrintHelp();
@@ -143,6 +156,29 @@ void Painter::KeyPressed(unsigned char ch, int x, int y) {
 	default:
 		break;
 	}
+}
+
+void Painter::SetModus(Modus m) {
+	// Neuen Modus speichern
+	currentModus_ = m;
+
+	// Alten Modus deaktivieren
+	currentController_->Deactivate();
+
+	// Neuen Modus zuweisen
+	switch(m) {
+	case POINT:
+		currentController_ = &pointModusController_;
+		break;
+	case LINE:
+		// currentController_ = &LineModusController_;
+		break;
+	default:
+		break;
+	}
+
+	// Neuen Modus aktivieren
+	currentController_->Activate();
 }
 
 void Painter::PrintHelp() {

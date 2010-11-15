@@ -14,6 +14,12 @@ ADD_LIBRARY(Graphics2D
 	PrimitiveLine.hh
 	Painter.cpp
 	Painter.hh
+	
+	# Modus controller
+	ModusController.cpp
+	ModusController.hh
+	PointModusController.cpp
+	PointModusController.hh
     )
 
 target_link_libraries(Graphics2D Graphics2DBase)

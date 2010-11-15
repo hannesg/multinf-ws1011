@@ -11,8 +11,14 @@ Hannes Georg, 850360
 #include "PainterBase.hh"
 #include "Color.hh"
 #include "PrimitiveBase.hh"
+#include "ModusController.hh"
+#include "PointModusController.hh"
 
 namespace Graphics2D {
+
+// forward declaration
+// class PointModusController;
+// class ModusController;
 
 class Painter : public PainterBase {
 
@@ -52,8 +58,6 @@ public:
 	// Removes all primitives
 	void RemoveAllPrimitives();
 
-private:
-
 	// Adds a temporary primitive to the temporary primitive list
 	void AddTemporaryPrimitive(PrimitiveBase *p);
 
@@ -63,8 +67,16 @@ private:
 	// Returns temporary primitive number i
 	PrimitiveBase *GetTemporaryPrimitive(int i);
 
+private:
+
 	// Print Help
 	void PrintHelp();
+
+	// Enumeration fuer moegliche Modi 
+	enum Modus { POINT, LINE, POLYGON, BOX };
+
+	// Sets the current Modus
+	void SetModus(Modus m);
 
 	// Die gegenwaertige Farbe
 	Color currentColor_;
@@ -75,11 +87,16 @@ private:
 	// Vektor, der alle *temporaeren* zu zeichnenden Primitive enthaelt
 	vector<PrimitiveBase *> tempPrimitives_;
 
-	// Enumeration fuer moegliche Modi 
-	enum Modus { POINT, LINE, POLYGON, BOX };
-
 	// Gegenwaertiger Modus
 	Modus currentModus_;
+
+	// Gegenwaertiger Controller
+	ModusController *currentController_;
+
+	// Vorgegebene Controller
+	PointModusController pointModusController_;
+	// LineModusController *lineModusController_;
+
 };
 
 

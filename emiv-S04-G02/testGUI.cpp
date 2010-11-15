@@ -29,6 +29,5 @@ int main(int argc, char *argv[]) {
 	
 	// painter.AddPrimitive(...); 
 	
-	
 	canvas.Start();
 }
