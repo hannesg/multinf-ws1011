@@ -15,6 +15,8 @@ INCLUDE_DIRECTORIES(${MultInf_SOURCE_DIR}/Graphics2D)
 
 OPTION(BUILD_SHARED_LIBS "Build HelloWorld with shared libraries." OFF)
 
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+
 add_subdirectory(Graphics2D)
 add_subdirectory(Graphics2DBase)
 
