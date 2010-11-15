@@ -7,6 +7,10 @@ Hannes Georg, 850360
 #ifndef __COORDINATE_HH
 #define __COORDINATE_HH
 
+#include <cmath>
+
+using namespace std;
+
 namespace Graphics2D {
 
 class Coordinate
@@ -24,8 +28,8 @@ public:
 	inline void SetY(int y) { y_ = y; }
 
 	/* getters */
-	inline int GetX() const { return (int)x_; };
-	inline int GetY() const { return (int)y_; };
+	inline int GetX() const { return (int)rint(x_); };
+	inline int GetY() const { return (int)rint(y_); };
 
 private:
 	float x_, y_;

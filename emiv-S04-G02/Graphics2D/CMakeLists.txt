@@ -12,6 +12,8 @@ ADD_LIBRARY(Graphics2D
 	PrimitivePoint.hh
 	PrimitiveLine.cpp
 	PrimitiveLine.hh
+	Painter.cpp
+	Painter.hh
     )
 
 target_link_libraries(Graphics2D Graphics2DBase)

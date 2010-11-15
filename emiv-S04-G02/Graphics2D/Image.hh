@@ -21,6 +21,7 @@ public:
 	Image();
 	Image(const Image &other);
 	Image &operator =(const Image &other);
+	Image(int w, int h) { Init(w, h); }
 	virtual ~Image();
 
 	virtual void FillZero();
