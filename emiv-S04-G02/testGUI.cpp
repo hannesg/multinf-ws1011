@@ -18,6 +18,8 @@ int main(int argc, char *argv[]) {
 	canvas.Init(0, 0, 512, 512);
 
 	Image img(512, 512);
+
+	img.LoadPPM("wasserturm-small.ppm");
 	
 	canvas.RegisterImage(&img);
 	

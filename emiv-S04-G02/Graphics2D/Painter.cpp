@@ -12,11 +12,15 @@ using namespace std;
 
 namespace Graphics2D {
 
+Painter::Painter() {
+	currentColor_ = Color::black();
+}
+
 void Painter::Draw() {
 }
 
 string Painter::GetColorString() {
-	return "";
+	return currentColor_.GetName();
 }
 
 string Painter::GetString() {
@@ -37,6 +41,22 @@ void Painter::MouseMove(int x, int y) {
 
 void Painter::KeyPressed(unsigned char ch, int x, int y) {
 	cerr << "KeyPressed " << ch << " " << x << " " << y << endl;
+	switch(ch) {
+	case '1':
+		currentColor_ = Color::black();
+		break;
+	case '2':
+		currentColor_ = Color::red();
+		break;
+	case '3':
+		currentColor_ = Color::green();
+		break;
+	case '4':
+		currentColor_ = Color::blue();
+		break;
+	default:
+		break;
+	}
 }
 
 }
