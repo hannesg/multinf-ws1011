@@ -28,7 +28,8 @@ ADD_LIBRARY(Graphics2D
 	LineModusController.hh
 	BoxModusController.cpp
 	BoxModusController.hh
-	
+	PolygonModusController.cpp
+	PolygonModusController.hh
     )
 
 target_link_libraries(Graphics2D Graphics2DBase)

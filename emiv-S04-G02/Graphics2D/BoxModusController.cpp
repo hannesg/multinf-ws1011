@@ -52,7 +52,7 @@ void BoxModusController::MouseUp(int x, int y)  {
 		pressed_ = false;
 
 		// Das Rechteck endgueltig hinzufuegen
-		// TODO! 
+		// TODO! Auskommentieren wenn PrimitiveBox-Klasse erstellt
 		// myPainter_.AddPrimitive(new PrimitiveBox(startingPoint_, Coordinate(x, y), myPainter_.GetCurrentColor()));
 
 		// Temporaere Objekte loeschen

@@ -15,6 +15,7 @@ Hannes Georg, 850360
 #include "PointModusController.hh"
 #include "LineModusController.hh"
 #include "BoxModusController.hh"
+#include "PolygonModusController.hh"
 #include "Image.hh"
 
 namespace Graphics2D {
@@ -88,6 +89,7 @@ private:
 	PointModusController pointModusController_;
 	LineModusController lineModusController_;
 	BoxModusController boxModusController_;
+	PolygonModusController polygonModusController_;
 
 };
 

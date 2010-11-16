@@ -18,7 +18,8 @@ namespace Graphics2D {
 Painter::Painter(const Image &backgroundImage) 
 	: pointModusController_(*this), 
 	lineModusController_(*this), 
-	boxModusController_(*this)
+	boxModusController_(*this), 
+	polygonModusController_(*this)
 {
 	currentColor_ = Color::black();
 
@@ -140,7 +141,7 @@ void Painter::KeyPressed(unsigned char ch, int x, int y) {
 	case 'l':
 		SetModus(LINE);
 		break;
-	case 'b':
+	case 'r':
 		SetModus(BOX);
 		break;
 	case 'y':
@@ -175,7 +176,7 @@ void Painter::SetModus(Modus m) {
 		currentController_ = &boxModusController_;
 		break;
 	case POLYGON:
-		// TODO
+		currentController_ = &polygonModusController_;
 		break;
 	// Hier mehr Controller hinzufuegen
 	default:
@@ -191,7 +192,7 @@ void Painter::PrintHelp() {
 	cout << "Weitere Kuerzel fuer Auswahl der verschiedenen Modi: " << endl;
 	cout << " p: Punkte" << endl;
 	cout << " l: Linien" << endl;
-	cout << " b: Rechteck" << endl;
+	cout << " r: Rechteck" << endl;
 	cout << " y: Polygon" << endl;
 	cout << "h druckt diese Hilfe aus" << endl;
 }
