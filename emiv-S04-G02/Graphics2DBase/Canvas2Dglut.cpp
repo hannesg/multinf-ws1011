@@ -71,6 +71,7 @@ namespace Graphics2D {
     glutDisplayFunc(Render);
     glutMouseFunc(MouseButtonEvents);
     glutMotionFunc(MouseMotionEvents);
+    glutPassiveMotionFunc(MouseMotionEvents);
     glutKeyboardFunc(KeyboardEvents);
     glutTimerFunc(40, OnTimer, 1);
     glMatrixMode (GL_PROJECTION);
