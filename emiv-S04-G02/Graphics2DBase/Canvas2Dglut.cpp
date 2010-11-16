@@ -149,22 +149,22 @@ namespace Graphics2D {
         instance_->painter_->MouseUp(x,y);
       }
     }
-    glutPostRedisplay();
-    glutSwapBuffers();
+    // glutPostRedisplay();
+    // glutSwapBuffers();
   }
 
   void Canvas2D::MouseMotionEvents(int x, int y) {
     if (instance_->painter_ == NULL) { return; }
     instance_->painter_->MouseMove(x,y);
-    glutPostRedisplay();
-    glutSwapBuffers();
+    // glutPostRedisplay();
+    // glutSwapBuffers();
   }
   
   void Canvas2D::KeyboardEvents(unsigned char ch, int x, int y) {
     if (instance_->painter_ == NULL) { return; }
     instance_->painter_->KeyPressed(ch,x,y);
-    glutPostRedisplay();
-    glutSwapBuffers();
+    // glutPostRedisplay();
+    // glutSwapBuffers();
   }
 
 }
