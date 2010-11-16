@@ -26,6 +26,8 @@ ADD_LIBRARY(Graphics2D
 	PointModusController.hh
 	LineModusController.cpp
 	LineModusController.hh
+	BoxModusController.cpp
+	BoxModusController.hh
 	
     )
 

@@ -54,7 +54,7 @@ void LineModusController::MouseUp(int x, int y)  {
 
 void LineModusController::MouseMove(int x, int y)  {
 
-	// Den temporaere Linie verschieben
+	// Die temporaere Linie verschieben
 	if(pressed_ && tempPrimitives_.size() != 0) {
 
 		PrimitiveLine *theLine = dynamic_cast<PrimitiveLine *>(tempPrimitives_.front());
