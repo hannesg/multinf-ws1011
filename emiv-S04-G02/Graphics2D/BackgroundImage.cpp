@@ -5,7 +5,10 @@ Matthias Boehm, 895778
 Hannes Georg, 850360
 */
 
+#include <memory.h>
 #include "BackgroundImage.hh"
+
+using namespace std;
 
 namespace Graphics2D {
 
@@ -20,6 +23,7 @@ void BackgroundImage::Draw(ImageBase *img) const
 			img->SetPixel(x, y, 2, img_.GetPixel(x, y, 2));
 		}
 	}
+	// memset(img->GetData(), 255, img->GetWidth()*img->GetHeight()*3);
 }
 
 }

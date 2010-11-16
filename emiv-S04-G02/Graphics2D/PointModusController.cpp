@@ -23,7 +23,7 @@ void PointModusController::Activate() {
 void PointModusController::Deactivate() {
 	// Aufrauemen (loescht auch automatisch die hier in der Klasse
 	// erzeugten Zeiger)! 
-	RemoveAllPrimitives();
+	RemoveAllTemporaryPrimitives();
 
 	pressed_ = false;
 }
@@ -45,7 +45,7 @@ void PointModusController::MouseUp(int x, int y)  {
 		myPainter_.AddPrimitive(new PrimitivePoint(x, y, myPainter_.GetCurrentColor()));
 
 		// Temporaere Objekte loeschen
-		RemoveAllPrimitives();
+		RemoveAllTemporaryPrimitives();
 	}
 }
 

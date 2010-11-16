@@ -27,7 +27,7 @@ public:
 	ModusController(Painter &b);
 
 	/* deconstructor */
-	virtual ~ModusController() { /* Aufraeumen und Speicherplatz freigeben! */ RemoveAllPrimitives(); }
+	virtual ~ModusController() { /* Aufraeumen und Speicherplatz freigeben! */ RemoveAllTemporaryPrimitives(); }
 
 	/* called, when the modus is activated */
 	virtual void Activate() = 0;
@@ -53,7 +53,7 @@ public:
 	const vector<PrimitiveBase *> & GetTemporaryPrimitives() const { return tempPrimitives_; }
 
 	// Removes all temporary primitives
-	void RemoveAllPrimitives();
+	void RemoveAllTemporaryPrimitives();
 
 protected:
 	/* der Painter, zu dem dieser Controller gehoehrt */

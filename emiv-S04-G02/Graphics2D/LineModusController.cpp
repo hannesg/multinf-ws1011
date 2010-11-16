@@ -23,7 +23,7 @@ void LineModusController::Activate() {
 void LineModusController::Deactivate() {
 	// Aufrauemen (loescht auch automatisch die hier in der Klasse
 	// erzeugten Zeiger)! 
-	RemoveAllPrimitives();
+	RemoveAllTemporaryPrimitives();
 
 	pressed_ = false;
 }
@@ -48,7 +48,7 @@ void LineModusController::MouseUp(int x, int y)  {
 		myPainter_.AddPrimitive(new PrimitiveLine(startPoint_, Coordinate(x, y), myPainter_.GetCurrentColor()));
 
 		// Temporaere Objekte loeschen
-		RemoveAllPrimitives();
+		RemoveAllTemporaryPrimitives();
 	}
 }
 

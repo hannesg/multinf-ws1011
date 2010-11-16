@@ -26,8 +26,6 @@ int main(int argc, char *argv[]) {
 	Painter thePainter(img);
 	
 	canvas.RegisterPainter(&thePainter);
-	
-	// painter.AddPrimitive(...); 
-	
+		
 	canvas.Start();
 }
