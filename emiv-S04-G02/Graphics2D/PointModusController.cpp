@@ -23,7 +23,9 @@ void PointModusController::Activate() {
 void PointModusController::Deactivate() {
 	// Aufrauemen (loescht auch automatisch die hier in der Klasse
 	// erzeugten Zeiger)! 
-	myPainter_.RemoveAllTemporaryPrimitives();
+	RemoveAllPrimitives();
+
+	pressed_ = false;
 }
 
 void PointModusController::MouseDown(int x, int y) {
@@ -31,7 +33,7 @@ void PointModusController::MouseDown(int x, int y) {
 	pressed_ = true;
 
 	// Temporaeren Punkt erzeugen
-	myPainter_.AddTemporaryPrimitive(new PrimitivePoint(x, y, myPainter_.GetCurrentColor()));
+	tempPrimitives_.push_back(new PrimitivePoint(x, y, myPainter_.GetCurrentColor()));
 }
 
 void PointModusController::MouseUp(int x, int y)  {
@@ -43,7 +45,7 @@ void PointModusController::MouseUp(int x, int y)  {
 		myPainter_.AddPrimitive(new PrimitivePoint(x, y, myPainter_.GetCurrentColor()));
 
 		// Temporaere Objekte loeschen
-		myPainter_.RemoveAllTemporaryPrimitives();
+		RemoveAllPrimitives();
 	}
 }
 
@@ -51,8 +53,13 @@ void PointModusController::MouseMove(int x, int y)  {
 
 	// Den temporaeren Punkt verschieben
 	if(pressed_) {
-		/* TODO: was wenn GetTemporaryPrimitive(0) nicht existiert */
-		PrimitivePoint *thePoint = dynamic_cast<PrimitivePoint *>(myPainter_.GetTemporaryPrimitive(0));
+
+		if(tempPrimitives_.size() == 0) {
+			// Punkt hinzugfuegen, falls nicht vorhanden
+			tempPrimitives_.push_back(new PrimitivePoint(x, y, myPainter_.GetCurrentColor()));
+		}
+		
+		PrimitivePoint *thePoint = dynamic_cast<PrimitivePoint *>(tempPrimitives_.front());
 		assert(thePoint != NULL);
 
 		thePoint->SetCoordinate(x, y);

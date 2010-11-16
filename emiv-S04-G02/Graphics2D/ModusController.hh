@@ -8,6 +8,11 @@ Hannes Georg, 850360
 #ifndef MODUS_CONTROLLER_HH
 #define MODUS_CONTROLLER_HH
 
+#include <vector>
+#include "PrimitiveBase.hh"
+
+using namespace std;
+
 namespace Graphics2D {
 
 //forward declaration
@@ -44,9 +49,18 @@ public:
 	/// this function is called when a user presses a key in the gui. ch is the key pressed.
 	// virtual void KeyPressed(unsigned char ch, int x, int y) = 0;
 
+	/* liefert den Vektor mit temporaeren Primitiven zurueck */
+	const vector<PrimitiveBase *> & GetTemporaryPrimitives() const { return tempPrimitives_; }
+
+	// Removes all temporary primitives
+	void RemoveAllPrimitives();
 
 protected:
+	/* der Painter, zu dem dieser Controller gehoehrt */
 	Painter &myPainter_;
+
+	// Vektor, der alle *temporaeren* zu zeichnenden Primitive enthaelt
+	vector<PrimitiveBase *> tempPrimitives_;
 };
 
 

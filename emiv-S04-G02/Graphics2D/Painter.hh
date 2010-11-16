@@ -55,15 +55,6 @@ public:
 	// Removes all primitives
 	void RemoveAllPrimitives();
 
-	// Adds a temporary primitive to the temporary primitive list
-	void AddTemporaryPrimitive(PrimitiveBase *p);
-
-	// Removes all temporary primitives
-	void RemoveAllTemporaryPrimitives();
-
-	// Returns temporary primitive number i
-	PrimitiveBase *GetTemporaryPrimitive(int i);
-
 	// Returns the current color
 	Color GetCurrentColor() const { return currentColor_; }
 
@@ -84,9 +75,6 @@ private:
 	// Vektor, der alle bisher gezeichneten Primitiven enthaelt
 	// Hier *muessen* Zeiger verwendet werden!!
 	vector<PrimitiveBase *> primitives_;
-
-	// Vektor, der alle *temporaeren* zu zeichnenden Primitive enthaelt
-	vector<PrimitiveBase *> tempPrimitives_;
 
 	// Gegenwaertiger Modus
 	Modus currentModus_;

@@ -13,5 +13,16 @@ namespace Graphics2D {
 
 ModusController::ModusController(Painter &b) : myPainter_(b) { }
 
+void ModusController::RemoveAllPrimitives() {
+	vector<PrimitiveBase *>::iterator it;
+
+	// Alle temporaere Primitives loeschen (Da sie mit new erstellt wurden! )
+	for(it = tempPrimitives_.begin(); it != tempPrimitives_.end(); it++) {
+		delete *it;
+	}
+
+	// Liste leeren
+	tempPrimitives_.clear();
+}
 
 }

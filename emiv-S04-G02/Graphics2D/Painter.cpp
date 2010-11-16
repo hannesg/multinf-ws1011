@@ -22,17 +22,8 @@ Painter::Painter(const Image &backgroundImage) : pointModusController_(*this) {
 	BackgroundImage *img = new BackgroundImage(backgroundImage);
 	AddPrimitive(img);
 
-	// Zum Test
-	PrimitiveLine *l1 = new PrimitiveLine(0, 0, 10, 10);
-	PrimitiveLine *l2 = new PrimitiveLine(10, 0, 0, 10);
-
-	AddPrimitive(l1);
-	AddPrimitive(l2);
-
-	// Vorgegebenen Modus setzen (hier pointModus)
-	currentController_ = &pointModusController_;
-
 	// Modus am Start ist Punkte zeichnen
+	currentController_ = NULL;
 	SetModus(POINT);
 }
 
@@ -40,7 +31,6 @@ Painter::~Painter() {
 
 	// Aufraeumen
 	RemoveAllPrimitives();
-	RemoveAllTemporaryPrimitives();
 }
 
 void Painter::Draw() {
@@ -52,9 +42,12 @@ void Painter::Draw() {
 		(*it)->Draw(image_);
 	}
 
+	const vector<PrimitiveBase *> &temps = currentController_->GetTemporaryPrimitives();
+	vector<PrimitiveBase *>::const_iterator itc;
+
 	/* Auch die temporaeren Elemente durchgehen */
-	for(it = tempPrimitives_.begin(); it != tempPrimitives_.end(); it++) {
-		(*it)->Draw(image_);
+	for(itc = temps.begin(); itc != temps.end(); itc++) {
+		(*itc)->Draw(image_);
 	}
 }
 
@@ -74,26 +67,6 @@ void Painter::RemoveAllPrimitives() {
 
 	// Liste leeren
 	primitives_.clear();
-}
-
-void Painter::AddTemporaryPrimitive(PrimitiveBase *p) {
-	tempPrimitives_.push_back(p);
-}
-
-void Painter::RemoveAllTemporaryPrimitives() {
-	vector<PrimitiveBase *>::iterator it;
-
-	// Alle temporaere Primitives loeschen
-	for(it = tempPrimitives_.begin(); it != tempPrimitives_.end(); it++) {
-		delete *it;
-	}
-
-	// Liste leeren
-	tempPrimitives_.clear();
-}
-
-PrimitiveBase *Painter::GetTemporaryPrimitive(int i) {
-	return tempPrimitives_[i];
 }
 
 string Painter::GetColorString() {
@@ -168,7 +141,9 @@ void Painter::SetModus(Modus m) {
 	currentModus_ = m;
 
 	// Alten Modus deaktivieren
-	currentController_->Deactivate();
+	if(currentController_) {
+		currentController_->Deactivate();
+	}
 
 	// Neuen Modus zuweisen
 	switch(m) {
