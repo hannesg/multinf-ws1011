@@ -19,6 +19,13 @@ OPTION(BUILD_SHARED_LIBS "Build HelloWorld with shared libraries." OFF)
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
+OPTION(USE_GTK "Use GTK+ instead of GLUT" OFF)
+
+IF(USE_GTK)
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DGRAPHICS2D_USEGTK")
+SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${EMultInf_SOURCE_DIR})
+ENDIF(USE_GTK)
+
 add_subdirectory(Graphics2D)
 add_subdirectory(Graphics2DBase)
 
@@ -29,3 +36,6 @@ add_executable(testGUI testGUI.cpp)
 target_link_libraries(testGraphics2D Graphics2DBase Graphics2D)
 target_link_libraries(testPrimitives Graphics2DBase Graphics2D)
 target_link_libraries(testGUI Graphics2DBase Graphics2D)
+
+add_executable(showImage showImage.cpp)
+target_link_libraries(showImage Graphics2D)

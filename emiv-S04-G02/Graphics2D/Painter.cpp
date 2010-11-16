@@ -53,6 +53,8 @@ void Painter::Draw() {
 	for(itc = temps.begin(); itc != temps.end(); itc++) {
 		(*itc)->Draw(image_);
 	}
+
+	cout << "." << flush;
 }
 
 void Painter::AddPrimitive(PrimitiveBase *p)
@@ -97,28 +99,28 @@ string Painter::GetString() {
 }
 
 void Painter::MouseDown(int x, int y) {
-	cerr << "MouseDown " << x << " " << y << endl;
+	cout << "md" << flush;
 
 	// Weiterleiten 
 	currentController_->MouseDown(x, y);
 }
 
 void Painter::MouseUp(int x, int y) {
-	cerr << "MouseUp " << x << " " << y << endl;
+	cout << "mu" << flush;
 
 	// Weiterleiten 
 	currentController_->MouseUp(x, y);
 }
 
 void Painter::MouseMove(int x, int y) {
-	cerr << "MouseMove " << x << " " << y << endl;
+	cout << "mm" << flush;
 
 	// Weiterleiten 
 	currentController_->MouseMove(x, y);
 }
 
 void Painter::KeyPressed(unsigned char ch, int x, int y) {
-	cerr << "KeyPressed " << ch << " " << x << " " << y << endl;
+
 	switch(ch) {
 	case '1':
 		currentColor_ = Color::black();

@@ -1,3 +1,9 @@
+/*
+ * a glut window drawing a registered image to screen.
+ * a 2d painter can be registered to paint primitives
+ * @author fkellner, 10/10
+ */
+
 #include <iostream>
 #include <cstdlib>
 #include <GL/glut.h>
@@ -51,7 +57,7 @@ namespace Graphics2D {
   }
 
   Canvas2D::~Canvas2D() {
-    // TODO Auto-generated destructor stub
+
   }
   
   void Canvas2D::Start() {
@@ -66,7 +72,7 @@ namespace Graphics2D {
     glutMouseFunc(MouseButtonEvents);
     glutMotionFunc(MouseMotionEvents);
     glutKeyboardFunc(KeyboardEvents);
-    glutIdleFunc(Idle);
+    glutTimerFunc(40, OnTimer, 1);
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
     glOrtho (0, width_, height_, 0, 0, 1);
@@ -127,9 +133,10 @@ namespace Graphics2D {
     }
   }
   
-  void Canvas2D::Idle() {
+  void Canvas2D::OnTimer(int value) {
     glutPostRedisplay();
     glutSwapBuffers();
+    glutTimerFunc(40, OnTimer, value+1);
   }
 
   void Canvas2D::MouseButtonEvents(int button, int state, int x, int y) {
@@ -155,7 +162,7 @@ namespace Graphics2D {
   
   void Canvas2D::KeyboardEvents(unsigned char ch, int x, int y) {
     if (instance_->painter_ == NULL) { return; }
-    instance_->painter_->KeyPressed(ch, x, y);
+    instance_->painter_->KeyPressed(ch,x,y);
     glutPostRedisplay();
     glutSwapBuffers();
   }
