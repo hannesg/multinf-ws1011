@@ -62,6 +62,7 @@ void PointModusController::MouseMove(int x, int y)  {
 		PrimitivePoint *thePoint = dynamic_cast<PrimitivePoint *>(tempPrimitives_.front());
 		assert(thePoint != NULL);
 
+		// neue Koordinaten setzen
 		thePoint->SetCoordinate(x, y);
 	}
 

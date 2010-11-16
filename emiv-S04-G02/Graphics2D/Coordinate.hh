@@ -27,6 +27,9 @@ public:
 	inline void SetX(int x) { x_ = x; }
 	inline void SetY(int y) { y_ = y; }
 
+	inline void Set(float x, float y) { x_ = x; y_ = y; }
+	inline void Set(int x, int y) { x_ = x; y_ = y; }
+
 	/* getters */
 	inline int GetX() const { return (int)rint(x_); };
 	inline int GetY() const { return (int)rint(y_); };

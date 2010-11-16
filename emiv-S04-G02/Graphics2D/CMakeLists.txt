@@ -6,6 +6,10 @@ ADD_LIBRARY(Graphics2D
 	Coordinate.hh
 	Color.cpp
 	Color.hh
+	Painter.cpp
+        Painter.hh
+	
+	# Primitives
 	PrimitiveBase.cpp
 	PrimitiveBase.hh
 	PrimitivePoint.cpp
@@ -14,15 +18,14 @@ ADD_LIBRARY(Graphics2D
 	PrimitiveLine.hh
 	BackgroundImage.cpp
 	BackgroundImage.hh
-	Painter.cpp
-	Painter.hh
 	
-	# Modus controller
+	# Modus controllers
 	ModusController.cpp
 	ModusController.hh
 	PointModusController.cpp
 	PointModusController.hh
-	
+	LineModusController.cpp
+	LineModusController.hh
 	
     )
 

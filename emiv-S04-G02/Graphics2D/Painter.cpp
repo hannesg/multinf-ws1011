@@ -15,7 +15,8 @@ using namespace std;
 
 namespace Graphics2D {
 
-Painter::Painter(const Image &backgroundImage) : pointModusController_(*this) {
+Painter::Painter(const Image &backgroundImage) 
+	: pointModusController_(*this), lineModusController_(*this) {
 	currentColor_ = Color::black();
 
 	// Das Hintergrundbild hinzufuegen
@@ -151,8 +152,9 @@ void Painter::SetModus(Modus m) {
 		currentController_ = &pointModusController_;
 		break;
 	case LINE:
-		// currentController_ = &LineModusController_;
+		currentController_ = &lineModusController_;
 		break;
+	// Hier mehr Controller hinzufuegen
 	default:
 		break;
 	}

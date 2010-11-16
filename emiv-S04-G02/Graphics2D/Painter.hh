@@ -13,6 +13,7 @@ Hannes Georg, 850360
 #include "PrimitiveBase.hh"
 #include "ModusController.hh"
 #include "PointModusController.hh"
+#include "LineModusController.hh"
 #include "Image.hh"
 
 namespace Graphics2D {
@@ -84,7 +85,7 @@ private:
 
 	// Vorgegebene Controller
 	PointModusController pointModusController_;
-	// LineModusController *lineModusController_;
+	LineModusController lineModusController_;
 
 };
 

@@ -135,7 +135,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	Image img;
-	int OutputFileIndex;
+	int OutputFileIndex = 0;
 	
 	if(argc == 1) {
 		/* Leeres Bild */

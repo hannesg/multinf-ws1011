@@ -27,7 +27,7 @@ public:
 	ModusController(Painter &b);
 
 	/* deconstructor */
-	virtual ~ModusController() { }
+	virtual ~ModusController() { /* Aufraeumen und Speicherplatz freigeben! */ RemoveAllPrimitives(); }
 
 	/* called, when the modus is activated */
 	virtual void Activate() = 0;
