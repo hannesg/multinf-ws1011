@@ -7,6 +7,7 @@ Hannes Georg, 850360
 
 
 #include <cassert>
+#include <cstdlib>
 #include "PolygonModusController.hh"
 #include "Painter.hh"
 #include "PrimitiveLine.hh"
