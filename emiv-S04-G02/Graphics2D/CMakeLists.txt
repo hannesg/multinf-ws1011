@@ -12,6 +12,8 @@ ADD_LIBRARY(Graphics2D
 	PrimitivePoint.hh
 	PrimitiveLine.cpp
 	PrimitiveLine.hh
+	BackgroundImage.cpp
+	BackgroundImage.hh
 	Painter.cpp
 	Painter.hh
 	
@@ -20,6 +22,8 @@ ADD_LIBRARY(Graphics2D
 	ModusController.hh
 	PointModusController.cpp
 	PointModusController.hh
+	
+	
     )
 
 target_link_libraries(Graphics2D Graphics2DBase)

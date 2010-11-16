@@ -9,13 +9,18 @@ Hannes Georg, 850360
 #include "Painter.hh"
 #include "PrimitiveLine.hh"
 #include "PointModusController.hh"
+#include "BackgroundImage.hh"
 
 using namespace std;
 
 namespace Graphics2D {
 
-Painter::Painter() : pointModusController_(*this) {
+Painter::Painter(const Image &backgroundImage) : pointModusController_(*this) {
 	currentColor_ = Color::black();
+
+	// Das Hintergrundbild hinzufuegen
+	BackgroundImage *img = new BackgroundImage(backgroundImage);
+	AddPrimitive(img);
 
 	// Zum Test
 	PrimitiveLine *l1 = new PrimitiveLine(0, 0, 10, 10);

@@ -13,15 +13,5 @@ namespace Graphics2D {
 
 ModusController::ModusController(Painter &b) : myPainter_(b) { }
 
-void ModusController::Activate() {
-
-}
-
-void ModusController::Deactivate() {
-
-	// aufraeumen! 
-	myPainter_.RemoveAllTemporaryPrimitives();
-}
-
 
 }

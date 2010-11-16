@@ -13,19 +13,16 @@ Hannes Georg, 850360
 #include "PrimitiveBase.hh"
 #include "ModusController.hh"
 #include "PointModusController.hh"
+#include "Image.hh"
 
 namespace Graphics2D {
-
-// forward declaration
-// class PointModusController;
-// class ModusController;
 
 class Painter : public PainterBase {
 
 public:
 
 	// constructor
-	Painter();
+	Painter(const Image &backgroundImage);
 
 	// deconstructor
 	~Painter();
@@ -67,6 +64,9 @@ public:
 	// Returns temporary primitive number i
 	PrimitiveBase *GetTemporaryPrimitive(int i);
 
+	// Returns the current color
+	Color GetCurrentColor() const { return currentColor_; }
+
 private:
 
 	// Print Help
@@ -82,6 +82,7 @@ private:
 	Color currentColor_;
 
 	// Vektor, der alle bisher gezeichneten Primitiven enthaelt
+	// Hier *muessen* Zeiger verwendet werden!!
 	vector<PrimitiveBase *> primitives_;
 
 	// Vektor, der alle *temporaeren* zu zeichnenden Primitive enthaelt

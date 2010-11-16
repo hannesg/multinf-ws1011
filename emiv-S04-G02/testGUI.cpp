@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
 	
 	canvas.RegisterImage(&img);
 	
-	Painter thePainter;
+	Painter thePainter(img);
 	
 	canvas.RegisterPainter(&thePainter);
 	

@@ -34,6 +34,7 @@ public:
 	
 	/* special setters/getters */
 	void SetCoordinate(const Coordinate &c);
+	void SetCoordinate(int x, int y);
 	Coordinate GetCoordinate() const { return points_.front(); }
 
 	/* further getters, for convenience */

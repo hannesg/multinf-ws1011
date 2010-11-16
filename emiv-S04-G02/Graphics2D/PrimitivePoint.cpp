@@ -22,6 +22,12 @@ void PrimitivePoint::SetCoordinate(const Coordinate &coor)
 	assert(points_.size() == 1);
 }
 
+void PrimitivePoint::SetCoordinate(int x, int y) {
+	points_.pop_back();
+	points_.push_back(Coordinate(x, y));
+	assert(points_.size() == 1);
+}
+
 void PrimitivePoint::Draw(ImageBase *img) const {
 	
 	Coordinate c = points_.front();

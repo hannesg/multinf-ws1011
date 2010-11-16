@@ -13,6 +13,9 @@ namespace Graphics2D {
 //forward declaration
 class Painter;
 
+
+/* Klasse, die den jeweiligen Modus kontrolliert, und entsprechend des Modus
+ * den Painter modifiziert */
 class ModusController {
 public:
 	/* Constructor. Needs always a reference to the corresponding painter */
@@ -22,10 +25,10 @@ public:
 	virtual ~ModusController() { }
 
 	/* called, when the modus is activated */
-	virtual void Activate();
+	virtual void Activate() = 0;
 
 	/* called, when modus is deactivated */
-	virtual void Deactivate();
+	virtual void Deactivate() = 0;
 
 	/* The following functions are taken from PointerBase */
 
@@ -42,7 +45,7 @@ public:
 	// virtual void KeyPressed(unsigned char ch, int x, int y) = 0;
 
 
-private:
+protected:
 	Painter &myPainter_;
 };
 
