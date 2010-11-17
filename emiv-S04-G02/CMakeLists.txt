@@ -8,16 +8,20 @@ cmake_minimum_required(VERSION 2.4)
 cmake_policy(SET CMP0003 NEW)
 
 PROJECT(MultInf)
-SET(LIBRARY_OUTPUT_PATH "${MultInf_BINARY_DIR}/lib")
-SET(EXECUTABLE_OUTPUT_PATH "${MultInf_BINARY_DIR}/bin")
+
+SET(MultInf "0.1")
+
+SET(LIBRARY_OUTPUT_PATH "${MultInf_BINARY_DIR}/lib" CACHE PATH "This is where the libraries go.")
+SET(EXECUTABLE_OUTPUT_PATH "${MultInf_BINARY_DIR}/bin" CACHE PATH "This is where the binaries go.")
+SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${EMultInf_BINARY_DIR}/bin" CACHE PATH "This is where runtime DLLs go.")
 
 INCLUDE_DIRECTORIES(${MultInf_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${MultInf_SOURCE_DIR}/Graphics2DBase)
 INCLUDE_DIRECTORIES(${MultInf_SOURCE_DIR}/Graphics2D)
 
-OPTION(BUILD_SHARED_LIBS "Build HelloWorld with shared libraries." OFF)
+OPTION(BUILD_SHARED_LIBS "Build HelloWorld with shared libraries." ON)
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
 OPTION(USE_GTK "Use GTK+ instead of GLUT" OFF)
 
