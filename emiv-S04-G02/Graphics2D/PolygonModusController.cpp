@@ -30,6 +30,8 @@ void PolygonModusController::Deactivate() {
 }
 
 void PolygonModusController::MouseDown(int x, int y) {
+	// avoid warnings
+	(void)x, (void)y;
 	// nichts tun
 }
 

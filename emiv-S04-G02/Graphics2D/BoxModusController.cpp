@@ -48,6 +48,9 @@ void BoxModusController::MouseDown(int x, int y) {
 
 void BoxModusController::MouseUp(int x, int y)  {
 
+	//avoid warnings
+	(void)x, (void)y;
+
 	if(pressed_) {
 		pressed_ = false;
 

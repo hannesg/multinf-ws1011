@@ -121,7 +121,7 @@ void Painter::MouseMove(int x, int y) {
 }
 
 void Painter::KeyPressed(unsigned char ch, int x, int y) {
-
+	
 	switch(ch) {
 	case '1':
 		currentColor_ = Color::black();
@@ -153,6 +153,9 @@ void Painter::KeyPressed(unsigned char ch, int x, int y) {
 	default:
 		break;
 	}
+
+	// Avoid warnings
+	(void)x, void(y);
 }
 
 void Painter::SetModus(Modus m) {
