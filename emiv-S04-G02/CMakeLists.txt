@@ -13,7 +13,7 @@ SET(MultInf "0.1")
 
 SET(LIBRARY_OUTPUT_PATH "${MultInf_BINARY_DIR}/lib" CACHE PATH "This is where the libraries go.")
 SET(EXECUTABLE_OUTPUT_PATH "${MultInf_BINARY_DIR}/bin" CACHE PATH "This is where the binaries go.")
-SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${EMultInf_BINARY_DIR}/bin" CACHE PATH "This is where runtime DLLs go.")
+SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${MultInf_BINARY_DIR}/bin" CACHE PATH "This is where runtime DLLs go.")
 
 INCLUDE_DIRECTORIES(${MultInf_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${MultInf_SOURCE_DIR}/Graphics2DBase)
