@@ -14,6 +14,9 @@ using namespace Graphics2D;
 
 int main(int argc, char *argv[]) {
 
+	// avoid warnings
+	(void)argc, (void)argv;
+
 	Canvas2D canvas;
 	canvas.Init(0, 0, 512, 512);
 

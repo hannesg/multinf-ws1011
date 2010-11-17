@@ -55,7 +55,7 @@ void Painter::Draw() {
 		(*itc)->Draw(image_);
 	}
 
-	// cout << "." << flush;
+	cout << "." << flush;
 }
 
 void Painter::AddPrimitive(PrimitiveBase *p)
@@ -100,21 +100,21 @@ string Painter::GetString() {
 }
 
 void Painter::MouseDown(int x, int y) {
-	// cout << "md" << flush;
+	// cout << "d" << flush;
 
 	// Weiterleiten 
 	currentController_->MouseDown(x, y);
 }
 
 void Painter::MouseUp(int x, int y) {
-	// cout << "mu" << flush;
+	// cout << "u" << flush;
 
 	// Weiterleiten 
 	currentController_->MouseUp(x, y);
 }
 
 void Painter::MouseMove(int x, int y) {
-	// cout << "mm" << flush;
+	cout << "m" << flush;
 
 	// Weiterleiten 
 	currentController_->MouseMove(x, y);
