@@ -159,9 +159,7 @@ namespace Graphics2D {
   
   int Canvas2D::MouseMotionEvents (GtkWidget* /*widget*/, GdkEventMotion* event) {
     if (instance_->painter_ == NULL) { return 0; }
-	  if (instance_->buttonDown_) {
-      instance_->painter_->MouseMove( (int) event->x, (int) event->y);
-    }
+    instance_->painter_->MouseMove( (int) event->x, (int) event->y);
     return 0;
   }
 
