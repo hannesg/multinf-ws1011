@@ -29,6 +29,9 @@ public:
 	PrimitivePoint(int x, int y) { Init(Coordinate(x, y), Color(0, 0, 0)); }
 	PrimitivePoint(int x, int y, const Color &c) { Init(Coordinate(x, y), c); }
 
+	// deconstructor
+	virtual ~PrimitivePoint() {}
+
 	/* overwrite Draw function */
 	virtual void Draw(ImageBase *img) const;
 	

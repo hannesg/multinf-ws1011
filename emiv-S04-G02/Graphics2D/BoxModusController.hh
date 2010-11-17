@@ -18,6 +18,7 @@ class BoxModusController : public ModusController {
 
 public:
 	BoxModusController(Painter &b) : ModusController(b), pressed_(false) { }
+	virtual ~BoxModusController() {}
 
 	virtual void MouseDown(int x, int y);
 	virtual void MouseUp(int x, int y);

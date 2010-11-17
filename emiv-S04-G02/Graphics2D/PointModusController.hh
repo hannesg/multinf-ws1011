@@ -18,6 +18,7 @@ class PointModusController : public ModusController {
 
 public:
 	PointModusController(Painter &b) : ModusController(b), pressed_(false) { }
+	virtual ~PointModusController() {}
 
 	virtual void MouseDown(int x, int y);
 	virtual void MouseUp(int x, int y);

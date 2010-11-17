@@ -13,6 +13,8 @@ namespace Graphics2D {
 class PrimitiveBase {
 	
 public:	
+	virtual ~PrimitiveBase() {} 
+
 	/* get and set colors */
 	Color GetColor() const { return color_; }
 	void SetColor(Color c) { color_ = c; }

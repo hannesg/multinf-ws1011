@@ -27,6 +27,9 @@ public:
 	PrimitiveLine(int x1, int y1, int x2, int y2) { Init(Coordinate(x1, y1), Coordinate(x2, y2), Color::black()); }
 	PrimitiveLine(int x1, int y1, int x2, int y2, const Color &c) { Init(Coordinate(x1, y1), Coordinate(x2, y2), c); }
 
+	// deconstructor
+	virtual ~PrimitiveLine() {}
+
 	/* setters and getters for convenience */
 	void SetStartingPoint(const Coordinate &c) { points_[0] = c; }
 	void SetStartingPoint(int x, int y) { points_[0] = Coordinate(x, y); }

@@ -18,6 +18,7 @@ class LineModusController : public ModusController {
 
 public:
 	LineModusController(Painter &b) : ModusController(b), pressed_(false) { }
+	virtual ~LineModusController() {}
 
 	virtual void MouseDown(int x, int y);
 	virtual void MouseUp(int x, int y);

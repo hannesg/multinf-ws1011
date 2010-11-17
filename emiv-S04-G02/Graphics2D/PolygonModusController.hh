@@ -20,6 +20,7 @@ class PolygonModusController : public ModusController {
 
 public:
 	PolygonModusController(Painter &b) : ModusController(b), delta(MAX_DELTA) { }
+	virtual ~PolygonModusController() {}
 
 	virtual void MouseDown(int x, int y);
 	virtual void MouseUp(int x, int y);

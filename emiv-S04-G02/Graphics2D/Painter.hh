@@ -28,7 +28,7 @@ public:
 	Painter(const Image &backgroundImage);
 
 	// deconstructor
-	~Painter();
+	virtual ~Painter();
 
 	/// draws a vector of primitives
 	virtual void Draw();
