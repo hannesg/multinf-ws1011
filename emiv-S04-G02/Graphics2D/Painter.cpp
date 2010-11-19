@@ -196,6 +196,8 @@ void Painter::PrintHelp() {
 	cout << " l: Linien" << endl;
 	cout << " r: Rechteck" << endl;
 	cout << " y: Polygon" << endl;
+	cout << "Im Polygonmodus muss fuer jeden Punkt des Polygons geklickt werden (also " << endl;
+	cout << " Maustaste druecken *und* wieder loslassen). " << endl;
 	cout << "h druckt diese Hilfe aus" << endl;
 }
 
