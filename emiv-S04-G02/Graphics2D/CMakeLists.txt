@@ -18,16 +18,16 @@ ADD_LIBRARY(Graphics2D
 	BackgroundImage.hh
 	
 	# Modus controllers
-	ModusController.cpp
-	ModusController.hh
-	PointModusController.cpp
-	PointModusController.hh
-	LineModusController.cpp
-	LineModusController.hh
-	BoxModusController.cpp
-	BoxModusController.hh
-	PolygonModusController.cpp
-	PolygonModusController.hh
+	Controller/ModusController.cpp
+	Controller/ModusController.hh
+	Controller/PointModusController.cpp
+	Controller/PointModusController.hh
+	Controller/LineModusController.cpp
+	Controller/LineModusController.hh
+	Controller/BoxModusController.cpp
+	Controller/BoxModusController.hh
+	Controller/PolygonModusController.cpp
+	Controller/PolygonModusController.hh
     )
 
 target_link_libraries(Graphics2D Graphics2DBase)

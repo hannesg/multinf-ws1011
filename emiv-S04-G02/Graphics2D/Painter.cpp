@@ -8,7 +8,6 @@ Hannes Georg, 850360
 #include <iostream>
 #include "Painter.hh"
 #include "PrimitiveLine.hh"
-#include "PointModusController.hh"
 #include "BackgroundImage.hh"
 
 using namespace std;

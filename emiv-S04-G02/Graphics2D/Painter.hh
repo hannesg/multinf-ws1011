@@ -11,11 +11,11 @@ Hannes Georg, 850360
 #include "PainterBase.hh"
 #include "Color.hh"
 #include "PrimitiveBase.hh"
-#include "ModusController.hh"
-#include "PointModusController.hh"
-#include "LineModusController.hh"
-#include "BoxModusController.hh"
-#include "PolygonModusController.hh"
+#include "Controller/ModusController.hh"
+#include "Controller/PointModusController.hh"
+#include "Controller/LineModusController.hh"
+#include "Controller/BoxModusController.hh"
+#include "Controller/PolygonModusController.hh"
 #include "Image.hh"
 
 namespace Graphics2D {
