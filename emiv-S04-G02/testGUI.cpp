@@ -22,7 +22,13 @@ int main(int argc, char *argv[]) {
 
 	Image img(512, 512);
 
-	img.LoadPPM("wasserturm-small.ppm");
+	string imgFile = "wasserturm-small.ppm";
+
+	if(argc > 1) {
+		imgFile = argv[1];
+	}
+
+	img.LoadPPM(imgFile);
 	
 	canvas.RegisterImage(&img);
 	

@@ -17,8 +17,6 @@ namespace Graphics2D {
 class BackgroundImage : public PrimitiveBase
 {
 public:
-	/* laedt Bild aus Datei name */
-	// BackgroundImage(String name);
 	/* nimmt uebergebenes Bild */
 	BackgroundImage(const Image &img) { img_ = img; }
 
