@@ -3,6 +3,8 @@ SET(GRAPHICS2DBASE_SRC
     ImageBase.hh
     PainterBase.hh
     Canvas2D.hh
+    PrimitiveBase.cpp
+    PrimitiveBase.hh
 )
 
 

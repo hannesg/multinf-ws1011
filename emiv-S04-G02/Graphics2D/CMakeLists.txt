@@ -10,8 +10,6 @@ ADD_LIBRARY(Graphics2D
         Painter.hh
 	
 	# Primitives
-	PrimitiveBase.cpp
-	PrimitiveBase.hh
 	PrimitivePoint.cpp
 	PrimitivePoint.hh
 	PrimitiveLine.cpp
