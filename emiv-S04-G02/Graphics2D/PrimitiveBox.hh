@@ -5,13 +5,14 @@ Matthias Boehm, 895778
 Hannes Georg, 850360
 */
 
-#ifndef __PRIMITIVE_POLYGON_HH
-#define __PRIMITIVE_POLYGON_HH
+#ifndef __PRIMITIVE_BOX_HH
+#define __PRIMITIVE_BOX_HH
 
-#include "PrimitiveBase.hh"
+#include "PrimitivePolygon.hh"
+
 namespace Graphics2D {
 
-class PrimitivePolygon : public PrimitiveBase
+class PrimitiveBox : public PrimitivePolygon
 {
 public:
 	
