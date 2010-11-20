@@ -15,6 +15,8 @@ namespace Graphics2D {
 class PrimitiveBox : public PrimitivePolygon
 {
 public:
+	/* creates empty box */
+	PrimitiveBox() { Init(Coordinate(0, 0), Coordinate(0, 0), Color::black()); }
 
 	/* constructors for convenience */
 	PrimitiveBox(const Coordinate &c1, const Coordinate &c2) { Init(c1, c2, Color::black()); }

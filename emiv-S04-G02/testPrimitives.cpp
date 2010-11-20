@@ -10,6 +10,7 @@ Hannes Georg, 850360
 #include <PrimitivePoint.hh>
 #include <PrimitiveLine.hh>
 #include <PrimitivePolygon.hh>
+#include <PrimitiveBox.hh>
 
 using namespace std;
 using namespace Graphics2D;
@@ -142,6 +143,35 @@ void paintSomePolygons(Image &img) {
 	p2.Draw(&img);
 }
 
+void paintSomeBoxes(Image &img) {
+
+	PrimitiveBox p1, p2;
+
+	vector<Coordinate> cs1;
+	cs1.push_back(Coordinate(60, 60));
+	cs1.push_back(Coordinate(60, 70));
+	cs1.push_back(Coordinate(70, 70));
+	cs1.push_back(Coordinate(70, 60));
+	cs1.push_back(Coordinate(60, 60));
+
+	p1.SetCoordinates(cs1);
+
+	p1.Draw(&img);
+
+	p2.SetColor(Color::red());
+
+	// pruefen, ob falsche Koordinaten angenommen werden
+	cs1.clear();
+	cs1.push_back(Coordinate(60, 60));
+	cs1.push_back(Coordinate(60, 70));
+	cs1.push_back(Coordinate(71, 70));
+	cs1.push_back(Coordinate(70, 60));
+	cs1.push_back(Coordinate(60, 60));
+	
+	p2.SetCoordinates(cs1);
+	p2.Draw(&img);
+}
+
 
 int main(int argc, char *argv[]) {
 
@@ -189,6 +219,7 @@ int main(int argc, char *argv[]) {
 	// paintSomePoints(img);
 	// paintSomeLines(img);
 	paintSomePolygons(img);
+	paintSomeBoxes(img);
 
 	/* Speichere Bild */
 	if(img.SavePPM(argv[OutputFileIndex]) != 0) {
