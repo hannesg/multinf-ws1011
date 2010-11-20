@@ -14,6 +14,8 @@ ADD_LIBRARY(Graphics2D
 	PrimitivePoint.hh
 	PrimitiveLine.cpp
 	PrimitiveLine.hh
+	PrimitivePolygon.cpp
+	PrimitivePolygon.hh
 	BackgroundImage.cpp
 	BackgroundImage.hh
 	

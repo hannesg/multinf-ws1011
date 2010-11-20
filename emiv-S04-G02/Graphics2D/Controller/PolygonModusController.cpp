@@ -11,6 +11,7 @@ Hannes Georg, 850360
 #include "PolygonModusController.hh"
 #include "Painter.hh"
 #include "PrimitiveLine.hh"
+#include "PrimitivePolygon.hh"
 
 using namespace std;
 
@@ -43,14 +44,14 @@ void PolygonModusController::MouseUp(int x, int y)  {
 		points_.push_back(points_[0]);
 
 		// Darauf achten, dass auch wirklich ein Polygon gezeichnet wurde! 
-		if(points_.size() >= 3) {
-			// TODO!  Auskommentieren wenn PrimitivePolygon-Klasse erstellt
-			// PrimitivePolygon p = new PrimitivePolygon();
+		if(points_.size() >= 4) {
+			// Polygon erstellen und hinzufuegen 
+			PrimitivePolygon *p = new PrimitivePolygon();
 
-			// p.SetCoordinates(points_);
-			// p.SetColor(myPainter_.GetCurrentColor());
+			p->SetCoordinates(points_);
+			p->SetColor(myPainter_.GetCurrentColor());
 
-			// myPainter_.AddPrimitive(p);
+			myPainter_.AddPrimitive(p);
 		}
 
 		RemoveAllTemporaryPrimitives();

@@ -34,6 +34,10 @@ public:
 	inline int GetX() const { return (int)rint(x_); };
 	inline int GetY() const { return (int)rint(y_); };
 
+	/* comparison */
+	bool operator == (const Coordinate &c) const { return (c.x_ == x_ && c.y_ == y_); }
+	bool operator != (const Coordinate &c) const { return !(this->operator ==(c)); }
+
 private:
 	float x_, y_;
 };
