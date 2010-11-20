@@ -28,7 +28,12 @@ int main(int argc, char *argv[]) {
 		imgFile = argv[1];
 	}
 
-	img.LoadPPM(imgFile);
+	int result = img.LoadPPM(imgFile);
+
+	if(result) {
+		cerr << "Warning: Could not load image " << imgFile << "! " << endl;
+		img.FillColor(Color(200, 200, 200));
+	}
 	
 	canvas.RegisterImage(&img);
 	

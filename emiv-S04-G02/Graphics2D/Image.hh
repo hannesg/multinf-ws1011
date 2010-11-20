@@ -10,6 +10,7 @@ Hannes Georg, 850360
 
 #include <fstream>
 #include "ImageBase.hh"
+#include "Color.hh"
 
 using namespace std;
 
@@ -25,6 +26,7 @@ public:
 	virtual ~Image();
 
 	virtual void FillZero();
+	virtual void FillColor(const Color &c);
 	
 	virtual unsigned char GetPixel(const int &x, const int &y, const int &ch) const;
 	virtual void SetPixel(const int &x, const int &y, const int &ch, const unsigned char &value);

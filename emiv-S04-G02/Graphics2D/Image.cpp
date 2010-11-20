@@ -42,6 +42,20 @@ void Image::FillZero() {
 	}
 }
 
+void Image::FillColor(const Color &c) {
+	if(!Valid()) {
+		throw exception();
+	}
+	/* Alle Pixel durchgehen und jeden Channel auf die entsprechende Farbe setzen */
+	for(unsigned int i = 0; i < width_; i++) {
+		for(unsigned int j = 0; j < height_; j++) {
+			SetPixel(i, j, 0, c.GetR());
+			SetPixel(i, j, 1, c.GetG());
+			SetPixel(i, j, 2, c.GetB());
+		}
+	}
+}
+
 void Image::SetPixel(const int &x, const int &y, const int &ch, const unsigned char &value) {
 	if(!Valid()) {
 		throw exception();
