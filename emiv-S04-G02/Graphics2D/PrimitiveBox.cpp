@@ -18,17 +18,36 @@ void PrimitiveBox::Draw(ImageBase *img) const
 
 void PrimitiveBox::SetCoordinates(const vector<Coordinate> &points) 
 {
-	// Check whether we really have a polygon
-	if(points.size() < 4) {
-		return;
+	// check that we have a box
+
+	if(points.size() == 5) {
+		if(points[0] != points[4]) {
+			return;
+		}
+
+		if(( points[0].GetX() == points[1].GetX() 
+			&& points[1].GetY() == points[2].GetY() 
+			&& points[2].GetX() == points[3].GetX()
+			&& points[3].GetY() == points[4].GetY())
+			||
+			(points[0].GetY() == points[1].GetY()
+			&& points[1].GetX() == points[2].GetX()
+			&& points[2].GetY() == points[3].GetY()
+			&& points[3].GetX() == points[4].GetX())) {
+
+				points_ = points;
+		}
 	}
+}
 
-	if(points[0] != points[points.size()-1]) {
-		return;
-	}
-
-	points_ = points;
-
+void PrimitiveBox::Init(const Coordinate &c1, const Coordinate &c2, const Color &c) {
+	// construct rectangle
+	points_.push_back(c1);
+	points_.push_back(Coordinate(c1.GetX(), c2.GetY()));
+	points_.push_back(c2);
+	points_.push_back(Coordinate(c2.GetX(), c1.GetY()));
+	points_.push_back(c1);
+	SetColor(c);
 }
 
 }

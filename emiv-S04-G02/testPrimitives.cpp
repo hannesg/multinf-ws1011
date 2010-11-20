@@ -1,6 +1,6 @@
 /*
 Gruppe: 02
-Serie 03
+Serie 04
 Matthias Boehm, 895778
 Hannes Georg, 850360
 */
@@ -9,6 +9,7 @@ Hannes Georg, 850360
 #include <Image.hh>
 #include <PrimitivePoint.hh>
 #include <PrimitiveLine.hh>
+#include <PrimitivePolygon.hh>
 
 using namespace std;
 using namespace Graphics2D;
@@ -118,6 +119,29 @@ void paintSomeLines(Image &img){
 	}
 }
 
+void paintSomePolygons(Image &img) {
+
+	PrimitivePolygon p1, p2;
+	vector<Coordinate> cs1;
+	cs1.push_back(Coordinate(10, 10));
+	cs1.push_back(Coordinate(100, 100));
+	cs1.push_back(Coordinate(50, 40));
+	cs1.push_back(Coordinate(10, 100));
+	cs1.push_back(Coordinate(10, 10));
+
+	p1.SetCoordinates(cs1);
+
+	p1.Draw(&img);
+
+	p2.SetColor(Color::red());
+
+	// pruefen, ob falsche Koordinaten angenommen werden
+	cs1.pop_back();
+
+	p2.SetCoordinates(cs1);
+	p2.Draw(&img);
+}
+
 
 int main(int argc, char *argv[]) {
 
@@ -162,8 +186,9 @@ int main(int argc, char *argv[]) {
 	}
 
 	/* Fuere Tests durch */
-	paintSomePoints(img);
-	paintSomeLines(img);
+	// paintSomePoints(img);
+	// paintSomeLines(img);
+	paintSomePolygons(img);
 
 	/* Speichere Bild */
 	if(img.SavePPM(argv[OutputFileIndex]) != 0) {

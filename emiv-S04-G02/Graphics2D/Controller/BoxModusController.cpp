@@ -10,6 +10,7 @@ Hannes Georg, 850360
 #include "BoxModusController.hh"
 #include "Painter.hh"
 #include "PrimitiveLine.hh"
+#include "PrimitiveBox.hh"
 
 using namespace std;
 
@@ -55,8 +56,7 @@ void BoxModusController::MouseUp(int x, int y)  {
 		pressed_ = false;
 
 		// Das Rechteck endgueltig hinzufuegen
-		// TODO! Auskommentieren wenn PrimitiveBox-Klasse erstellt
-		// myPainter_.AddPrimitive(new PrimitiveBox(startingPoint_, Coordinate(x, y), myPainter_.GetCurrentColor()));
+		myPainter_.AddPrimitive(new PrimitiveBox(startingPoint_, Coordinate(x, y), myPainter_.GetCurrentColor()));
 
 		// Temporaere Objekte loeschen
 		RemoveAllTemporaryPrimitives();
