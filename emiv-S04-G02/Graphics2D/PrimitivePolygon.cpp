@@ -14,7 +14,7 @@ void PrimitivePolygon::Draw(ImageBase *img) const
 {
 	// Linien erstellen (Zeiger werden benoetigt, da dynamisch 
 	// erzeugt wird)
-	int countLines = points_.size() -1;
+	unsigned int countLines = points_.size() -1;
 	PrimitiveLine *lines = new PrimitiveLine[countLines];
 
 	for(unsigned int i = 0; i < countLines; i++) {
