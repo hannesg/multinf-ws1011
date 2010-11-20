@@ -158,6 +158,19 @@ void paintSomeBoxes(Image &img) {
 
 	p1.Draw(&img);
 
+	p1.SetColor(Color::green());
+	p1.SetBottomRight(80, 80);
+
+	p1.Draw(&img);
+
+	p1.SetColor(Color::yellow());
+	p1.SetTopLeft(45, 50);
+
+	p1.Draw(&img);
+
+	p1.Set(30, 30, 64, 73);
+	p1.Draw(&img);
+
 	p2.SetColor(Color::red());
 
 	// pruefen, ob falsche Koordinaten angenommen werden

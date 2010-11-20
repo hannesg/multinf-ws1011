@@ -41,6 +41,9 @@ void PrimitiveBox::SetCoordinates(const vector<Coordinate> &points)
 }
 
 void PrimitiveBox::Init(const Coordinate &c1, const Coordinate &c2, const Color &c) {
+
+	points_.clear();
+
 	// construct rectangle
 	points_.push_back(c1);
 	points_.push_back(Coordinate(c1.GetX(), c2.GetY()));
