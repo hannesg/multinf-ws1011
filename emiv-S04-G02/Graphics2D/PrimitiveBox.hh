@@ -26,14 +26,14 @@ public:
 
 	/* setters and getters, for convenience */
 
-	void SetTopLeft(const Coordinate &c) { Init(c, points_[2], GetColor()); }
-	void SetBottomRight(const Coordinate &c) { Init(points_[0], c, GetColor()); }
+	void SetTopLeftCorner(const Coordinate &c) { Init(c, points_[2], GetColor()); }
+	void SetBottomRightCorner(const Coordinate &c) { Init(points_[0], c, GetColor()); }
 
-	Coordinate GetTopLeft() const { return points_[0]; }
-	Coordinate GetBottomRight() const { return points_[2]; }
+	Coordinate GetTopLeftCorner() const { return points_[0]; }
+	Coordinate GetBottomRightCorner() const { return points_[2]; }
 
-	void SetTopLeft(int x, int y) { SetTopLeft(Coordinate(x, y)); }
-	void SetBottomRight(int x, int y) { SetBottomRight(Coordinate(x, y)); }
+	void SetTopLeftCorner(int x, int y) { SetTopLeftCorner(Coordinate(x, y)); }
+	void SetBottomRightCorner(int x, int y) { SetBottomRightCorner(Coordinate(x, y)); }
 
 	void Set(const Coordinate &c1, const Coordinate &c2) { Init(c1, c2, GetColor()); }
 	void Set(int x1, int y1, int x2, int y2) { Init(Coordinate(x1, y1), Coordinate(x2, y2), GetColor()); }

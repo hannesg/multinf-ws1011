@@ -159,12 +159,12 @@ void paintSomeBoxes(Image &img) {
 	p1.Draw(&img);
 
 	p1.SetColor(Color::green());
-	p1.SetBottomRight(80, 80);
+	p1.SetBottomRightCorner(80, 80);
 
 	p1.Draw(&img);
 
 	p1.SetColor(Color::yellow());
-	p1.SetTopLeft(45, 50);
+	p1.SetTopLeftCorner(45, 50);
 
 	p1.Draw(&img);
 
