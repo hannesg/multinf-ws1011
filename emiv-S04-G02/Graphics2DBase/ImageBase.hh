@@ -118,6 +118,7 @@ namespace Graphics2D {
        * @return pointer to first pixel of image
        */
       inline unsigned char *GetData() { return data_; }
+	  inline const unsigned char *GetData() const { return data_; }
 
       /**
        * @brief get image width
