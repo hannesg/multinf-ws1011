@@ -27,7 +27,7 @@ void PrimitiveStar::Init(const Coordinate &c, float innerRadius, float outerRadi
 	Coordinate outPoint = c + Coordinate(outerRadius, 0);
 	Coordinate inPoint = c + Coordinate(innerRadius, 0);
 	
-	inPoint.Rotate(center_, M_PI/8);
+	outPoint.Rotate(center_, -M_PI/8);
 
 	for(int i = 0; i < 8; i++) {
 		points_.push_back(outPoint);
