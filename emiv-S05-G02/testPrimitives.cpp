@@ -232,7 +232,7 @@ int main(int argc, char *argv[]) {
 	// paintSomePoints(img);
 	// paintSomeLines(img);
 	// paintSomePolygons(img);
-	// paintSomeBoxes(img);
+	paintSomeBoxes(img);
 
 	Coordinate c(60, 50);
 	for(int i =0; i < 20; i++) {
