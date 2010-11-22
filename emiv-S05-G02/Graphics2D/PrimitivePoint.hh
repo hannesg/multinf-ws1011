@@ -26,8 +26,9 @@ public:
 	PrimitivePoint(const Coordinate &coor, const Color &c) { Init(coor, c); }
 
 	/* further constructors, for convenience */
-	PrimitivePoint(int x, int y) { Init(Coordinate(x, y), Color(0, 0, 0)); }
-	PrimitivePoint(int x, int y, const Color &c) { Init(Coordinate(x, y), c); }
+	PrimitivePoint(float x, float y) { Init(Coordinate(x, y), Color(0, 0, 0)); }
+	PrimitivePoint(float x, float y, const Color &c) { Init(Coordinate(x, y), c); }
+
 
 	// deconstructor
 	virtual ~PrimitivePoint() {}
@@ -37,7 +38,7 @@ public:
 	
 	/* special setters/getters */
 	void SetCoordinate(const Coordinate &c);
-	void SetCoordinate(int x, int y);
+	void SetCoordinate(float x, float y);
 	Coordinate GetCoordinate() const { return points_.front(); }
 
 	/* further getters, for convenience */

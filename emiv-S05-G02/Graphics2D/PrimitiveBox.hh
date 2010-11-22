@@ -20,9 +20,9 @@ public:
 
 	/* constructors for convenience */
 	PrimitiveBox(const Coordinate &c1, const Coordinate &c2) { Init(c1, c2, Color::black()); }
-	PrimitiveBox(int x1, int y1, int x2, int y2) { Init(Coordinate(x1, y1), Coordinate(x2, y2), Color::black()); }
+	PrimitiveBox(float x1, float y1, float x2, float y2) { Init(Coordinate(x1, y1), Coordinate(x2, y2), Color::black()); }
 	PrimitiveBox(const Coordinate &c1, const Coordinate &c2, const Color &c) { Init(c1, c2, c); }
-	PrimitiveBox(int x1, int y1, int x2, int y2, const Color &c) { Init(Coordinate(x1, y1), Coordinate(x2, y2), c); }
+	PrimitiveBox(float x1, float y1, float x2, float y2, const Color &c) { Init(Coordinate(x1, y1), Coordinate(x2, y2), c); }
 
 	/* setters and getters, for convenience */
 
@@ -32,11 +32,11 @@ public:
 	Coordinate GetTopLeftCorner() const { return points_[0]; }
 	Coordinate GetBottomRightCorner() const { return points_[2]; }
 
-	void SetTopLeftCorner(int x, int y) { SetTopLeftCorner(Coordinate(x, y)); }
-	void SetBottomRightCorner(int x, int y) { SetBottomRightCorner(Coordinate(x, y)); }
+	void SetTopLeftCorner(float x, float y) { SetTopLeftCorner(Coordinate(x, y)); }
+	void SetBottomRightCorner(float x, float y) { SetBottomRightCorner(Coordinate(x, y)); }
 
 	void Set(const Coordinate &c1, const Coordinate &c2) { Init(c1, c2, GetColor()); }
-	void Set(int x1, int y1, int x2, int y2) { Init(Coordinate(x1, y1), Coordinate(x2, y2), GetColor()); }
+	void Set(float x1, float y1, float x2, float y2) { Init(Coordinate(x1, y1), Coordinate(x2, y2), GetColor()); }
 	
 	/* SetCoordinates, zum Setzen der Koordinaten (ueberschrieben) */
 	virtual void SetCoordinates(const vector<Coordinate> &points);

@@ -22,7 +22,7 @@ void PrimitivePoint::SetCoordinate(const Coordinate &coor)
 	assert(points_.size() == 1);
 }
 
-void PrimitivePoint::SetCoordinate(int x, int y) {
+void PrimitivePoint::SetCoordinate(float x, float y) {
 	points_.pop_back();
 	points_.push_back(Coordinate(x, y));
 	assert(points_.size() == 1);

@@ -24,17 +24,17 @@ public:
 	PrimitiveLine(const Coordinate &c1, const Coordinate &c2, const Color &c) { Init(c1, c2, c); }
 
 	/* creates a line from (x1, y1) to (x2, y2), for convenience  */
-	PrimitiveLine(int x1, int y1, int x2, int y2) { Init(Coordinate(x1, y1), Coordinate(x2, y2), Color::black()); }
-	PrimitiveLine(int x1, int y1, int x2, int y2, const Color &c) { Init(Coordinate(x1, y1), Coordinate(x2, y2), c); }
+	PrimitiveLine(float x1, float y1, float x2, float y2) { Init(Coordinate(x1, y1), Coordinate(x2, y2), Color::black()); }
+	PrimitiveLine(float x1, float y1, float x2, float y2, const Color &c) { Init(Coordinate(x1, y1), Coordinate(x2, y2), c); }
 
 	// deconstructor
 	virtual ~PrimitiveLine() {}
 
 	/* setters and getters for convenience */
 	void SetStartingPoint(const Coordinate &c) { points_[0] = c; }
-	void SetStartingPoint(int x, int y) { points_[0] = Coordinate(x, y); }
+	void SetStartingPoint(float x, float y) { points_[0] = Coordinate(x, y); }
 	void SetEndingPoint(const Coordinate &c) { points_[1] = c; }
-	void SetEndingPoint(int x, int y) { points_[1] = Coordinate(x, y); }
+	void SetEndingPoint(float x, float y) { points_[1] = Coordinate(x, y); }
 
 	Coordinate GetStartingPoint() const { return points_[0]; }
 	Coordinate GetEndingPoint() const { return points_[1]; }
