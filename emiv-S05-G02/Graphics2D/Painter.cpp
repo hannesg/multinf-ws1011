@@ -18,7 +18,8 @@ Painter::Painter(const Image &backgroundImage)
 	: pointModusController_(*this), 
 	lineModusController_(*this), 
 	boxModusController_(*this), 
-	polygonModusController_(*this)
+	polygonModusController_(*this), 
+	starModusController_(*this)
 {
 	currentColor_ = Color::black();
 
@@ -95,6 +96,9 @@ string Painter::GetString() {
 	case POLYGON:
 		return "Polygon";
 		break;
+	case STAR:
+		return "Stern";
+		break;
 	default:
 		return "";
 	}
@@ -121,7 +125,7 @@ void Painter::MouseMove(int x, int y) {
 	currentController_->MouseMove(x, y);
 }
 
-void Painter::KeyPressed(unsigned char ch, int x, int y) {
+void Painter::KeyPressed(unsigned char ch, int /* x */, int /* y */) {
 	
 	switch(ch) {
 	case '1':
@@ -148,6 +152,9 @@ void Painter::KeyPressed(unsigned char ch, int x, int y) {
 	case 'y':
 		SetModus(POLYGON);
 		break;
+	case 's':
+		SetModus(STAR);
+		break;
 	case 'h':
 		PrintHelp();
 		break;
@@ -155,8 +162,6 @@ void Painter::KeyPressed(unsigned char ch, int x, int y) {
 		break;
 	}
 
-	// Avoid warnings
-	(void)x, void(y);
 }
 
 void Painter::SetModus(Modus m) {
@@ -182,6 +187,8 @@ void Painter::SetModus(Modus m) {
 	case POLYGON:
 		currentController_ = &polygonModusController_;
 		break;
+	case STAR:
+		currentController_ = &starModusController_;
 	// Hier mehr Controller hinzufuegen
 	default:
 		break;
@@ -198,6 +205,7 @@ void Painter::PrintHelp() {
 	cout << " l: Linien" << endl;
 	cout << " r: Rechteck" << endl;
 	cout << " y: Polygon" << endl;
+	cout << " s: Stern" << endl;
 	cout << "Im Polygonmodus muss fuer jeden Punkt des Polygons geklickt werden (also " << endl;
 	cout << " Maustaste druecken *und* wieder loslassen). " << endl;
 	cout << "h druckt diese Hilfe aus" << endl;

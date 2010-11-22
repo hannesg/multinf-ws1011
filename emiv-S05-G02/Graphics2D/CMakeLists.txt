@@ -20,6 +20,8 @@ ADD_LIBRARY(Graphics2D
 	PrimitiveBox.hh
 	BackgroundImage.cpp
 	BackgroundImage.hh
+	PrimitiveStar.cpp
+	PrimitiveStar.hh
 	
 	# Modus controllers
 	Controller/ModusController.cpp
@@ -32,6 +34,8 @@ ADD_LIBRARY(Graphics2D
 	Controller/BoxModusController.hh
 	Controller/PolygonModusController.cpp
 	Controller/PolygonModusController.hh
+	Controller/StarModusController.cpp
+	Controller/StarModusController.hh
     )
 
 target_link_libraries(Graphics2D Graphics2DBase)

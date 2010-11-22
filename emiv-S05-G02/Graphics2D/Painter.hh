@@ -16,6 +16,7 @@ Hannes Georg, 850360
 #include "Controller/LineModusController.hh"
 #include "Controller/BoxModusController.hh"
 #include "Controller/PolygonModusController.hh"
+#include "Controller/StarModusController.hh"
 #include "Image.hh"
 
 namespace Graphics2D {
@@ -67,7 +68,7 @@ private:
 	void PrintHelp();
 
 	// Enumeration fuer moegliche Modi 
-	enum Modus { POINT, LINE, POLYGON, BOX };
+	enum Modus { POINT, LINE, POLYGON, BOX, STAR };
 
 	// Sets the current Modus
 	void SetModus(Modus m);
@@ -90,6 +91,7 @@ private:
 	LineModusController lineModusController_;
 	BoxModusController boxModusController_;
 	PolygonModusController polygonModusController_;
+	StarModusController starModusController_;
 
 };
 
