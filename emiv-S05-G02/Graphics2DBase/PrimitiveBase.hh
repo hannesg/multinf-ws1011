@@ -27,6 +27,8 @@ public:
 	/* Draws the primitive into the image */
 	virtual void Draw(ImageBase *im) const = 0;
 	
+	void Rotate(float angle);
+	
 protected:
 	/* coordinates */
 	vector<Coordinate> points_;

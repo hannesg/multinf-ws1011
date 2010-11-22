@@ -42,18 +42,25 @@ public:
 	bool operator != (const Coordinate &c) const { return !(this->operator ==(c)); }
 	
 	/* weitere Operatoren */
-	Coordinate operator + (const Coordinate &c);
-	Coordinate operator - (const Coordinate &c);
-	Coordinate operator * (float x);
-	Coordinate operator * (int x);
+	Coordinate operator + (const Coordinate &c) const;
+	Coordinate operator - (const Coordinate &c) const;
+	Coordinate operator * (float x) const;
+	// Coordinate operator * (int x) const;
 	
+	Coordinate &operator += (const Coordinate &c);
+	Coordinate &operator -= (const Coordinate &c);
+	Coordinate &operator *= (float x);
+	// Coordinate &operator *= (int x);
+	
+	/* rotation */
+	void Rotate(const Coordinate &c, float angle);
 
 private:
 	float x_, y_;
 };
 
 Coordinate operator * (float x, const Coordinate &c);
-Coordinate operator * (int x, const Coordinate &c);
+// Coordinate operator * (int x, const Coordinate &c);
 
 }
 

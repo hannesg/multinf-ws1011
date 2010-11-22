@@ -231,8 +231,16 @@ int main(int argc, char *argv[]) {
 	/* Fuere Tests durch */
 	// paintSomePoints(img);
 	// paintSomeLines(img);
-	paintSomePolygons(img);
-	paintSomeBoxes(img);
+	// paintSomePolygons(img);
+	// paintSomeBoxes(img);
+
+	Coordinate c(60, 50);
+	for(int i =0; i < 20; i++) {
+		
+		c.Rotate(Coordinate(50, 50), M_PI/4);
+		PrimitiveLine l(Coordinate(50, 50), c);
+		l.Draw(&img);
+	}
 
 	/* Speichere Bild */
 	if(img.SavePPM(argv[OutputFileIndex]) != 0) {

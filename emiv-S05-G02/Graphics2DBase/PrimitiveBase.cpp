@@ -19,4 +19,18 @@ void PrimitiveBase::SetCoordinates(const vector<Coordinate> &points) {
 	points_ = points;
 }
 
+void PrimitiveBase::Rotate(float angle) {
+	Coordinate center(0, 0);
+
+	for(unsigned int i = 0; i < points_.size(); i++) {
+		center += points_[i];
+	}
+	
+	center *= (1.0/points_.size());
+	
+	for(unsigned int i = 0; i < points_.size(); i++) {
+		points_[i].Rotate(center, angle);
+	}
+}
+
 }

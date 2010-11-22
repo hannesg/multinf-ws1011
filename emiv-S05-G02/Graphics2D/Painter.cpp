@@ -1,6 +1,6 @@
 /*
 Gruppe: 02
-Serie 04
+Serie 05
 Matthias Boehm, 895778
 Hannes Georg, 850360
 */
@@ -43,6 +43,8 @@ void Painter::Draw() {
 
 	/* Alle Elemente durchgehen */
 	for(it = primitives_.begin(); it != primitives_.end(); it++) {
+		// rotieren
+		(*it)->Rotate(2*M_PI/100);
 		(*it)->Draw(image_);
 	}
 
