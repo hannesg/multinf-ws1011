@@ -16,5 +16,13 @@ void PrimitiveStar::Draw(ImageBase *img) const {
 	PrimitivePolygon::Draw(img);
 }
 
+void PrimitiveStar::Init(const Coordinate &c, float innerRadius, float outerRadius) {
+
+	center_ = c;
+	innerRadius_ = innerRadius;
+	outerRadius_ = outerRadius;
+
+}
+
 
 } 
