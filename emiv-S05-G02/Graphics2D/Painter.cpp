@@ -162,7 +162,7 @@ void Painter::KeyPressed(unsigned char ch, int /* x */, int /* y */) {
 	case 'h':
 		PrintHelp();
 		break;
-	case 'x':
+	case ' ':
 		pause = !pause;
 		break;
 	default:
@@ -215,7 +215,7 @@ void Painter::PrintHelp() {
 	cout << " s: Stern" << endl;
 	cout << "Im Polygonmodus muss fuer jeden Punkt des Polygons geklickt werden (also " << endl;
 	cout << " Maustaste druecken *und* wieder loslassen). " << endl;
-	cout << " x pausiert die Rotationsanimation. " << endl;
+	cout << "Leertaste pausiert die Rotationsanimation. " << endl;
 	cout << "h druckt diese Hilfe aus" << endl;
 }
 
