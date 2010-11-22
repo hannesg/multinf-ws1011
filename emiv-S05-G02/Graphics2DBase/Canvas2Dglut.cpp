@@ -25,6 +25,8 @@ namespace Graphics2D {
     instance_ = this;
     width_ = width;
     height_= height;
+	wreshape_ = 1.0f;
+    hreshape_ = 1.0f;
     posx_ = posx;
     posy_ = posy;
     return 0;
@@ -73,6 +75,7 @@ namespace Graphics2D {
     glutMotionFunc(MouseMotionEvents);
     glutPassiveMotionFunc(MouseMotionEvents);
     glutKeyboardFunc(KeyboardEvents);
+	glutReshapeFunc(Reshape);
     glutTimerFunc(40, OnTimer, 1);
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
@@ -142,6 +145,8 @@ namespace Graphics2D {
 
   void Canvas2D::MouseButtonEvents(int button, int state, int x, int y) {
     if (instance_->painter_ == NULL) { return; }
+	x = (int) float(x)*instance_->wreshape_;
+    y = (int) float(y)*instance_->hreshape_;
     if (button == GLUT_LEFT_BUTTON) {
       if (state == GLUT_DOWN) {
         instance_->painter_->MouseDown(x,y);
@@ -156,6 +161,8 @@ namespace Graphics2D {
 
   void Canvas2D::MouseMotionEvents(int x, int y) {
     if (instance_->painter_ == NULL) { return; }
+	x = (int) float(x)*instance_->wreshape_;
+    y = (int) float(y)*instance_->hreshape_;
     instance_->painter_->MouseMove(x,y);
     // glutPostRedisplay();
     // glutSwapBuffers();
@@ -163,9 +170,16 @@ namespace Graphics2D {
   
   void Canvas2D::KeyboardEvents(unsigned char ch, int x, int y) {
     if (instance_->painter_ == NULL) { return; }
+	x = (int) float(x)*instance_->wreshape_;
+    y = (int) float(y)*instance_->hreshape_;
     instance_->painter_->KeyPressed(ch,x,y);
     // glutPostRedisplay();
     // glutSwapBuffers();
   }
-
+  
+  void Canvas2D::Reshape(int x, int y) {
+    instance_->wreshape_ = float(instance_->width_) / float(x); 
+    instance_->hreshape_ = float(instance_->height_) / float(y);
+    glViewport(0,0,x,y);
+  }
 }

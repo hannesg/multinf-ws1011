@@ -48,8 +48,10 @@ namespace Graphics2D {
       // keyboard events, will call painter->keybordevents
       static void KeyboardEvents(unsigned char ch, int x, int y);
       
+      static void Reshape(int x, int y);
     private:
       int posx_, posy_, width_, height_;
+      float wreshape_, hreshape_;
       unsigned int texId_;
       ImageBase *image_;
       PainterBase *painter_;
