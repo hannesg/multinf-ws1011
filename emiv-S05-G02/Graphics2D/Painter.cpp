@@ -30,6 +30,8 @@ Painter::Painter(const Image &backgroundImage)
 	// Modus am Start ist Punkte zeichnen
 	currentController_ = NULL;
 	SetModus(POINT);
+
+	pause = false;
 }
 
 Painter::~Painter() {
@@ -44,8 +46,10 @@ void Painter::Draw() {
 
 	/* Alle Elemente durchgehen */
 	for(it = primitives_.begin(); it != primitives_.end(); it++) {
-		// rotieren
-		(*it)->Rotate(2*M_PI/100);
+		if(!pause) {
+			// rotieren
+			(*it)->Rotate(2*M_PI/100);
+		}
 		(*it)->Draw(image_);
 	}
 
@@ -158,6 +162,9 @@ void Painter::KeyPressed(unsigned char ch, int /* x */, int /* y */) {
 	case 'h':
 		PrintHelp();
 		break;
+	case 'x':
+		pause = !pause;
+		break;
 	default:
 		break;
 	}
@@ -208,6 +215,7 @@ void Painter::PrintHelp() {
 	cout << " s: Stern" << endl;
 	cout << "Im Polygonmodus muss fuer jeden Punkt des Polygons geklickt werden (also " << endl;
 	cout << " Maustaste druecken *und* wieder loslassen). " << endl;
+	cout << " x pausiert die Rotationsanimation. " << endl;
 	cout << "h druckt diese Hilfe aus" << endl;
 }
 

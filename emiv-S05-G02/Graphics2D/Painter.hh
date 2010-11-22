@@ -93,6 +93,9 @@ private:
 	PolygonModusController polygonModusController_;
 	StarModusController starModusController_;
 
+	// angehalten?
+	bool pause;
+
 };
 
 
