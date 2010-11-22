@@ -5,6 +5,10 @@ SET(GRAPHICS2DBASE_SRC
     Canvas2D.hh
     PrimitiveBase.cpp
     PrimitiveBase.hh
+    
+    # muss hinzugefuegt werden, da bei mingw sonst Fehler erscheinen
+    ../Graphics2D/Coordinate.cpp
+    ../Graphics2D/Coordinate.hh
 )
 
 
