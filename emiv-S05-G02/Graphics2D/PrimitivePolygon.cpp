@@ -14,12 +14,12 @@ void PrimitivePolygon::Draw(ImageBase *img) const
 {
 	// Linien erstellen (Zeiger werden benoetigt, da dynamisch 
 	// erzeugt wird)
-	unsigned int countLines = points_.size() -1;
+	unsigned int countLines = points_.size();
 	PrimitiveLine *lines = new PrimitiveLine[countLines];
 
 	for(unsigned int i = 0; i < countLines; i++) {
 		lines[i].SetStartingPoint(points_[i]);
-		lines[i].SetEndingPoint(points_[i+1]);
+		lines[i].SetEndingPoint(points_[(i+1)%countLines]);
 		
 		lines[i].SetColor(GetColor());
 	}
@@ -45,6 +45,9 @@ void PrimitivePolygon::SetCoordinates(const vector<Coordinate> &points)
 	}
 
 	points_ = points;
+
+	// delete last point
+	points_.pop_back();
 
 }
 

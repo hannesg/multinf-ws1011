@@ -1,6 +1,6 @@
 /*
 Gruppe: 02
-Serie 03
+Serie 05
 Matthias Boehm, 895778
 Hannes Georg, 850360
 */
@@ -33,14 +33,27 @@ public:
 	/* getters */
 	inline int GetX() const { return (int)rint(x_); };
 	inline int GetY() const { return (int)rint(y_); };
+	
+	inline float GetXAsFloat() const { return x_; }
+	inline float GetYAsFloat() const { return y_; }
 
 	/* comparison */
 	bool operator == (const Coordinate &c) const { return (c.x_ == x_ && c.y_ == y_); }
 	bool operator != (const Coordinate &c) const { return !(this->operator ==(c)); }
+	
+	/* weitere Operatoren */
+	Coordinate operator + (const Coordinate &c);
+	Coordinate operator - (const Coordinate &c);
+	Coordinate operator * (float x);
+	Coordinate operator * (int x);
+	
 
 private:
 	float x_, y_;
 };
+
+Coordinate operator * (float x, const Coordinate &c);
+Coordinate operator * (int x, const Coordinate &c);
 
 }
 
