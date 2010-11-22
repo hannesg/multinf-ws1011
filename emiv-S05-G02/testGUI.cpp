@@ -17,10 +17,7 @@ int main(int argc, char *argv[]) {
 	// avoid warnings
 	(void)argc, (void)argv;
 
-	Canvas2D canvas;
-	canvas.Init(0, 0, 512, 512);
-
-	Image img(512, 512);
+	Image img;
 
 	string imgFile = "wasserturm-small.ppm";
 
@@ -32,8 +29,12 @@ int main(int argc, char *argv[]) {
 
 	if(result) {
 		cerr << "Warning: Could not load image " << imgFile << "! " << endl;
+		img.Init(512, 512);
 		img.FillColor(Color(200, 200, 200));
 	}
+
+	Canvas2D canvas;
+	canvas.Init(0, 0, img.GetWidth(), img.GetHeight());
 	
 	canvas.RegisterImage(&img);
 	
