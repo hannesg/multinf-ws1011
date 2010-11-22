@@ -9,7 +9,7 @@ Hannes Georg, 850360
 #include <cassert>
 #include "StarModusController.hh"
 #include "Painter.hh"
-#include "PrimitiveLine.hh"
+#include "PrimitiveStar.hh"
 
 using namespace std;
 
@@ -35,8 +35,11 @@ void StarModusController::MouseDown(int x, int y) {
 	// Startpunkt merken
 	startingPoint_.Set(x, y);
 
-	// Temporaere Linie erzeugen
-	// tempPrimitives_.push_back(new PrimitiveLine(startingPoint_, startingPoint_, myPainter_.GetCurrentColor()));
+	PrimitiveStar *theStar = new PrimitiveStar(startingPoint_, 0, 0);
+	theStar->SetColor(myPainter_.GetCurrentColor());
+
+	// Temporaeren Stern erzeugen
+	tempPrimitives_.push_back(theStar);
 }
 
 void StarModusController::MouseUp(int x, int y)  {
@@ -44,8 +47,13 @@ void StarModusController::MouseUp(int x, int y)  {
 	if(pressed_) {
 		pressed_ = false;
 
-		// Die Linie endgueltig hinzufuegen
-		// myPainter_.AddPrimitive(new PrimitiveLine(startingPoint_, Coordinate(x, y), myPainter_.GetCurrentColor()));
+		// Den Stern endgueltig hinzufuegen
+		float radius = getRadius(x, y);
+
+		PrimitiveStar *theStar = new PrimitiveStar(startingPoint_, radius/2, radius);
+		theStar->SetColor(myPainter_.GetCurrentColor());
+
+		myPainter_.AddPrimitive(theStar);
 
 		// Temporaere Objekte loeschen
 		RemoveAllTemporaryPrimitives();
@@ -54,15 +62,24 @@ void StarModusController::MouseUp(int x, int y)  {
 
 void StarModusController::MouseMove(int x, int y)  {
 
-	// Die temporaere Linie verschieben
+	// Den temporaeren Stern verschieben
 	if(pressed_ && tempPrimitives_.size() != 0) {
 
-		// PrimitiveLine *theLine = dynamic_cast<PrimitiveLine *>(tempPrimitives_.front());
-		// assert(theLine != NULL);
+		PrimitiveStar *theStar = dynamic_cast<PrimitiveStar *>(tempPrimitives_.front());
+		assert(theStar != NULL);
 
-		// theLine->SetEndingPoint(x, y);
+		float radius = getRadius(x, y);
+
+		theStar->SetOuterRadius(radius); 
+		theStar->SetInnerRadius(radius/2);
 	}
 
+}
+
+float StarModusController::getRadius(int x, int y) const {
+	Coordinate radius = Coordinate(x, y) - startingPoint_;
+
+	return sqrt(pow(radius.GetX(), 2) + pow(radius.GetY(), 2));
 }
 
 }

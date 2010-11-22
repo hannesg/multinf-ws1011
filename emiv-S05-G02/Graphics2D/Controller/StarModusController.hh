@@ -32,6 +32,8 @@ private:
 	bool pressed_;
 	Coordinate startingPoint_;
 
+	float getRadius(int x, int y) const;
+
 };
 
 

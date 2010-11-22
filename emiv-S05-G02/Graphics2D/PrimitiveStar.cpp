@@ -18,10 +18,24 @@ void PrimitiveStar::Draw(ImageBase *img) const {
 
 void PrimitiveStar::Init(const Coordinate &c, float innerRadius, float outerRadius) {
 
+	points_.clear();
+
 	center_ = c;
 	innerRadius_ = innerRadius;
 	outerRadius_ = outerRadius;
 
+	Coordinate outPoint = c + Coordinate(outerRadius, 0);
+	Coordinate inPoint = c + Coordinate(innerRadius, 0);
+	
+	inPoint.Rotate(center_, M_PI/8);
+
+	for(int i = 0; i < 8; i++) {
+		points_.push_back(outPoint);
+		points_.push_back(inPoint);
+
+		outPoint.Rotate(center_, M_PI/4);
+		inPoint.Rotate(center_, M_PI/4);
+	}
 }
 
 
