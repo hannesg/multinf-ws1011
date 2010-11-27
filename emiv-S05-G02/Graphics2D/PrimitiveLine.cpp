@@ -100,7 +100,7 @@ void PrimitiveLine::DrawLine(ImageBase *img, const Coordinate &c1, const Coordin
 	DrawLineBresenham(img,Coordinate(dX,dY),orthant,c1);
 }
 
-float PrimitiveLine::getXValue(float y0) const {
+int PrimitiveLine::getXValue(float y0) const {
 		int x1 = points_[0].GetX();
 		int x2 = points_[1].GetX();
 		int y1 = points_[0].GetY();
@@ -109,7 +109,7 @@ float PrimitiveLine::getXValue(float y0) const {
 		// nicht durch Null dividieren!
 		if(y2 == y1) { throw exception(); }
 
-		return x1 + rint(
+		return x1 + (int)rint(
 			((y0-y1)*(x2-x1))/(float)(y2-y1));
 }
 

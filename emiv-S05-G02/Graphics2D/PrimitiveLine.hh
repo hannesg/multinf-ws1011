@@ -40,13 +40,13 @@ public:
 	Coordinate GetEndingPoint() const { return points_[1]; }
 
 	/* geben die jeweils kleinsten/groessten X/Y-Werte zurueck */
-	int GetXMin() const { return rint(min(points_[0].GetX(), points_[1].GetX())); }
-	int GetXMax() const { return rint(max(points_[0].GetX(), points_[1].GetX())); }
-	int GetYMin() const { return rint(min(points_[0].GetY(), points_[1].GetY())); }
-	int GetYMax() const { return rint(max(points_[0].GetY(), points_[1].GetY())); }
+	int GetXMin() const { return (int)rint(min(points_[0].GetX(), points_[1].GetX())); }
+	int GetXMax() const { return (int)rint(max(points_[0].GetX(), points_[1].GetX())); }
+	int GetYMin() const { return (int)rint(min(points_[0].GetY(), points_[1].GetY())); }
+	int GetYMax() const { return (int)rint(max(points_[0].GetY(), points_[1].GetY())); }
 
 	// Gibt den X-Wert des Schnittpunktes mit der Geraden y = y0 zurueck
-	float getXValue(float y0) const;
+	int getXValue(float y0) const;
 
 	/* Draw-Funktion */
 	virtual void Draw(ImageBase *img) const;

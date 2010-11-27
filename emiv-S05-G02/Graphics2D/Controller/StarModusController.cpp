@@ -7,6 +7,7 @@ Hannes Georg, 850360
 
 
 #include <cassert>
+#include <cmath>
 #include "StarModusController.hh"
 #include "Painter.hh"
 #include "PrimitiveStar.hh"
@@ -79,7 +80,7 @@ void StarModusController::MouseMove(int x, int y)  {
 float StarModusController::getRadius(int x, int y) const {
 	Coordinate radius = Coordinate(x, y) - startingPoint_;
 
-	return sqrt(pow(radius.GetX(), 2) + pow(radius.GetY(), 2));
+	return sqrt(pow(radius.GetX(), 2.0) + pow(radius.GetY(), 2.0));
 }
 
 }
