@@ -101,14 +101,15 @@ void PrimitiveLine::DrawLine(ImageBase *img, const Coordinate &c1, const Coordin
 }
 
 float PrimitiveLine::getXValue(float y0) const {
-		float x1 = points_[0].GetXAsFloat();
-		float x2 = points_[1].GetXAsFloat();
-		float y1 = points_[0].GetYAsFloat();
-		float y2 = points_[1].GetYAsFloat();
+		int x1 = points_[0].GetX();
+		int x2 = points_[1].GetX();
+		int y1 = points_[0].GetY();
+		int y2 = points_[1].GetY();
 
 		if(y2 == y1) { throw exception(); }
 
-		return rint((y0-y1)/(y2-y1)*(x2-x1)+x1);
+		return x1 + rint(
+			((y0-y1)*(x2-x1))/(float)(y2-y1));
 }
 
 }
