@@ -18,7 +18,12 @@ namespace Graphics2D {
 
 void PrimitivePolygon::Draw(ImageBase *img) const
 {
-	if(0) {
+	// Variable, die angibt, ob Scanline-Algortihmus benutzt werden
+	// soll, oder nur die Linien gezeichnet werden sollen
+
+	const bool Scanline = true;
+
+	if(!Scanline) {
 		// Linien erstellen (Zeiger werden benoetigt, da dynamisch 
 		// erzeugt wird)
 		unsigned int countLines = points_.size();
@@ -39,8 +44,9 @@ void PrimitivePolygon::Draw(ImageBase *img) const
 		// aufraeumen
 		delete [] lines;
 	}
-
-	ScanlineFill(img);
+	else {
+		ScanlineFill(img);
+	}
 }
 
 /* bool compareLines(const PrimitiveLine &l1, const PrimitiveLine &l2) {
