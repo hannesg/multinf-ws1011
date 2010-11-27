@@ -46,16 +46,14 @@ void PrimitivePolygon::Draw(ImageBase *img) const
 	
 }
 
-/* bool compareLines(const PrimitiveLine &l1, const PrimitiveLine &l2) {
-	return l1.GetXMin() < l2.GetXMin(); 
-} */
-
+// Hilfsfunktion, Ausgabeoperator fuer PrimitiveLine (fuers Debuggen)
 ostream &operator << (ostream &o, const PrimitiveLine &l) {
 	o << "(" << l.GetStartingPoint().GetX() << ", " << l.GetStartingPoint().GetY() << 
 		"), (" << l.GetEndingPoint().GetX() << ", " << l.GetEndingPoint().GetY() << ")" << endl;
 	return o;
 }
 
+// Hilfsfunktion, gibt true zurueck, wenn Edge table leer
 bool isEmpty(vector<PrimitiveLine> *et, unsigned int count) 
 {
 	for(unsigned int i = 0; i < count; i++) {
@@ -66,6 +64,7 @@ bool isEmpty(vector<PrimitiveLine> *et, unsigned int count)
 	return true;
 }
 
+// Hilfsfunktion, gibt Anzahl der Kanten in Edge table zurueck
 unsigned int size(vector<PrimitiveLine> *et, unsigned int count) {
 
 	unsigned int s = 0;
@@ -95,9 +94,8 @@ void PrimitivePolygon::ScanlineFill(ImageBase *img) const
 		}
 	}
 
+	// Die Anzahl von zu betrachtenden y-Koordinaten bestimmen
 	global_y_diff = y_globalmax - y_globalmin + 1;
-
-	// cout << "min: " << y_globalmin << " max: " << y_globalmax << " diff: " << global_y_diff << endl;
 
 	// **************************************************************
 
@@ -109,10 +107,9 @@ void PrimitivePolygon::ScanlineFill(ImageBase *img) const
 	for(unsigned int i = 0; i < countLines; i++) {
 		PrimitiveLine e(points_[i], points_[(i+1)%countLines]);
 		edges.push_back(e);
-		// cout << e;
 	}
 
-	// cout << "********************" << endl;
+	// **************************************************************
 
 	// Edgetable erstellen
 
@@ -126,16 +123,9 @@ void PrimitivePolygon::ScanlineFill(ImageBase *img) const
 				et[y-y_globalmin].push_back(edges[j]);
 			}
 		}
-
-		// Ausgabe
-		/* cout << "Line " << y << endl;
-		for(unsigned int j = 0; j < et[y-y_globalmin].size(); j++) {
-			cout << et[y-y_globalmin][j];
-		} */
 	}
 
-	// *********************************
-
+	// **************************************************************
 
 	// Determine first y coordinate that has edges
 	list<PrimitiveLine> aet;
@@ -148,34 +138,26 @@ void PrimitivePolygon::ScanlineFill(ImageBase *img) const
 		}
 	} 
 
-	typedef list<PrimitiveLine>::iterator iter;
+	// y is now set to the first coordinate that has edges
 
-	// y is the first coordinate, that has edges
+	// **************************************************************
 
 	// Algorithmus durchfuehren und Zeichnen
 
-	while(!(aet.empty() && isEmpty(et, global_y_diff))) {
+	// Abkuerzung fuer iterator verwenden
+	typedef list<PrimitiveLine>::iterator iter;
 
-		// cout << "===== Line " << y << " ============================" << endl;
+	while(!(aet.empty() && isEmpty(et, global_y_diff))) {
 
 		// Algorithm point 1
 		// Nehme edges in active edge table auf
 		
 		for(unsigned int i = 0; i < et[y-y_globalmin].size(); i++) {
-			// if(et[y-y_globalmin][i].GetYMin() == y) {
 			aet.push_back(et[y-y_globalmin][i]);
-			// }
 		}
 
+		// Loesche Edges aus Edge table
 		et[y-y_globalmin].clear();
-
-		// aet.sort(compareLines);
-
-		// cout << "aet size: " << aet.size() << endl;
-		// cout << "et size: " << size(et, global_y_diff) << endl;
-		/* for(iter it = aet.begin(); it != aet.end(); it++) {
-			cout << *it;
-		} */
 
 		// Algorithm point 3
 		// Loesche nicht mehr benoetigte Kanten
@@ -192,12 +174,6 @@ void PrimitivePolygon::ScanlineFill(ImageBase *img) const
 			}
 		}
 
-		/* cout << "aet size: " << aet.size() << endl;
-		cout << "et size: " << size(et, global_y_diff) << endl;
-		for(iter it = aet.begin(); it != aet.end(); it++) {
-			it->print();
-		} */
-
 		// Algorithm point 2
 		// Determine x values (Schnittpunkte)
 
@@ -205,17 +181,17 @@ void PrimitivePolygon::ScanlineFill(ImageBase *img) const
 
 		for(iter it = aet.begin(); it != aet.end(); it++) {
 			xs.push_back(it->getXValue(y));
-
-			// cout << it->getXValue(y) << " " ;
 		}
-		// cout << endl;
 
+		// Schnittpunkte sortieren
 		sort(xs.begin(), xs.end());
 
+		// Darauf achten, dass gerade Anzahl von Schnittpunkten vorkommt!
 		if(xs.size() % 2 == 0) {
 
 			for(unsigned int i = 0; i < xs.size()/2; i++) {
 
+				// Bereich zwischen jeweils zwei Schnittpunkten fuellen
 				for(int x = xs[2*i]; x <= xs[2*i+1]; x++) {
 					if(img->isInImage(x, y)) {
 						img->SetPixel(x, y, 0, GetColor().GetR());
@@ -229,15 +205,11 @@ void PrimitivePolygon::ScanlineFill(ImageBase *img) const
 			cerr << "Fehler! xs muss gerade Anzahl von Punkten haben! " << endl;
 		}
 
-		
-
 		// algorithm point 4
 		y++;
 	}
 
 	delete [] et;
-
-	// cout << "Fertig! " << endl;
 }
 
 void PrimitivePolygon::SetCoordinates(const vector<Coordinate> &points) 

@@ -21,6 +21,7 @@ public:
 	/* Draw-Funktion */
 	virtual void Draw(ImageBase *img) const;
 
+	// Funktion zum Fuellen des Polygons mit dem Scanline-Algorithmus
 	virtual void ScanlineFill(ImageBase *img) const;
 
 };

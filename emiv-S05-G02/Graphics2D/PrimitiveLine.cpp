@@ -106,6 +106,7 @@ float PrimitiveLine::getXValue(float y0) const {
 		int y1 = points_[0].GetY();
 		int y2 = points_[1].GetY();
 
+		// nicht durch Null dividieren!
 		if(y2 == y1) { throw exception(); }
 
 		return x1 + rint(
