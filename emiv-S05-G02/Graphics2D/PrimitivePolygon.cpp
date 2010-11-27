@@ -18,35 +18,32 @@ namespace Graphics2D {
 
 void PrimitivePolygon::Draw(ImageBase *img) const
 {
-	// Variable, die angibt, ob Scanline-Algortihmus benutzt werden
-	// soll, oder nur die Linien gezeichnet werden sollen
+	// Fuellen
+	ScanlineFill(img);
 
-	const bool Scanline = true;
+	// Zeichnen der Kanten sollte trotz obigen Fuellens durchgefuehrt werden, da 
+	// in einigen Faellen das Ergebnis besser aussieht
 
-	if(!Scanline) {
-		// Linien erstellen (Zeiger werden benoetigt, da dynamisch 
-		// erzeugt wird)
-		unsigned int countLines = points_.size();
-		PrimitiveLine *lines = new PrimitiveLine[countLines];
+	// Linien erstellen (Zeiger werden benoetigt, da dynamisch 
+	// erzeugt wird)
+	unsigned int countLines = points_.size();
+	PrimitiveLine *lines = new PrimitiveLine[countLines];
 
-		for(unsigned int i = 0; i < countLines; i++) {
-			lines[i].SetStartingPoint(points_[i]);
-			lines[i].SetEndingPoint(points_[(i+1)%countLines]);
+	for(unsigned int i = 0; i < countLines; i++) {
+		lines[i].SetStartingPoint(points_[i]);
+		lines[i].SetEndingPoint(points_[(i+1)%countLines]);
 		
-			lines[i].SetColor(GetColor());
-		}
+		lines[i].SetColor(GetColor());
+	}
 	
-		// Die erzeugten Linien, aus denen das Polygon besteht, zeichnen!
-		for(unsigned int i = 0; i < countLines; i++) {
-			lines[i].Draw(img);
-		}
+	// Die erzeugten Linien, aus denen das Polygon besteht, zeichnen!
+	for(unsigned int i = 0; i < countLines; i++) {
+		lines[i].Draw(img);
+	}
 
-		// aufraeumen
-		delete [] lines;
-	}
-	else {
-		ScanlineFill(img);
-	}
+	// aufraeumen
+	delete [] lines;
+	
 }
 
 /* bool compareLines(const PrimitiveLine &l1, const PrimitiveLine &l2) {
