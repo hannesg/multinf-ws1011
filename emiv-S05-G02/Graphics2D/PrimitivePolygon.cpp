@@ -18,32 +18,34 @@ namespace Graphics2D {
 
 void PrimitivePolygon::Draw(ImageBase *img) const
 {
-	// Linien erstellen (Zeiger werden benoetigt, da dynamisch 
-	// erzeugt wird)
-	unsigned int countLines = points_.size();
-	PrimitiveLine *lines = new PrimitiveLine[countLines];
+	if(0) {
+		// Linien erstellen (Zeiger werden benoetigt, da dynamisch 
+		// erzeugt wird)
+		unsigned int countLines = points_.size();
+		PrimitiveLine *lines = new PrimitiveLine[countLines];
 
-	for(unsigned int i = 0; i < countLines; i++) {
-		lines[i].SetStartingPoint(points_[i]);
-		lines[i].SetEndingPoint(points_[(i+1)%countLines]);
+		for(unsigned int i = 0; i < countLines; i++) {
+			lines[i].SetStartingPoint(points_[i]);
+			lines[i].SetEndingPoint(points_[(i+1)%countLines]);
 		
-		lines[i].SetColor(GetColor());
-	}
+			lines[i].SetColor(GetColor());
+		}
 	
-	// Die erzeugten Linien, aus denen das Polygon besteht, zeichnen!
-	for(unsigned int i = 0; i < countLines; i++) {
-		lines[i].Draw(img);
-	}
+		// Die erzeugten Linien, aus denen das Polygon besteht, zeichnen!
+		for(unsigned int i = 0; i < countLines; i++) {
+			lines[i].Draw(img);
+		}
 
-	// aufraeumen
-	delete [] lines;
+		// aufraeumen
+		delete [] lines;
+	}
 
 	ScanlineFill(img);
 }
 
-bool compareLines(const PrimitiveLine &l1, const PrimitiveLine &l2) {
+/* bool compareLines(const PrimitiveLine &l1, const PrimitiveLine &l2) {
 	return l1.GetXMin() < l2.GetXMin(); 
-}
+} */
 
 ostream &operator << (ostream &o, const PrimitiveLine &l) {
 	o << "(" << l.GetStartingPoint().GetX() << ", " << l.GetStartingPoint().GetY() << 
@@ -92,7 +94,7 @@ void PrimitivePolygon::ScanlineFill(ImageBase *img) const
 
 	global_y_diff = y_globalmax - y_globalmin + 1;
 
-	cout << "min: " << y_globalmin << " max: " << y_globalmax << " diff: " << global_y_diff << endl;
+	// cout << "min: " << y_globalmin << " max: " << y_globalmax << " diff: " << global_y_diff << endl;
 
 	// **************************************************************
 
@@ -104,10 +106,10 @@ void PrimitivePolygon::ScanlineFill(ImageBase *img) const
 	for(unsigned int i = 0; i < countLines; i++) {
 		PrimitiveLine e(points_[i], points_[(i+1)%countLines]);
 		edges.push_back(e);
-		cout << e;
+		// cout << e;
 	}
 
-	cout << "********************" << endl;
+	// cout << "********************" << endl;
 
 	// Edgetable erstellen
 
@@ -149,54 +151,25 @@ void PrimitivePolygon::ScanlineFill(ImageBase *img) const
 
 	while(!(aet.empty() && isEmpty(et, global_y_diff))) {
 
-		cout << "===== Line " << y << " ============================" << endl;
+		// cout << "===== Line " << y << " ============================" << endl;
 
 		// Algorithm point 1
 		// copy(et[y-y_globalmin].begin(), et[y-y_globalmin].end(), aet.end());
 		for(unsigned int i = 0; i < et[y-y_globalmin].size(); i++) {
-			// if(et[y-y_globalmin][i].ymin == y) {
-				aet.push_back(et[y-y_globalmin][i]);
+			// if(et[y-y_globalmin][i].GetYMin() == y) {
+			aet.push_back(et[y-y_globalmin][i]);
 			// }
 		}
 
 		et[y-y_globalmin].clear();
 
-		aet.sort(compareLines);
+		// aet.sort(compareLines);
 
-		cout << "aet size: " << aet.size() << endl;
-		cout << "et size: " << size(et, global_y_diff) << endl;
+		// cout << "aet size: " << aet.size() << endl;
+		// cout << "et size: " << size(et, global_y_diff) << endl;
 		/* for(iter it = aet.begin(); it != aet.end(); it++) {
 			cout << *it;
 		} */
-
-		// Algorithm point 2
-		// Determine x values
-
-		vector<int> xs;
-
-		for(iter it = aet.begin(); it != aet.end(); it++) {
-			xs.push_back(it->getXValue(y));
-
-			cout << it->getXValue(y) << " " ;
-		}
-		cout << endl;
-
-		sort(xs.begin(), xs.end());
-
-		if(xs.size() % 2 != 0) {
-			cerr << "Fehler! xs muss gerade Anzahl von Punkten haben! " << endl;
-			return;
-		}
-
-		for(unsigned int i = 0; i < xs.size()/2; i++) {
-
-			for(int x = xs[2*i]; x <= xs[2*i+1]; x++) {
-				img->SetPixel(x, y, 0, GetColor().GetR());
-				img->SetPixel(x, y, 1, GetColor().GetG());
-				img->SetPixel(x, y, 2, GetColor().GetB());
-			}
-
-		}
 
 		// Algorithm point 3
 
@@ -218,6 +191,39 @@ void PrimitivePolygon::ScanlineFill(ImageBase *img) const
 			it->print();
 		} */
 
+		// Algorithm point 2
+		// Determine x values
+
+		vector<int> xs;
+
+		for(iter it = aet.begin(); it != aet.end(); it++) {
+			xs.push_back(it->getXValue(y));
+
+			// cout << it->getXValue(y) << " " ;
+		}
+		// cout << endl;
+
+		sort(xs.begin(), xs.end());
+
+		if(xs.size() % 2 == 0) {
+
+			for(unsigned int i = 0; i < xs.size()/2; i++) {
+
+				for(int x = xs[2*i]; x <= xs[2*i+1]; x++) {
+					if(img->isInImage(x, y)) {
+						img->SetPixel(x, y, 0, GetColor().GetR());
+						img->SetPixel(x, y, 1, GetColor().GetG());
+						img->SetPixel(x, y, 2, GetColor().GetB());
+					}
+				}
+			}
+		}
+		else {
+			cerr << "Fehler! xs muss gerade Anzahl von Punkten haben! " << endl;
+		}
+
+		
+
 		// algorithm point 4
 		y++;
 
@@ -226,7 +232,7 @@ void PrimitivePolygon::ScanlineFill(ImageBase *img) const
 
 	delete [] et;
 
-	cout << "Fertig! " << endl;
+	// cout << "Fertig! " << endl;
 }
 
 void PrimitivePolygon::SetCoordinates(const vector<Coordinate> &points) 

@@ -143,6 +143,11 @@ namespace Graphics2D {
        */
       inline void SetColorModel(ColorModel colormodel) { colormodel_ = colormodel; }
 
+	  // returns whether the specified point lies in the image
+	  inline bool isInImage(int x, int y) const { 
+		  return x >= 0 && y >= 0 && (unsigned)x < GetWidth() && (unsigned)y < GetHeight();
+	  }
+
     protected:
       
       unsigned int width_, height_;
