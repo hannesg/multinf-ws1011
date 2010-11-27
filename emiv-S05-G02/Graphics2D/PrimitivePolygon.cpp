@@ -149,12 +149,15 @@ void PrimitivePolygon::ScanlineFill(ImageBase *img) const
 
 	// y is the first coordinate, that has edges
 
+	// Algorithmus durchfuehren und Zeichnen
+
 	while(!(aet.empty() && isEmpty(et, global_y_diff))) {
 
 		// cout << "===== Line " << y << " ============================" << endl;
 
 		// Algorithm point 1
-		// copy(et[y-y_globalmin].begin(), et[y-y_globalmin].end(), aet.end());
+		// Nehme edges in active edge table auf
+		
 		for(unsigned int i = 0; i < et[y-y_globalmin].size(); i++) {
 			// if(et[y-y_globalmin][i].GetYMin() == y) {
 			aet.push_back(et[y-y_globalmin][i]);
@@ -172,6 +175,7 @@ void PrimitivePolygon::ScanlineFill(ImageBase *img) const
 		} */
 
 		// Algorithm point 3
+		// Loesche nicht mehr benoetigte Kanten
 
 		iter it = aet.begin();
 
@@ -192,7 +196,7 @@ void PrimitivePolygon::ScanlineFill(ImageBase *img) const
 		} */
 
 		// Algorithm point 2
-		// Determine x values
+		// Determine x values (Schnittpunkte)
 
 		vector<int> xs;
 
@@ -226,8 +230,6 @@ void PrimitivePolygon::ScanlineFill(ImageBase *img) const
 
 		// algorithm point 4
 		y++;
-
-		// algorithm point 5
 	}
 
 	delete [] et;
