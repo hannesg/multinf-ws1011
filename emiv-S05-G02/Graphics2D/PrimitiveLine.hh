@@ -1,6 +1,6 @@
 /*
 Gruppe: 02
-Serie 03
+Serie 05
 Matthias Boehm, 895778
 Hannes Georg, 850360
 */
@@ -38,6 +38,13 @@ public:
 
 	Coordinate GetStartingPoint() const { return points_[0]; }
 	Coordinate GetEndingPoint() const { return points_[1]; }
+
+	int GetXMin() const { return rint(min(points_[0].GetX(), points_[1].GetX())); }
+	int GetXMax() const { return rint(max(points_[0].GetX(), points_[1].GetX())); }
+	int GetYMin() const { return rint(min(points_[0].GetY(), points_[1].GetY())); }
+	int GetYMax() const { return rint(max(points_[0].GetY(), points_[1].GetY())); }
+
+	float getXValue(float y0) const;
 
 	/* Draw-Funktion */
 	virtual void Draw(ImageBase *img) const;

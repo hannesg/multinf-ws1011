@@ -38,10 +38,12 @@ add_subdirectory(Graphics2DBase)
 add_executable(testGraphics2D testGraphics2D.cpp)
 add_executable(testPrimitives testPrimitives.cpp)
 add_executable(testGUI testGUI.cpp)
+add_executable(testScanline testScanline.cpp)
 
 target_link_libraries(testGraphics2D Graphics2DBase Graphics2D)
 target_link_libraries(testPrimitives Graphics2DBase Graphics2D)
 target_link_libraries(testGUI Graphics2DBase Graphics2D)
+target_link_libraries(testScanline Graphics2DBase Graphics2D)
 
 add_executable(showImage showImage.cpp)
 target_link_libraries(showImage Graphics2D)

@@ -21,7 +21,7 @@ public:
 	/* Draw-Funktion */
 	virtual void Draw(ImageBase *img) const;
 
-
+	virtual void ScanlineFill(ImageBase *img) const;
 
 };
 
