@@ -38,6 +38,45 @@ void paintSomePolygons(Image &img) {
 	p1.SetCoordinates(cs1);
 
 	p1.Draw(&img);
+
+	cs1.clear();
+	cs1.push_back(Coordinate(50, 50));
+	cs1.push_back(Coordinate(55, 55));
+	cs1.push_back(Coordinate(60, 50));
+	cs1.push_back(Coordinate(65, 55));
+	cs1.push_back(Coordinate(70, 50));
+	cs1.push_back(Coordinate(70, 80));
+	cs1.push_back(Coordinate(65, 75));
+	cs1.push_back(Coordinate(60, 80));
+	cs1.push_back(Coordinate(55, 75));
+	cs1.push_back(Coordinate(50, 80));
+	cs1.push_back(Coordinate(50, 50));
+
+	p2.SetCoordinates(cs1);
+
+	p2.Draw(&img);
+
+	cs1.clear();
+	cs1.push_back(Coordinate(50, 50));
+	cs1.push_back(Coordinate(55, 65));
+	cs1.push_back(Coordinate(60, 50));
+	cs1.push_back(Coordinate(65, 65));
+	cs1.push_back(Coordinate(70, 50));
+	cs1.push_back(Coordinate(70, 80));
+	cs1.push_back(Coordinate(65, 65));
+	cs1.push_back(Coordinate(60, 80));
+	cs1.push_back(Coordinate(55, 65));
+	cs1.push_back(Coordinate(50, 80));
+	cs1.push_back(Coordinate(50, 50));
+
+	for(unsigned int i = 0; i < cs1.size(); i++) {
+		cs1[i] += Coordinate(50, 0);
+	}
+
+	p2.SetCoordinates(cs1);
+
+	p2.Draw(&img);
+
 }
 
 int main(int argc, char *argv[]) {
@@ -48,10 +87,10 @@ int main(int argc, char *argv[]) {
 
 	if(argc == 0) {
 		cout << "Usage: " << endl << "testScanline <Output-File> " << endl;
-		cout << " loads an empty picture and paints some points, stores result in <Output-File> " << endl;
+		cout << " loads an empty picture and paints some polygons, stores result in <Output-File> " << endl;
 		cout << " or " << endl;
 		cout << "testScanline <Input-File> <Output-File> " << endl;
-		cout << " loads <Input-File>, paints some points, stores result in <Output-File> " << endl;
+		cout << " loads <Input-File>, paints some polygons, stores result in <Output-File> " << endl;
 		return 1;
 	}
 
