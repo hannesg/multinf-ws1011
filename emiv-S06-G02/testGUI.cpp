@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
 
 	Image img;
 
-	string imgFile = "wasserturm-small.ppm";
+	string imgFile = "wasserturm-low-quality.ppm";
 
 	if(argc > 1) {
 		imgFile = argv[1];

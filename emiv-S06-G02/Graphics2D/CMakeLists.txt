@@ -8,6 +8,8 @@ ADD_LIBRARY(Graphics2D
 	Color.hh
 	Painter.cpp
         Painter.hh
+	ColorConversion.cpp
+	ColorConversion.hh
 	
 	# Primitives
 	PrimitivePoint.cpp

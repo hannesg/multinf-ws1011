@@ -18,6 +18,7 @@ Hannes Georg, 850360
 #include "Controller/PolygonModusController.hh"
 #include "Controller/StarModusController.hh"
 #include "Image.hh"
+#include "BackgroundImage.hh"
 
 namespace Graphics2D {
 
@@ -94,8 +95,14 @@ private:
 	StarModusController starModusController_;
 
 	// angehalten?
-	bool pause;
+	bool pause_;
 
+	// Graubild
+	bool grey_;
+	
+	// the background images
+	BackgroundImage * background_;
+	BackgroundImage * backgroundGrey_;
 };
 
 

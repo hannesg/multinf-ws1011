@@ -22,6 +22,9 @@ public:
 
 	/* Draw-Funktion */
 	virtual void Draw(ImageBase *img) const;
+	
+	// returns the Image
+	Image &GetImage() { return img_; }
 
 private:
 	Image img_;

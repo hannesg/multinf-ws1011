@@ -9,6 +9,7 @@ Hannes Georg, 850360
 #include "Painter.hh"
 #include "PrimitiveLine.hh"
 #include "BackgroundImage.hh"
+#include "ColorConversion.hh"
 
 using namespace std;
 
@@ -24,14 +25,21 @@ Painter::Painter(const Image &backgroundImage)
 	currentColor_ = Color::black();
 
 	// Das Hintergrundbild hinzufuegen
-	BackgroundImage *img = new BackgroundImage(backgroundImage);
-	AddPrimitive(img);
-
+	background_ = new BackgroundImage(backgroundImage);
+	
+	// Graubild erstellen
+	Image greyPicture;
+		
+	ColorConversion::ToGrey(background_->GetImage(), greyPicture);
+	backgroundGrey_ = new BackgroundImage(greyPicture);
+	
 	// Modus am Start ist Punkte zeichnen
 	currentController_ = NULL;
 	SetModus(POINT);
 
-	pause = false;
+	pause_ = false;
+	
+	grey_ = false;
 }
 
 Painter::~Painter() {
@@ -43,16 +51,23 @@ Painter::~Painter() {
 void Painter::Draw() {
 
 	vector<PrimitiveBase *>::iterator it;
-
+	
+	if(grey_) {
+		backgroundGrey_->Draw(image_);
+	}
+	else {
+		background_->Draw(image_);
+	}
+	
 	/* Alle Elemente durchgehen */
 	for(it = primitives_.begin(); it != primitives_.end(); it++) {
-		if(!pause) {
+		if(!pause_) {
 			// rotieren
 			(*it)->Rotate(2*M_PI/100);
 		}
 		(*it)->Draw(image_);
 	}
-
+	
 	const vector<PrimitiveBase *> &temps = currentController_->GetTemporaryPrimitives();
 	vector<PrimitiveBase *>::const_iterator itc;
 
@@ -163,7 +178,10 @@ void Painter::KeyPressed(unsigned char ch, int /* x */, int /* y */) {
 		PrintHelp();
 		break;
 	case ' ':
-		pause = !pause;
+		pause_ = !pause_;
+		break;
+	case 'c':
+		grey_ = !grey_;
 		break;
 	default:
 		break;
