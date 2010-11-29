@@ -15,7 +15,7 @@ void ColorConversion::ToGrey(const Image &src, Image &dst) {
 	Image converted;
 
 	if (src.GetColorModel() == ImageBase::cm_HSV) {
-		ColorConversion::ToBMP(src, converted);
+		ColorConversion::ToRGB(src, converted);
 		actualSrc = &converted;
 	} else {
 		actualSrc = &src;
@@ -24,21 +24,25 @@ void ColorConversion::ToGrey(const Image &src, Image &dst) {
 	dst.Init(actualSrc->GetWidth(), actualSrc->GetHeight());
 	dst.SetColorModel(ImageBase::cm_Grey);
 	
+	unsigned int size = actualSrc->GetWidth()*actualSrc->GetHeight();
+	const unsigned char *data = actualSrc->GetData();
+	unsigned char *dstData = dst.GetData();
 
-	for(unsigned x = 0; x < actualSrc->GetWidth(); x++) {
-		for(unsigned y = 0; y < actualSrc->GetHeight(); y++) {
+	for(unsigned int i = 0; i < size; i++) {
+		int r = data[3*i+0];
+		int g = data[3*i+1];
+		int b = data[3*i+2];
 			
-			int r = actualSrc->GetPixel(x, y, 0);
-			int g = actualSrc->GetPixel(x, y, 1);
-			int b = actualSrc->GetPixel(x, y, 2);
+		int grey = 30*r + 59*g + 11*b;
+		grey /= 100;
+
+		/* Normalisieren, falls (sehr grosses falls) grey < 0 oder grey > 255 */
+		if(grey < 0) { grey = 0; }
+		if(grey > 255) { grey = 255; }
 			
-			int grey = 30*r + 59*g + 11*b;
-			grey /= 100;
-			
-			dst.SetPixel(x, y, 0, grey);
-			dst.SetPixel(x, y, 1, grey);
-			dst.SetPixel(x, y, 2, grey);
-		}
+		dstData[3*i+0] = grey;
+		dstData[3*i+1] = grey;
+		dstData[3*i+2] = grey;
 	}
 }
 
