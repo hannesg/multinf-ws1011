@@ -261,9 +261,17 @@ void Painter::printColor(int x, int y) const
 void Painter::ConvertBackgroundImage() {
 	Image tmp;
 
-	ColorConversion::ToHSV(background_->GetImage(), tmp);
+	// wie oft konvertieren?
+	const int n = 1;
 
-	ColorConversion::ToRGB(tmp, background_->GetImage());
+	for(int i = 0; i < n; i++) {
+		ColorConversion::ToHSV(background_->GetImage(), tmp);
+
+		ColorConversion::ToRGB(tmp, background_->GetImage());
+		if(i % 10 == 0) {
+			cout << i*100/n << "%" << endl;
+		}
+	}
 }
 
 
