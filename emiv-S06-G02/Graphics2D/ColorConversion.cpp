@@ -5,13 +5,26 @@ namespace Graphics2D {
 
 void ColorConversion::ToGrey(const Image &src, Image &dst) {
 	
-	if(src.GetColorModel() != ImageBase::cm_RGB) {
-		throw exception();
+	if(src.GetColorModel() == ImageBase::cm_Grey) {
+		// do nothing
+		dst = src;
+		return;
+	} 
+
+	Image *actualSrc;
+	Image converted;
+
+	if (src.GetColorModel() == ImageBase::cm_HSV) {
+		ColorConversion::ToHSV(src, converted);
+		actualSrc = &converted;
+	} else {
+		actualSrc = &src;
 	}
 
 	dst.Init(src.GetWidth(), src.GetHeight());
 	dst.SetColorModel(ImageBase::cm_Grey);
 	
+
 	for(unsigned x = 0; x < src.GetWidth(); x++) {
 		for(unsigned y = 0; y < src.GetHeight(); y++) {
 			
