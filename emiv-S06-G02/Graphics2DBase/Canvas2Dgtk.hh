@@ -68,6 +68,7 @@ namespace Graphics2D {
       _GtkWidget *gtkWindow_;
       _GdkFont *gdkFont_;
       bool buttonDown_;
+      int lastx_, lasty_;
   };
 }
 
