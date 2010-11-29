@@ -11,7 +11,7 @@ void ColorConversion::ToGrey(const Image &src, Image &dst) {
 		return;
 	} 
 
-	Image *actualSrc;
+	const Image *actualSrc;
 	Image converted;
 
 	if (src.GetColorModel() == ImageBase::cm_HSV) {
@@ -21,16 +21,16 @@ void ColorConversion::ToGrey(const Image &src, Image &dst) {
 		actualSrc = &src;
 	}
 
-	dst.Init(src.GetWidth(), src.GetHeight());
+	dst.Init(actualSrc->GetWidth(), actualSrc->GetHeight());
 	dst.SetColorModel(ImageBase::cm_Grey);
 	
 
-	for(unsigned x = 0; x < src.GetWidth(); x++) {
-		for(unsigned y = 0; y < src.GetHeight(); y++) {
+	for(unsigned x = 0; x < actualSrc->GetWidth(); x++) {
+		for(unsigned y = 0; y < actualSrc->GetHeight(); y++) {
 			
-			int r = src.GetPixel(x, y, 0);
-			int g = src.GetPixel(x, y, 1);
-			int b = src.GetPixel(x, y, 2);
+			int r = actualSrc->GetPixel(x, y, 0);
+			int g = actualSrc->GetPixel(x, y, 1);
+			int b = actualSrc->GetPixel(x, y, 2);
 			
 			int grey = 30*r + 59*g + 11*b;
 			grey /= 100;
