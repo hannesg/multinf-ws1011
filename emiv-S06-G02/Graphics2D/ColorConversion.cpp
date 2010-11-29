@@ -18,6 +18,7 @@ void ColorConversion::ToGrey(const Image &src, Image &dst) {
 	if(src.GetColorModel() == ImageBase::cm_Grey) {
 		// do nothing
 		dst = src;
+		cerr << "warning: no ToGrey conversion done" << endl;
 		return;
 	} 
 
@@ -62,11 +63,12 @@ void ColorConversion::ToRGB(const Image &src, Image &dst) {
 		// do nothing 
 		dst = src;
 		dst.SetColorModel(ImageBase::cm_RGB);
+		cerr << "warning: no ToRGB conversion done" << endl;
 		return;
 	}
 
 	dst.Init(src.GetWidth(), src.GetHeight());
-	dst.SetColorModel(ImageBase::cm_HSV);
+	dst.SetColorModel(ImageBase::cm_RGB);
 
 	unsigned int size = src.GetWidth()*src.GetHeight();
 	const unsigned char *data = src.GetData();
@@ -79,12 +81,16 @@ void ColorConversion::ToRGB(const Image &src, Image &dst) {
 		int vi = data[3*i+2];
 
 		// auf Bereich 0..1 bzw. 0..360 bringen
-		float h = hi/255.0*360.0;
-		float s = si/255.0;
-		float v = vi/255.0;
+		float h = (float)hi/255.0*360.0;
+		float s = (float)si/255.0;
+		float v = (float)vi/255.0;
+
+		assert(0 <= h && h <= 360 
+			&& 0 <= s && s <= 1
+			&& 0 <= v && v <= 1);
 
 		// Hilfsvariablen
-		int h_i = floor(h/60.0);
+		int h_i = (int)floor(h/60.0);
 
 		float f = h/60.0 - h_i;
 
@@ -126,6 +132,9 @@ void ColorConversion::ToRGB(const Image &src, Image &dst) {
 		int gi = g*255;
 		int bi = b*255;
 
+		assert(0 <= ri && 0 <= gi && 0 <= bi 
+			&& ri < 256 && gi < 256 && bi < 256);
+
 		/* Speichern */
 		dstData[3*i+0] = ri;
 		dstData[3*i+1] = gi;
@@ -138,6 +147,7 @@ void ColorConversion::ToHSV(const Image &src, Image &dst) {
 	if(src.GetColorModel() == ImageBase::cm_HSV) {
 		// do nothing
 		dst = src;
+		cerr << "warning: no ToHSV conversion done" << endl;
 		return;
 	}
 
@@ -168,6 +178,12 @@ void ColorConversion::ToHSV(const Image &src, Image &dst) {
 		float max = std::max(r, std::max(g, b));
 		float min = std::min(r, std::min(g, b));
 
+		assert(0 <= r && r <= 1
+			&& 0 <= g && g <= 1
+			&& 0 <= b && b <= 1 
+			&& 0 <= max && max <= 1
+			&& 0 <= min && min <= 1);
+
 		/* hue berechnen */
 		if(min == max) {
 			h = 0; 
@@ -176,7 +192,7 @@ void ColorConversion::ToHSV(const Image &src, Image &dst) {
 		} else if(max == g) {
 			h = 60*(2 + (b-r)/(max-min));
 		} else if(max == b) {
-			h = 60*(2 + (r-b)/(max-min));
+			h = 60*(4 + (r-g)/(max-min));
 		}
 
 		if(h < 0) { h += 360; }
@@ -191,15 +207,21 @@ void ColorConversion::ToHSV(const Image &src, Image &dst) {
 		/* value berechnen */
 		v = max;
 
+		assert(h >= 0 && h <= 360
+			&& s >= 0 && s <= 1
+			&& v >= 0 && v <= 1);
+
 		/* in Bereich 0..255 bringen */
 		/* h kann maximal (eingeschlossen!) 360 annehmen */
 		int hi = h/360.0*255.0;
 
-		assert(hi < 256);
+		int si = s*255;
 
-		int si = h*255;
+		int vi = v*255;
 
-		int vi = h*255;
+		assert(0 <= hi && hi < 256);
+		assert(0 <= si && si < 256);
+		assert(0 <= vi && vi < 256);
 
 		dstData[3*i+0] = hi;
 		dstData[3*i+1] = si;
