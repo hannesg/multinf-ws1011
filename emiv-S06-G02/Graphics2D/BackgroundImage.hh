@@ -25,6 +25,7 @@ public:
 	
 	// returns the Image
 	Image &GetImage() { return img_; }
+	Image GetImage() const { return img_; }
 
 private:
 	Image img_;

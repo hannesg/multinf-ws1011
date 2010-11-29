@@ -46,6 +46,9 @@ Painter::~Painter() {
 
 	// Aufraeumen
 	RemoveAllPrimitives();
+
+	delete background_;
+	delete backgroundGrey_;
 }
 
 void Painter::Draw() {
@@ -177,7 +180,7 @@ void Painter::KeyPressed(unsigned char ch, int /* x */, int /* y */) {
 	case 'h':
 		PrintHelp();
 		break;
-	case ' ':
+	case '.':
 		pause_ = !pause_;
 		break;
 	case 'c':
@@ -233,7 +236,7 @@ void Painter::PrintHelp() {
 	cout << " s: Stern" << endl;
 	cout << "Im Polygonmodus muss fuer jeden Punkt des Polygons geklickt werden (also " << endl;
 	cout << " Maustaste druecken *und* wieder loslassen). " << endl;
-	cout << "Leertaste pausiert die Rotationsanimation. " << endl;
+	cout << "'.' pausiert die Rotationsanimation. " << endl;
 	cout << "h druckt diese Hilfe aus" << endl;
 	cout << "c toggelt Grau-/Buntbild" << endl;
 }
