@@ -15,7 +15,7 @@ void ColorConversion::ToGrey(const Image &src, Image &dst) {
 	Image converted;
 
 	if (src.GetColorModel() == ImageBase::cm_HSV) {
-		ColorConversion::ToHSV(src, converted);
+		ColorConversion::ToBMP(src, converted);
 		actualSrc = &converted;
 	} else {
 		actualSrc = &src;
@@ -43,15 +43,27 @@ void ColorConversion::ToGrey(const Image &src, Image &dst) {
 }
 
 void ColorConversion::ToRGB(const Image &src, Image &dst) {
-	if(src.GetColorModel() != ImageBase::cm_HSV) {
-		throw exception();
+
+	if(src.GetColorModel() == ImageBase::cm_Grey || 
+		src.GetColorModel() == ImageBase::cm_RGB) {
+		// do nothing 
+		dst = src;
+		dst.SetColorModel(ImageBase::cm_RGB);
+		return;
 	}
+
+
+	
 }
 
 void ColorConversion::ToHSV(const Image &src, Image &dst) {
-	if(src.GetColorModel() != Image::cm_RGB && src.GetColorModel() != Image::cm_Grey) {
-		throw exception();
+	
+	if(src.GetColorModel() == ImageBase::cm_HSV) {
+		// do nothing
+		dst = src;
+		return;
 	}
+
 }
 
 } 

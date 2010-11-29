@@ -34,6 +34,7 @@ namespace Graphics2D {
     height_ = other.height_;
     data_ = new unsigned char[width_*height_*3];
     memcpy(data_, other.data_, width_*height_*3);
+	colormodel_ = other.colormodel_;
   }
 
   ImageBase& ImageBase::operator=(const ImageBase &other) {
@@ -56,6 +57,8 @@ namespace Graphics2D {
       if (!Valid())
         data_ = new unsigned char[width_*height_*3];
       memcpy(data_, other.data_, width_*height_*3);
+
+	  colormodel_ = other.colormodel_;
     }
     return *this;
   }
