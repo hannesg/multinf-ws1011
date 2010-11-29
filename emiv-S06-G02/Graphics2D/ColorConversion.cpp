@@ -128,9 +128,9 @@ void ColorConversion::ToRGB(const Image &src, Image &dst) {
 		}
 
 		/* auf Bereich 0..255 bringen */
-		int ri = r*255;
-		int gi = g*255;
-		int bi = b*255;
+		int ri = (int)rint(r*255);
+		int gi = (int)rint(g*255);
+		int bi = (int)rint(b*255);
 
 		assert(0 <= ri && 0 <= gi && 0 <= bi 
 			&& ri < 256 && gi < 256 && bi < 256);
@@ -213,11 +213,11 @@ void ColorConversion::ToHSV(const Image &src, Image &dst) {
 
 		/* in Bereich 0..255 bringen */
 		/* h kann maximal (eingeschlossen!) 360 annehmen */
-		int hi = h/360.0*255.0;
+		int hi = (int)rint(h/360.0*255.0);
 
-		int si = s*255;
+		int si = (int)rint(s*255);
 
-		int vi = v*255;
+		int vi = (int)rint(v*255);
 
 		assert(0 <= hi && hi < 256);
 		assert(0 <= si && si < 256);
