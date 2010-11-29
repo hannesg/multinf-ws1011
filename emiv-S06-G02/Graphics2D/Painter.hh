@@ -66,7 +66,10 @@ public:
 private:
 
 	// Print Help
-	void PrintHelp();
+	void PrintHelp() const;
+
+	// Print color
+	void printColor(int x, int y) const;
 
 	// Enumeration fuer moegliche Modi 
 	enum Modus { POINT, LINE, POLYGON, BOX, STAR };

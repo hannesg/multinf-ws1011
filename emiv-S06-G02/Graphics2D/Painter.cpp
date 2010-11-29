@@ -147,7 +147,7 @@ void Painter::MouseMove(int x, int y) {
 	currentController_->MouseMove(x, y);
 }
 
-void Painter::KeyPressed(unsigned char ch, int /* x */, int /* y */) {
+void Painter::KeyPressed(unsigned char ch, int x, int y) {
 	
 	switch(ch) {
 	case '1':
@@ -185,6 +185,9 @@ void Painter::KeyPressed(unsigned char ch, int /* x */, int /* y */) {
 		break;
 	case 'c':
 		grey_ = !grey_;
+		break;
+	case ' ':
+		printColor(x, y);
 		break;
 	default:
 		break;
@@ -226,7 +229,7 @@ void Painter::SetModus(Modus m) {
 	currentController_->Activate();
 }
 
-void Painter::PrintHelp() {
+void Painter::PrintHelp() const {
 	cout << "1 bis 4 stehen fuer die verschiedenen Farben Schwarz, Rot, Gruen, Blau. " << endl;
 	cout << "Weitere Kuerzel fuer Auswahl der verschiedenen Modi: " << endl;
 	cout << " p: Punkte" << endl;
@@ -239,6 +242,16 @@ void Painter::PrintHelp() {
 	cout << "'.' pausiert die Rotationsanimation. " << endl;
 	cout << "h druckt diese Hilfe aus" << endl;
 	cout << "c toggelt Grau-/Buntbild" << endl;
+	cout << "Leertaste zeigt aktuellen Wert unter Cursor an" << endl;
+}
+
+void Painter::printColor(int x, int y) const
+{
+	int r = image_->GetPixel(x, y, 0);
+	int g = image_->GetPixel(x, y, 1);
+	int b = image_->GetPixel(x, y, 2);
+
+	cout << r << " " << g << " " << b << endl;	
 }
 
 }
