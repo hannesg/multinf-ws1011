@@ -189,6 +189,9 @@ void Painter::KeyPressed(unsigned char ch, int x, int y) {
 	case ' ':
 		printColor(x, y);
 		break;
+	case 'x':
+		ConvertBackgroundImage();
+		break;
 	default:
 		break;
 	}
@@ -243,6 +246,7 @@ void Painter::PrintHelp() const {
 	cout << "h druckt diese Hilfe aus" << endl;
 	cout << "c toggelt Grau-/Buntbild" << endl;
 	cout << "Leertaste zeigt aktuellen Wert unter Cursor an" << endl;
+	cout << "x fuer Hin- und Rueckkonvertieren von Bild nach HSV und zurueck nach RGB" << endl;
 }
 
 void Painter::printColor(int x, int y) const
@@ -253,5 +257,14 @@ void Painter::printColor(int x, int y) const
 
 	cout << r << " " << g << " " << b << endl;	
 }
+
+void Painter::ConvertBackgroundImage() {
+	Image tmp;
+
+	ColorConversion::ToHSV(background_->GetImage(), tmp);
+
+	ColorConversion::ToRGB(tmp, background_->GetImage());
+}
+
 
 }

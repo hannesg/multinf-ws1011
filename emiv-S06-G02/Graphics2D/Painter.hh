@@ -71,6 +71,9 @@ private:
 	// Print color
 	void printColor(int x, int y) const;
 
+	// Converts background image to HSV and back to RGB
+	void ConvertBackgroundImage();
+
 	// Enumeration fuer moegliche Modi 
 	enum Modus { POINT, LINE, POLYGON, BOX, STAR };
 

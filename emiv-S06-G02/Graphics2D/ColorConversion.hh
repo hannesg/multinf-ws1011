@@ -1,3 +1,9 @@
+/*
+Gruppe: 02
+Serie 06
+Matthias Boehm, 895778
+Hannes Georg, 850360
+*/
 
 #ifndef COLOR_CONVERSION_HH
 #define COLOR_CONVERSION_HH

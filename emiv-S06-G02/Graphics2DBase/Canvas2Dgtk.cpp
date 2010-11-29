@@ -165,7 +165,7 @@ namespace Graphics2D {
 
   int Canvas2D::KeyboardEvents (GtkWidget* /*widget*/, GdkEventKey* event) {
 	if (instance_->painter_ == NULL) { return 0; }
-    instance_->painter_->KeyPressed( (unsigned char) event->keyval, 0, 0);
+    instance_->painter_->KeyPressed( (unsigned char) event->keyval, (int) event->x, (int) event->y);
     return 0;
   }
 
