@@ -10,6 +10,8 @@ class ColorConversion {
 
 public:
 	static void ToGrey(const Image &src, Image &dst);
+	static void ToHSV(const Image &src, Image &dst);
+	static void ToRGB(const Image &src, Image &dst);
 
 };
 

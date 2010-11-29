@@ -235,6 +235,7 @@ void Painter::PrintHelp() {
 	cout << " Maustaste druecken *und* wieder loslassen). " << endl;
 	cout << "Leertaste pausiert die Rotationsanimation. " << endl;
 	cout << "h druckt diese Hilfe aus" << endl;
+	cout << "c toggelt Grau-/Buntbild" << endl;
 }
 
 }

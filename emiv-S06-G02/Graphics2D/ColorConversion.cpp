@@ -29,4 +29,16 @@ void ColorConversion::ToGrey(const Image &src, Image &dst) {
 	}
 }
 
+void ColorConversion::ToRGB(const Image &src, Image &dst) {
+	if(src.GetColorModel() != ImageBase::cm_HSV) {
+		throw exception();
+	}
+}
+
+void ColorConversion::ToHSV(const Image &src, Image &dst) {
+	if(src.GetColorModel() != Image::cm_RGB && src.GetColorModel() != Image::cm_Grey) {
+		throw exception();
+	}
+}
+
 } 
