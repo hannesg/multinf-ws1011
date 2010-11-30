@@ -103,12 +103,19 @@ private:
 	// angehalten?
 	bool pause_;
 
-	// Graubild
-	bool grey_;
-	
 	// the background images
-	BackgroundImage * background_;
+	BackgroundImage * backgroundOriginal_;
 	BackgroundImage * backgroundGrey_;
+	BackgroundImage * backgroundBetterContrast_;
+
+	// enum for choosing the right background image
+	enum Background {
+		BG_ORIGINAL, 
+		BG_GREY, 
+		BG_BETTER_CONTRAST };
+
+	// the background modus
+	Background currentBGModus_;
 };
 
 

@@ -25,21 +25,24 @@ Painter::Painter(const Image &backgroundImage)
 	currentColor_ = Color::black();
 
 	// Das Hintergrundbild hinzufuegen
-	background_ = new BackgroundImage(backgroundImage);
+	backgroundOriginal_ = new BackgroundImage(backgroundImage);
 	
 	// Graubild erstellen
 	Image greyPicture;
 		
-	ColorConversion::ToGrey(background_->GetImage(), greyPicture);
+	ColorConversion::ToGrey(backgroundOriginal_->GetImage(), greyPicture);
 	backgroundGrey_ = new BackgroundImage(greyPicture);
+
+	// TODO: Bild mit besserem Kontrast erstellen
+	backgroundBetterContrast_ = NULL;
 	
 	// Modus am Start ist Punkte zeichnen
 	currentController_ = NULL;
 	SetModus(POINT);
 
-	pause_ = false;
+	currentBGModus_ = BG_ORIGINAL;
 	
-	grey_ = false;
+	pause_ = false;
 }
 
 Painter::~Painter() {
@@ -47,19 +50,26 @@ Painter::~Painter() {
 	// Aufraeumen
 	RemoveAllPrimitives();
 
-	delete background_;
+	delete backgroundOriginal_;
 	delete backgroundGrey_;
+	delete backgroundBetterContrast_;
 }
 
 void Painter::Draw() {
 
 	vector<PrimitiveBase *>::iterator it;
 	
-	if(grey_) {
+	switch(currentBGModus_) {
+	case BG_ORIGINAL:
+		backgroundOriginal_->Draw(image_);
+		break;
+	case BG_GREY:
 		backgroundGrey_->Draw(image_);
-	}
-	else {
-		background_->Draw(image_);
+		break;
+	case BG_BETTER_CONTRAST:
+		// TODO Zeichne Bild
+		// backgroundBetterContrast_->Draw(image_);
+		break;
 	}
 	
 	/* Alle Elemente durchgehen */
@@ -184,7 +194,18 @@ void Painter::KeyPressed(unsigned char ch, int x, int y) {
 		pause_ = !pause_;
 		break;
 	case 'c':
-		grey_ = !grey_;
+		if(currentBGModus_ == BG_GREY) {
+			currentBGModus_ = BG_ORIGINAL;
+		} else {
+			currentBGModus_ = BG_GREY;
+		}
+		break;
+	case 'k':
+		if(currentBGModus_ == BG_BETTER_CONTRAST) {
+			currentBGModus_ = BG_ORIGINAL;
+		} else {
+			currentBGModus_ = BG_BETTER_CONTRAST;
+		}
 		break;
 	case ' ':
 		printColor(x, y);
@@ -195,7 +216,6 @@ void Painter::KeyPressed(unsigned char ch, int x, int y) {
 	default:
 		break;
 	}
-
 }
 
 void Painter::SetModus(Modus m) {
@@ -244,7 +264,8 @@ void Painter::PrintHelp() const {
 	cout << " Maustaste druecken *und* wieder loslassen). " << endl;
 	cout << "'.' pausiert die Rotationsanimation. " << endl;
 	cout << "h druckt diese Hilfe aus" << endl;
-	cout << "c toggelt Grau-/Buntbild" << endl;
+	cout << "c toggelt Graubild/Originalbild" << endl;
+	cout << "k togglet Orignalbild/Bild mit besserem Kontrast" << endl;
 	cout << "Leertaste zeigt aktuellen Wert unter Cursor an" << endl;
 	cout << "x fuer Hin- und Rueckkonvertieren von Bild nach HSV und zurueck nach RGB" << endl;
 }
@@ -262,12 +283,12 @@ void Painter::ConvertBackgroundImage() {
 	Image tmp;
 
 	// wie oft konvertieren?
-	const int n = 100;
+	const int n = 50;
 
 	for(int i = 0; i < n; i++) {
-		ColorConversion::ToHSV(background_->GetImage(), tmp);
+		ColorConversion::ToHSV(backgroundOriginal_->GetImage(), tmp);
 
-		ColorConversion::ToRGB(tmp, background_->GetImage());
+		ColorConversion::ToRGB(tmp, backgroundOriginal_->GetImage());
 		if(i % 1 == 0) {
 			cout << i*100/n << "%" << endl;
 		}
