@@ -19,6 +19,8 @@ Hannes Georg, 850360
 #include "Controller/StarModusController.hh"
 #include "Image.hh"
 #include "BackgroundImage.hh"
+#include "Histogram.hh"
+#include <pthread.h>
 
 namespace Graphics2D {
 
@@ -63,6 +65,8 @@ public:
 	// Returns the current color
 	Color GetCurrentColor() const { return currentColor_; }
 
+	void UpdateHistograms();
+
 private:
 
 	// Print Help
@@ -103,6 +107,8 @@ private:
 	// angehalten?
 	bool pause_;
 
+	vector<Histogram*> histograms_;
+
 	// the background images
 	BackgroundImage * backgroundOriginal_;
 	BackgroundImage * backgroundGrey_;
@@ -116,6 +122,16 @@ private:
 
 	// the background modus
 	Background currentBGModus_;
+
+	enum HistogramMode {
+		HM_NONE,
+		HM_RGB,
+		HM_HSV
+	};
+
+	HistogramMode currentHistogramModus_;
+	pthread_mutex_t historyMutex_;
+
 };
 
 

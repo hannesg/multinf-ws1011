@@ -142,7 +142,6 @@ void ColorConversion::ToRGB(const Image &src, Image &dst) {
 	}
 	
 }
-
 void ColorConversion::ToHSV(const Image &src, Image &dst) {
 	if(src.GetColorModel() == ImageBase::cm_HSV) {
 		// do nothing

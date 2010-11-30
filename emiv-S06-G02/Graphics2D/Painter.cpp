@@ -10,6 +10,7 @@ Hannes Georg, 850360
 #include "PrimitiveLine.hh"
 #include "BackgroundImage.hh"
 #include "ColorConversion.hh"
+#include "Histogram.hh"
 
 using namespace std;
 
@@ -22,6 +23,7 @@ Painter::Painter(const Image &backgroundImage)
 	polygonModusController_(*this), 
 	starModusController_(*this)
 {
+
 	currentColor_ = Color::black();
 
 	// Das Hintergrundbild hinzufuegen
@@ -33,15 +35,20 @@ Painter::Painter(const Image &backgroundImage)
 	ColorConversion::ToGrey(backgroundOriginal_->GetImage(), greyPicture);
 	backgroundGrey_ = new BackgroundImage(greyPicture);
 
-	// TODO: Bild mit besserem Kontrast erstellen
-	backgroundBetterContrast_ = NULL;
+	// Bild mit besserem Kontrast erstellen
+	Image betterContrastPicture;
+	Histogram::Autocontrast(backgroundOriginal_->GetImage(),betterContrastPicture);
+	backgroundBetterContrast_ = new BackgroundImage(betterContrastPicture);
 	
 	// Modus am Start ist Punkte zeichnen
 	currentController_ = NULL;
 	SetModus(POINT);
 
 	currentBGModus_ = BG_ORIGINAL;
-	
+	currentHistogramModus_ = HM_NONE;
+
+//UpdateHistograms();
+
 	pause_ = false;
 }
 
@@ -50,6 +57,8 @@ Painter::~Painter() {
 	// Aufraeumen
 	RemoveAllPrimitives();
 
+	histograms_.clear();
+
 	delete backgroundOriginal_;
 	delete backgroundGrey_;
 	delete backgroundBetterContrast_;
@@ -57,21 +66,26 @@ Painter::~Painter() {
 
 void Painter::Draw() {
 
+
+
 	vector<PrimitiveBase *>::iterator it;
 	
+	BackgroundImage *currentImage;
+
 	switch(currentBGModus_) {
 	case BG_ORIGINAL:
-		backgroundOriginal_->Draw(image_);
+		currentImage = backgroundOriginal_;
 		break;
 	case BG_GREY:
-		backgroundGrey_->Draw(image_);
+		currentImage = backgroundGrey_;
 		break;
 	case BG_BETTER_CONTRAST:
-		// TODO Zeichne Bild
-		// backgroundBetterContrast_->Draw(image_);
+		currentImage = backgroundBetterContrast_;
 		break;
 	}
 	
+	currentImage->Draw(image_);
+
 	/* Alle Elemente durchgehen */
 	for(it = primitives_.begin(); it != primitives_.end(); it++) {
 		if(!pause_) {
@@ -84,12 +98,50 @@ void Painter::Draw() {
 	const vector<PrimitiveBase *> &temps = currentController_->GetTemporaryPrimitives();
 	vector<PrimitiveBase *>::const_iterator itc;
 
+	if( currentHistogramModus_ == HM_RGB ){
+		Image image = currentImage->GetImage();
+		int y=0;
+		int histogramHeight = image.GetHeight()/3;
+
+		for( int channel=0; channel<3; channel++ ){
+			Color color(channel==0 ? 255 : 0, channel==1 ? 255 : 0 , channel==2 ? 255 : 0);
+			Histogram hist( Coordinate(0,y), Coordinate(image.GetWidth(),y+histogramHeight),color);
+			hist.FromImage(image,channel);
+			hist.Draw(image_);
+			y+= histogramHeight;
+		}
+	}else if( currentHistogramModus_ == HM_HSV ){
+		Image image;
+		ColorConversion::ToHSV(currentImage->GetImage(),image);
+		int y=0;
+		int histogramHeight = image.GetHeight()/3;
+		for( int channel=0; channel<3; channel++ ){
+			Color color(channel * 127 , channel * 127 , channel * 127);
+			Histogram hist( Coordinate(0,y), Coordinate(image.GetWidth(),y+histogramHeight),color);
+			hist.FromImage(image,channel);
+			hist.Draw(image_);
+			y+= histogramHeight;
+		}
+	}
+
 	/* Auch die temporaeren Elemente durchgehen */
 	for(itc = temps.begin(); itc != temps.end(); itc++) {
 		(*itc)->Draw(image_);
 	}
+}
 
-	// cout << "." << flush;
+void Painter::UpdateHistograms(){
+	switch( currentHistogramModus_ ){
+	case HM_NONE:
+		currentHistogramModus_ = HM_RGB;
+		break;
+	case HM_RGB:
+		currentHistogramModus_ = HM_HSV;
+		break;
+	case HM_HSV:
+		currentHistogramModus_ = HM_NONE;
+		break;
+	}
 }
 
 void Painter::AddPrimitive(PrimitiveBase *p)
@@ -171,6 +223,9 @@ void Painter::KeyPressed(unsigned char ch, int x, int y) {
 		break;
 	case '4':
 		currentColor_ = Color::blue();
+		break;
+	case 'g':
+		UpdateHistograms();
 		break;
 	case 'p':
 		SetModus(POINT);
@@ -266,6 +321,7 @@ void Painter::PrintHelp() const {
 	cout << "h druckt diese Hilfe aus" << endl;
 	cout << "c toggelt Graubild/Originalbild" << endl;
 	cout << "k togglet Orignalbild/Bild mit besserem Kontrast" << endl;
+	cout << "g Histogram durchschalten ( Keins -> RGB -> HSV )" << endl;
 	cout << "Leertaste zeigt aktuellen Wert unter Cursor an" << endl;
 	cout << "x fuer Hin- und Rueckkonvertieren von Bild nach HSV und zurueck nach RGB" << endl;
 }
