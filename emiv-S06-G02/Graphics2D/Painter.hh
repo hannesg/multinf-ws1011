@@ -20,7 +20,6 @@ Hannes Georg, 850360
 #include "Image.hh"
 #include "BackgroundImage.hh"
 #include "Histogram.hh"
-#include <pthread.h>
 
 namespace Graphics2D {
 
@@ -130,7 +129,6 @@ private:
 	};
 
 	HistogramMode currentHistogramModus_;
-	pthread_mutex_t historyMutex_;
 
 };
 
