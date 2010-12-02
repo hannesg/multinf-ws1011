@@ -28,10 +28,12 @@ public:
 	/* Histogramm von Image image und channel channel erstellen */
 	int FromImage(const Image& image, const int channel);
 
-
+	/* Gibt die erste Position von hinten gesehen im Histogramm an, ab der ein Wert != 0 ist*/
 	int Max() const;
+	/* Gibt die erste Position im Histogramm an, an der der Wert != 0 ist */
 	int Min() const;
 
+	/* Gibt das Maximum aller Werte im Histogramm an */
 	int MaxValue() const;
 
 	/* überschriebene Zeichenfunktion */

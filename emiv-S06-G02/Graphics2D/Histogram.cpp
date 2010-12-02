@@ -91,19 +91,29 @@ void Histogram::Autocontrast(const Image &src, Image &dest){
 	ColorConversion::ToRGB(temp, dest);
 }
 
-void Histogram::Draw(Graphics2D::ImageBase* image) const {;
-	vector<Coordinate> coords = GetCoordinates();
+void Histogram::Draw(Graphics2D::ImageBase* image) const {
+	const vector<Coordinate> &coords = GetCoordinates();
+
 	Coordinate top_left = coords.front();
 	Coordinate bottom_right = coords.back();
-	float barWidth = (bottom_right.GetX() - top_left.GetX()) / (float) 256;
+
+	/* Breite eines Balken berechnen */
+	float barWidth = (bottom_right.GetX() - top_left.GetX()) / 256.0;
 	float height = bottom_right.GetY() - top_left.GetY();
 	float barHeight;
+
+	/* Skalierungsfaktor */
 	float s = height / log10(MaxValue()+1);
+
 	float x = top_left.GetX();
 	float y = bottom_right.GetY();
+
+	/* Histogrammelemente durchgehen und Histogramm zeichnen */
 	for( int i=0; i < 256; i++ ){
 		if( histogram_[i] != 0 ){
 			barHeight = s * log10(histogram_[i]+1);
+
+			// Rechteck zeichnen mit entsprechender Hoehe
 			PrimitiveBox box( x,y-barHeight ,x+barWidth,y, GetColor() );
 			box.Draw(image);
 		}
