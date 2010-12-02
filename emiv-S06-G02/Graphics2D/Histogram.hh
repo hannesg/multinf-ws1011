@@ -35,6 +35,8 @@ public:
 
 	/* Gibt das Maximum aller Werte im Histogramm an */
 	int MaxValue() const;
+	/* Gibt das Minimum aller Werte im Histogramm an */
+	int MinValue() const;
 
 	/* überschriebene Zeichenfunktion */
 	virtual void Draw(Graphics2D::ImageBase* image) const;

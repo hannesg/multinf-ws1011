@@ -57,6 +57,18 @@ int Histogram::MaxValue() const {
 	return max;
 }
 
+int Hisogram::MinValue() const {
+	int size = histogram_.size();
+	int min = histogram_[0];
+
+	for(int i = 1; i < size; i++) {
+		if (histogram_[i] < min) {
+			min = histogram_[i];
+		}
+	} 
+	return min;
+}
+
 void Histogram::Autocontrast(const Image &src, Image &dest){
 	Histogram hist;
 	Image imgHSV;
