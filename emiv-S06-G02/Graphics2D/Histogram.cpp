@@ -61,33 +61,49 @@ void Histogram::Autocontrast(const Image &src, Image &dest){
 	Histogram hist;
 	Image imgHSV;
 
+	/* Umwandlung des Quellbildes nach HSV */
 	ColorConversion::ToHSV(src,imgHSV);
 	hist.FromImage(imgHSV,2);
+
+	/* Minimal- und Maximalwerte aus Histogramm bestimmen */
 	int min = hist.Min(), max = hist.Max();
+
 	// calculate mapping parameters
 	float a = ((float) 255) / (max - min);
 	float b = -( min * a );
+
 	int w = src.GetWidth(), h = src.GetHeight();
 
+	// Temporaeres Bild anlegen
 	Image temp;
 	temp.Init(w,h);
 	temp.SetColorModel(ImageBase::cm_HSV);
 
+	// Punktoperation durchfuehren
 	int v;
 	for( int y = 0; y < h ; y ++ ){
 		for( int x = 0; x < w ; x++ ){
+
+			// Hue und Saturation bleiben gleich
 			temp.SetPixel(x,y,0,imgHSV.GetPixel(x,y,0));
 			temp.SetPixel(x,y,1,imgHSV.GetPixel(x,y,1));
+
+			// Skalierung durchfuehren
 			v = a * imgHSV.GetPixel(x,y,2) + b;
+
+			/* Ausreisser abfangen */
 			if( v > 255 ){
 				v = 255;
 			}else if( v < 0 ){
 				v = 0;
 			}
+
+			// Wert speichern
 			temp.SetPixel(x,y,2,v);
 		}
 	}
 
+	// Wieder in RGB umwandeln
 	ColorConversion::ToRGB(temp, dest);
 }
 
