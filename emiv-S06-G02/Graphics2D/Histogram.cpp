@@ -23,8 +23,9 @@ void Histogram::Init(const Coordinate &c1, const Coordinate &c2, const Color &c)
 }
 
 Histogram::~Histogram() {
-	// TODO Auto-generated destructor stub
+	
 }
+
 int Histogram::Min() const {
 	int size = histogram_.size();
 	for( int i = 0; i < size; i++ ){
@@ -97,12 +98,12 @@ void Histogram::Draw(Graphics2D::ImageBase* image) const {;
 	float barWidth = (bottom_right.GetX() - top_left.GetX()) / (float) 256;
 	float height = bottom_right.GetY() - top_left.GetY();
 	float barHeight;
-	float s = height / log10(MaxValue());
+	float s = height / log10(MaxValue()+1);
 	float x = top_left.GetX();
 	float y = bottom_right.GetY();
 	for( int i=0; i < 256; i++ ){
 		if( histogram_[i] != 0 ){
-			barHeight = s * log10(histogram_[i]);
+			barHeight = s * log10(histogram_[i]+1);
 			PrimitiveBox box( x,y-barHeight ,x+barWidth,y, GetColor() );
 			box.Draw(image);
 		}
@@ -113,9 +114,10 @@ void Histogram::Draw(Graphics2D::ImageBase* image) const {;
 int Histogram::FromImage(const Image& image, const int channel){
 	if( image.Valid() ){
 		int w = image.GetWidth(), h = image.GetHeight();
-		int x = 0, y = 0;
-		for( ; y < h ; y++ ){
-			for( ; x < w ; x++ ){
+		/* Bild durchlaufen */
+		for(int y = 0; y < h ; y++ ){
+			for(int x = 0; x < w ; x++ ){
+				/* jeweiligen Wert im Histogramm erhoehen */
 				histogram_[ image.GetPixel(x,y,channel) ]++;
 			}
 		}
