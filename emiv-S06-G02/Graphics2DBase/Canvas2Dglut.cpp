@@ -145,8 +145,8 @@ namespace Graphics2D {
 
   void Canvas2D::MouseButtonEvents(int button, int state, int x, int y) {
     if (instance_->painter_ == NULL) { return; }
-	x = (int) float(x)*instance_->wreshape_;
-    y = (int) float(y)*instance_->hreshape_;
+	x = (int) (float(x)*instance_->wreshape_);
+    y = (int) (float(y)*instance_->hreshape_);
     if (button == GLUT_LEFT_BUTTON) {
       if (state == GLUT_DOWN) {
         instance_->painter_->MouseDown(x,y);
@@ -161,8 +161,8 @@ namespace Graphics2D {
 
   void Canvas2D::MouseMotionEvents(int x, int y) {
     if (instance_->painter_ == NULL) { return; }
-	x = (int) float(x)*instance_->wreshape_;
-    y = (int) float(y)*instance_->hreshape_;
+	x = (int) (float(x)*instance_->wreshape_);
+    y = (int) (float(y)*instance_->hreshape_);
     instance_->painter_->MouseMove(x,y);
     // glutPostRedisplay();
     // glutSwapBuffers();
@@ -170,8 +170,8 @@ namespace Graphics2D {
   
   void Canvas2D::KeyboardEvents(unsigned char ch, int x, int y) {
     if (instance_->painter_ == NULL) { return; }
-	x = (int) float(x)*instance_->wreshape_;
-    y = (int) float(y)*instance_->hreshape_;
+	x = (int) (float(x)*instance_->wreshape_);
+    y = (int) (float(y)*instance_->hreshape_);
     instance_->painter_->KeyPressed(ch,x,y);
     // glutPostRedisplay();
     // glutSwapBuffers();
