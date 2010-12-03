@@ -47,8 +47,6 @@ Painter::Painter(const Image &backgroundImage)
 	currentBGModus_ = BG_ORIGINAL;
 	currentHistogramModus_ = HM_NONE;
 
-//UpdateHistograms();
-
 	pause_ = false;
 }
 
@@ -57,8 +55,6 @@ Painter::~Painter() {
 	// Aufraeumen
 	RemoveAllPrimitives();
 
-	histograms_.clear();
-
 	delete backgroundOriginal_;
 	delete backgroundGrey_;
 	delete backgroundBetterContrast_;
@@ -66,10 +62,9 @@ Painter::~Painter() {
 
 void Painter::Draw() {
 
-
-
 	vector<PrimitiveBase *>::iterator it;
 	
+	// Hintergrundbild auswaehlen und zeichnen
 	BackgroundImage *currentImage;
 
 	switch(currentBGModus_) {
@@ -95,42 +90,53 @@ void Painter::Draw() {
 		(*it)->Draw(image_);
 	}
 	
-	const vector<PrimitiveBase *> &temps = currentController_->GetTemporaryPrimitives();
-	vector<PrimitiveBase *>::const_iterator itc;
-
-	if( currentHistogramModus_ == HM_RGB ){
+	/* Histogramme zeichnen */
+	if( currentHistogramModus_ == HM_RGB ) {
 		Image image = currentImage->GetImage();
+
 		int y=0;
 		int histogramHeight = image.GetHeight()/3;
 
 		for( int channel=0; channel<3; channel++ ){
+			/* Jedes Histogramm entsprechend seiner Farbe faerben */
 			Color color(channel==0 ? 255 : 0, channel==1 ? 255 : 0 , channel==2 ? 255 : 0);
+
 			Histogram hist( Coordinate(0,y), Coordinate(image.GetWidth(),y+histogramHeight),color);
 			hist.FromImage(image,channel);
 			hist.Draw(image_);
+
 			y+= histogramHeight;
 		}
-	}else if( currentHistogramModus_ == HM_HSV ){
+	} else if( currentHistogramModus_ == HM_HSV ) {
 		Image image;
+		// Konversion durchfuehren
 		ColorConversion::ToHSV(currentImage->GetImage(),image);
+
 		int y=0;
 		int histogramHeight = image.GetHeight()/3;
-		for( int channel=0; channel<3; channel++ ){
+
+		/* Die drei Histogramme ausgeben */
+		for( int channel=0; channel<3; channel++ ) {
 			Color color(channel * 127 , channel * 127 , channel * 127);
+
 			Histogram hist( Coordinate(0,y), Coordinate(image.GetWidth(),y+histogramHeight),color);
 			hist.FromImage(image,channel);
 			hist.Draw(image_);
+
 			y+= histogramHeight;
 		}
 	}
 
 	/* Auch die temporaeren Elemente durchgehen */
+	const vector<PrimitiveBase *> &temps = currentController_->GetTemporaryPrimitives();
+	vector<PrimitiveBase *>::const_iterator itc;
+
 	for(itc = temps.begin(); itc != temps.end(); itc++) {
 		(*itc)->Draw(image_);
 	}
 }
 
-void Painter::UpdateHistograms(){
+void Painter::UpdateHistogramModus() {
 	switch( currentHistogramModus_ ){
 	case HM_NONE:
 		currentHistogramModus_ = HM_RGB;
@@ -225,7 +231,7 @@ void Painter::KeyPressed(unsigned char ch, int x, int y) {
 		currentColor_ = Color::blue();
 		break;
 	case 'g':
-		UpdateHistograms();
+		UpdateHistogramModus();
 		break;
 	case 'p':
 		SetModus(POINT);
@@ -267,6 +273,9 @@ void Painter::KeyPressed(unsigned char ch, int x, int y) {
 		break;
 	case 'x':
 		ConvertBackgroundImage();
+		break;
+	case 'm':
+		printMinMaxVChannel();
 		break;
 	default:
 		break;
@@ -324,6 +333,7 @@ void Painter::PrintHelp() const {
 	cout << "g Histogram durchschalten ( Keins -> RGB -> HSV )" << endl;
 	cout << "Leertaste zeigt aktuellen Wert unter Cursor an" << endl;
 	cout << "x fuer Hin- und Rueckkonvertieren von Bild nach HSV und zurueck nach RGB" << endl;
+	cout << "m gibt maximalen und minimalen Helligkeitswert des V-Kanals aus" << endl;
 }
 
 void Painter::printColor(int x, int y) const
@@ -351,5 +361,31 @@ void Painter::ConvertBackgroundImage() {
 	}
 }
 
+void Painter::printMinMaxVChannel() const {
+	// Minimalen und Maximalen Helligkeitswert des V-Kanals ausgeben 
+	// fuer Aufgabe 2b)
+
+	Image img;
+	BackgroundImage *currentImage = NULL;
+
+	switch(currentBGModus_) {
+	case BG_ORIGINAL:
+		currentImage = backgroundOriginal_;
+		break;
+	case BG_BETTER_CONTRAST:
+		currentImage = backgroundBetterContrast_;
+		break;
+	case BG_GREY:
+		currentImage = backgroundGrey_;
+		break;
+	}
+
+	ColorConversion::ToHSV(currentImage->GetImage(), img);
+
+	Histogram hist;
+	hist.FromImage(img, 2);
+
+	cout << "Minimum: " << hist.Min() << ", Maximum: " << hist.Max() << endl;
+}
 
 }

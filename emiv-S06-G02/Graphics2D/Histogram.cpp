@@ -57,7 +57,7 @@ int Histogram::MaxValue() const {
 	return max;
 }
 
-int Hisogram::MinValue() const {
+int Histogram::MinValue() const {
 	int size = histogram_.size();
 	int min = histogram_[0];
 
@@ -103,10 +103,10 @@ void Histogram::Autocontrast(const Image &src, Image &dest){
 			// Skalierung durchfuehren
 			v = a * imgHSV.GetPixel(x,y,2) + b;
 
-			/* Ausreisser abfangen */
+			/* Ausreisser (eventuell durch Rundung bedingt) abfangen */
 			if( v > 255 ){
 				v = 255;
-			}else if( v < 0 ){
+			} else if( v < 0 ){
 				v = 0;
 			}
 

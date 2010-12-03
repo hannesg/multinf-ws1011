@@ -64,7 +64,7 @@ public:
 	// Returns the current color
 	Color GetCurrentColor() const { return currentColor_; }
 
-	void UpdateHistograms();
+	void UpdateHistogramModus();
 
 private:
 
@@ -82,6 +82,9 @@ private:
 
 	// Sets the current Modus
 	void SetModus(Modus m);
+
+	// prints the minimal and maximal value of the V-channel
+	void printMinMaxVChannel() const;
 
 	// Die gegenwaertige Farbe
 	Color currentColor_;
@@ -106,8 +109,6 @@ private:
 	// angehalten?
 	bool pause_;
 
-	vector<Histogram*> histograms_;
-
 	// the background images
 	BackgroundImage * backgroundOriginal_;
 	BackgroundImage * backgroundGrey_;
@@ -128,6 +129,7 @@ private:
 		HM_HSV
 	};
 
+	// the current histogram mode
 	HistogramMode currentHistogramModus_;
 
 };
