@@ -64,6 +64,7 @@ public:
 	// Returns the current color
 	Color GetCurrentColor() const { return currentColor_; }
 
+	// Updates the current histogram modus
 	void UpdateHistogramModus();
 
 private:

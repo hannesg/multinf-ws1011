@@ -11,6 +11,7 @@
 namespace Graphics2D {
 
 Histogram::Histogram(): histogram_(256,0) {
+	Init(Coordinate(0, 0), Coordinate(0, 0), Color(0, 0, 0));
 }
 
 Histogram::Histogram(const Coordinate &c1, const Coordinate &c2, const Color &c): histogram_(256,0) {
@@ -123,18 +124,18 @@ void Histogram::Draw(Graphics2D::ImageBase* image) const {
 	const vector<Coordinate> &coords = GetCoordinates();
 
 	Coordinate top_left = coords.front();
-	Coordinate bottom_right = coords.back();
+	Coordinate width_height = coords.back();
 
 	/* Breite eines Balken berechnen */
-	float barWidth = (bottom_right.GetX() - top_left.GetX()) / 256.0;
-	float height = bottom_right.GetY() - top_left.GetY();
+	float barWidth = width_height.GetX() / 257.0;
+	float height = width_height.GetY();
 	float barHeight;
 
 	/* Skalierungsfaktor */
 	float s = height / log10(MaxValue()+1);
 
 	float x = top_left.GetX();
-	float y = bottom_right.GetY();
+	float y = top_left.GetY() + width_height.GetY();
 
 	/* Histogrammelemente durchgehen und Histogramm zeichnen */
 	for( int i=0; i < 256; i++ ){

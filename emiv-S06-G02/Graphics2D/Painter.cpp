@@ -101,7 +101,7 @@ void Painter::Draw() {
 			/* Jedes Histogramm entsprechend seiner Farbe faerben */
 			Color color(channel==0 ? 255 : 0, channel==1 ? 255 : 0 , channel==2 ? 255 : 0);
 
-			Histogram hist( Coordinate(0,y), Coordinate(image.GetWidth(),y+histogramHeight),color);
+			Histogram hist( Coordinate(0,y), Coordinate(image.GetWidth(),histogramHeight),color);
 			hist.FromImage(image,channel);
 			hist.Draw(image_);
 
@@ -119,7 +119,7 @@ void Painter::Draw() {
 		for( int channel=0; channel<3; channel++ ) {
 			Color color(channel * 127 , channel * 127 , channel * 127);
 
-			Histogram hist( Coordinate(0,y), Coordinate(image.GetWidth(),y+histogramHeight),color);
+			Histogram hist( Coordinate(0,y), Coordinate(image.GetWidth(),histogramHeight),color);
 			hist.FromImage(image,channel);
 			hist.Draw(image_);
 
