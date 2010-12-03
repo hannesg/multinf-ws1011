@@ -1,9 +1,9 @@
 /*
- * Histogram.hh
- *
- *  Created on: Nov 30, 2010
- *      Author: hannes
- */
+Gruppe: 02
+Serie 06
+Matthias Boehm, 895778
+Hannes Georg, 850360
+*/
 
 #ifndef HISTOGRAM_HH_
 #define HISTOGRAM_HH_

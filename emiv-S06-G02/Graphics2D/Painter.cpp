@@ -333,6 +333,8 @@ void Painter::PrintHelp() const {
 	cout << "g Histogram durchschalten ( Keins -> RGB -> HSV )" << endl;
 	cout << "Leertaste zeigt aktuellen Wert unter Cursor an" << endl;
 	cout << "x fuer Hin- und Rueckkonvertieren von Bild nach HSV und zurueck nach RGB" << endl;
+	cout << " Dies wird 50 mal durchgefuehrt. Wenn danach das Bild immer noch gleich" << endl;
+	cout << " aussieht, sind die Konvertierungsfunktionen hoechstwahrscheinlich korrekt. " << endl;
 	cout << "m gibt maximalen und minimalen Helligkeitswert des V-Kanals aus" << endl;
 }
 
