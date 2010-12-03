@@ -102,7 +102,7 @@ void Histogram::Autocontrast(const Image &src, Image &dest){
 			temp.SetPixel(x,y,1,imgHSV.GetPixel(x,y,1));
 
 			// Skalierung durchfuehren
-			v = a * imgHSV.GetPixel(x,y,2) + b;
+			v = (int)rint(a * imgHSV.GetPixel(x,y,2) + b);
 
 			/* Ausreisser (eventuell durch Rundung bedingt) abfangen */
 			if( v > 255 ){
