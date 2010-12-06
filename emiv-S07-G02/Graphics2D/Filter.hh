@@ -26,6 +26,9 @@ public:
 	// Filter zum Testen (laesst das Bild unveraendert)
 	static Filter *CreateIdentity(int width, int height);
 
+	// Rekursiven Mittelwert berechnen
+	static void MeanRecursive(const Image &src, Image &dst, unsigned int width, unsigned int height);
+
 	// debugging function
 	void printFilter() const;
 	

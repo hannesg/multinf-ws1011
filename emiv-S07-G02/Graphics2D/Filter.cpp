@@ -167,6 +167,7 @@ void Filter::FilterImage(const Image &src, Image &dst) const {
 	
 	dst.Init(src.GetWidth(), src.GetHeight());
 	dst.SetColorModel(src.GetColorModel());
+	dst.FillZero();
 
 	// je nachdem, ob Grau- oder Buntbild, nur einen Channel betrachten (Graubild)
 	// oder alle 3 (Buntbild)
@@ -224,8 +225,138 @@ void Filter::FilterImage(const Image &src, Image &dst) const {
 					break; 
 				}
 			}
-		}
+		} /* Ende Bild durchgehen */
+	} /* Ende channels durchgehen */
+}
+
+void Filter::MeanRecursive(const Image &src, Image &dst, unsigned int width, unsigned int height) {
+
+	if(width % 2 != 1 || height % 2 != 1) {
+		throw out_of_range("width/height even! ");
 	}
+
+	dst.Init(src.GetWidth(), src.GetHeight());
+	dst.SetColorModel(src.GetColorModel());
+	dst.FillZero();
+
+	// Bild zu klein?
+	if(src.GetWidth() < width || src.GetHeight() < height) {
+		return;
+	}
+
+	int dx = (width-1)/2;
+	int dy = (height-1)/2;
+
+	// je nachdem, ob Grau- oder Buntbild, nur einen Channel betrachten (Graubild)
+	// oder alle 3 (Buntbild)
+	int c;
+	int maxChannel;
+
+	switch(src.GetColorModel()) {
+	case ImageBase::cm_Grey:
+		c = 0; 
+		maxChannel = 1;
+		break;
+	case ImageBase::cm_RGB:
+		c = 0;
+		maxChannel = 3;
+		break;
+	case ImageBase::cm_HSV:
+		c = 2;
+		maxChannel = 3;
+		break;
+	}
+
+	// Channel durchgehen 
+	for(; c < maxChannel; c++) {
+
+		// ------------ Horizontal filtern --------------
+		for(unsigned int y = dy; y < src.GetHeight()-dy; y++) {
+
+			int sum = 0;
+
+			// Startwert ermitteln
+			for(unsigned int xs = 0; xs < width; xs++) {
+				sum += src.GetPixel(xs, y, c);
+			}
+
+			// Zeile durchgehen
+			for(unsigned int x = dx; x < src.GetWidth()-dx; x++) {
+
+				// Filterwert berechnen
+				int value = sum/width;
+
+				// je nachdem, ob Grau oder Bunt, einen oder drei channel wegschreiben
+				switch(src.GetColorModel()) {
+				case ImageBase::cm_Grey:
+					dst.SetPixel(x, y, 0, value);
+					dst.SetPixel(x, y, 1, value);
+					dst.SetPixel(x, y, 2, value);
+					break;
+				case ImageBase::cm_RGB:
+					dst.SetPixel(x, y, c, value);
+					break;
+				case ImageBase::cm_HSV:
+					dst.SetPixel(x, y, 2, value);
+					dst.SetPixel(x, y, 0, src.GetPixel(x, y, 0));
+					dst.SetPixel(x, y, 1, src.GetPixel(x, y, 1));
+					break; 
+				}
+
+				// Rekursion
+				sum -= src.GetPixel(x-dx, y, c);
+				// Ende beachten!
+				if(x + dx + 1 < src.GetWidth()) {
+					sum += src.GetPixel((x+dx+1) , y, c);
+				}
+			}
+		} /* Ende horizontal filtern */
+
+		// --------------- Vertikal filtern --------------------
+		for(unsigned int x = dx; x < src.GetWidth()-dx; x++) {
+
+			int sum = 0;
+
+			// Startwert ermitteln
+			for(unsigned int ys = 0; ys < height; ys++) {
+				sum += src.GetPixel(x, ys, c);
+			}
+
+			// Spalte durchgehen
+			for(unsigned int y = dy; y < src.GetHeight()-dy; y++) {
+
+				// Filterwert berechnen
+				int value = sum/height;
+
+				// je nachdem, ob Grau oder Bunt, einen oder drei channel wegschreiben
+				switch(src.GetColorModel()) {
+				case ImageBase::cm_Grey:
+					dst.SetPixel(x, y, 0, value);
+					dst.SetPixel(x, y, 1, value);
+					dst.SetPixel(x, y, 2, value);
+					break;
+				case ImageBase::cm_RGB:
+					dst.SetPixel(x, y, c, value);
+					break;
+				case ImageBase::cm_HSV:
+					dst.SetPixel(x, y, 2, value);
+					dst.SetPixel(x, y, 0, src.GetPixel(x, y, 0));
+					dst.SetPixel(x, y, 1, src.GetPixel(x, y, 1));
+					break; 
+				}
+
+				// Rekursion
+				sum -= src.GetPixel(x, y-dy, c);
+				// Ende beachten!
+				if(y + dy + 1 < src.GetHeight()) {
+					sum += src.GetPixel(x, y+dy+1, c);
+				}
+			}
+		} /* Ende Vertikal filtern */
+
+
+	} /* Ende channel durchgehen */
+
 }
 
 }

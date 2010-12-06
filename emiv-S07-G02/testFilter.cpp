@@ -139,9 +139,29 @@ int main(int argc, char *argv[]) {
 
 	displayPeriod(t1, t2);
 
+	// debugging
+	Save(tmp, outFilename + "_mean_1.ppm");
 	Save(dst, outFilename + "_mean_separatable.ppm");
 
-	// ------------------------------------------------------------------------
+	cout << "------------------- 4. Mittelwertfilter, rekursiv, 7x7 ---------------------" << endl;
+
+	gettimeofday(&t1, NULL);
+	Filter::MeanRecursive(src, dst, 7, 7);
+	gettimeofday(&t2, NULL);
+
+	displayPeriod(t1, t2);
+
+	Save(dst, outFilename + "_mean_recursive_7_7.ppm");
+
+	cout << "------------------- 5. Mittelwertfilter, rekursiv, 31x31 ---------------------" << endl;
+
+	gettimeofday(&t1, NULL);
+	Filter::MeanRecursive(src, dst, 31, 31);
+	gettimeofday(&t2, NULL);
+
+	displayPeriod(t1, t2);
+
+	Save(dst, outFilename + "_mean_recursive_31_31.ppm");
 
 	cout << "Fertig! " << endl;
 	
