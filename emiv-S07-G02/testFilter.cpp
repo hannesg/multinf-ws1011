@@ -18,8 +18,10 @@ int main(int argc, char *argv[]) {
 	argc--;
 	argv++;
 	
-	if(argc < 2) {
-		cout << "Usage: testFilter <input image> <output image>" << endl;
+	if(argc < 1) {
+		cout << "Usage: testFilter <input image>" << endl;
+		cout << "Creates files, that have as name the filename without extension of the " << endl;
+		cout << "input image, plus some different text. " << endl;
 		return 1;
 	}
 	
@@ -34,29 +36,52 @@ int main(int argc, char *argv[]) {
 	
 	// do filtering
 
-	// test working of filtering in general
+	string outFilename = argv[0];
+	// remove ".ppm"
+	outFilename.erase(outFilename.rfind("."));
 
 	Image dst;
+	Image tmp;
+	string filename;
+
+	// ------------------- 1. Binomialfilter -------------------------------
+
+
+
+	// ------------------- 2. Mittelwertfilter -------------------------------
+	
 	
 	Filter *meanFilter = Filter::CreateMean(7, 7);
-	
-	Image tmp;
-
-	// ColorConversion::ToGrey(src, tmp);
-	tmp = src;
-	
-	meanFilter->FilterImage(tmp, dst);
+		
+	meanFilter->FilterImage(src, dst);
 
 	// Save image
-	
-	res = dst.SavePPM(argv[1]);
-	
+	filename = outFilename + "_mean.ppm";
+	res = dst.SavePPM(filename);
+
 	if(res) {
-		cerr << "Couldn't write image " << argv[1] << "! " << endl;
+		cerr << "Couldn't write image " << filename << "! " << endl;
 		return 1;
 	}
 
+	// ------------------- 3. Mittelwertfilter, separabel ---------------------
+	
+	Filter *meanFilter1 = Filter::CreateMean(7, 1);
+	Filter *meanFilter2 = Filter::CreateMean(1, 7);
 
+	meanFilter1->FilterImage(src, tmp);
+	meanFilter2->FilterImage(tmp, dst);
+
+	// Save image
+	filename = outFilename + "_mean_separatable.ppm";
+	res = dst.SavePPM(filename);
+
+	if(res) {
+		cerr << "Couldn't write image " << filename << "! " << endl;
+		return 1;
+	}
+
+	// ------------------------------------------------------------------------
 
 	cout << "Fertig! " << endl;
 	
