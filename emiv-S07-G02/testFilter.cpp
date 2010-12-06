@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
 	Image tmp;
 	ColorConversion::ToGrey(src, tmp);
 	
-	tmp.SavePPM("wasserturm-grey.ppm");
+	// tmp.SavePPM("wasserturm-grey.ppm");
 	
 	meanFilter->FilterImage(tmp, dst);
 	
@@ -47,6 +47,8 @@ int main(int argc, char *argv[]) {
 		cerr << "Couldn't write image " << argv[1] << "! " << endl;
 		return 1;
 	}	
+
+	cout << "Fertig! " << endl;
 	
 	return 0;
 }

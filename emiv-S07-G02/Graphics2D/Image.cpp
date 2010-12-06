@@ -6,6 +6,7 @@ Hannes Georg, 850360
 */
 
 #include <fstream>
+#include <sstream>
 #include <string.h>
 #include <stdexcept>
 #include "Image.hh"
@@ -64,7 +65,9 @@ void Image::SetPixel(const int &x, const int &y, const int &ch, const unsigned c
 	if(x >= 0 && y >= 0 && ch >= 0 && ch < 3 && (unsigned)x < width_ && (unsigned)y < height_) {
 		data_[(width_*y + x)*3+ch] = value;
 	} else {
-		throw out_of_range("Index out of range");
+		stringstream str; 
+		str << "Index out of range " << x << " " << y << " " << ch << ", " << width_ << " " << height_;
+		throw out_of_range(str.str());
 	}
 }
 
@@ -76,7 +79,9 @@ unsigned char Image::GetPixel(const int &x, const int &y, const int &ch) const {
 	if(x >= 0 && y >= 0 && ch >= 0 && ch < 3 && (unsigned)x < width_ &&  (unsigned)y < height_) {
 		return data_[(width_*y + x)*3+ch];
 	} else {
-		throw out_of_range("Index out of range");
+		stringstream str; 
+		str << "Index out of range " << x << " " << y << " " << ch << ", " << width_ << " " << height_;
+		throw out_of_range(str.str());
 	}
 }
 
