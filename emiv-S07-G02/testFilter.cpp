@@ -19,7 +19,6 @@ int main(int argc, char *argv[]) {
 	}
 	
 	Image src;
-	Image dst;
 	
 	// load image
 	int res = src.LoadPPM(argv[0]);
@@ -29,24 +28,34 @@ int main(int argc, char *argv[]) {
 	}
 	
 	// do filtering
+
+	Image dst;
 	
 	Filter *meanFilter = Filter::CreateMean(7, 7);
 	
 	Image tmp;
-	ColorConversion::ToGrey(src, tmp);
-	
-	// tmp.SavePPM("wasserturm-grey.ppm");
+
+	// ColorConversion::ToGrey(src, tmp);
+	// tmp = src;
+	ColorConversion::ToHSV(src, tmp);
 	
 	meanFilter->FilterImage(tmp, dst);
+
+	Image tmp2;
+
+	ColorConversion::ToRGB(dst, tmp2);
+	// tmp2 = dst;
 	
 	// Save image
 	
-	res = dst.SavePPM(argv[1]);
+	res = tmp2.SavePPM(argv[1]);
 	
 	if(res) {
 		cerr << "Couldn't write image " << argv[1] << "! " << endl;
 		return 1;
-	}	
+	}
+
+
 
 	cout << "Fertig! " << endl;
 	

@@ -112,12 +112,30 @@ void Filter::FilterImage(const Image &src, Image &dst) const {
 	assert(dx >= 0 && dy >= 0);
 	
 	dst.Init(src.GetWidth(), src.GetHeight());
+	dst.SetColorModel(src.GetColorModel());
 
 	// je nachdem, ob Grau- oder Buntbild, nur einen Channel betrachten (Graubild)
-	// oder alle 3 (Buntbil)
-	int maxChannel = src.GetColorModel() == ImageBase::cm_Grey ? 1 : 3;
+	// oder alle 3 (Buntbild)
+	int c;
+	int maxChannel;
 
-	for(int c = 0; c < maxChannel; c++) {
+	switch(src.GetColorModel()) {
+	case ImageBase::cm_Grey:
+		c = 0; 
+		maxChannel = 1;
+		break;
+	case ImageBase::cm_RGB:
+	case ImageBase::cm_HSV:
+		c = 0;
+		maxChannel = 3;
+		break;
+	/* case ImageBase::cm_HSV:
+		c = 2;
+		maxChannel = 3;
+		break;  */
+	}
+
+	for(; c < maxChannel; c++) {
 
 		for(unsigned int x = dx; x < src.GetWidth()-dx; x++) {
 			for(unsigned int y = dy; y < src.GetHeight() - dy; y++) {
@@ -134,14 +152,21 @@ void Filter::FilterImage(const Image &src, Image &dst) const {
 				sum /= sum_;
 			
 				// je nachdem, ob Grau oder Bunt, einen oder drei channel wegschreiben
-				if(maxChannel == 3) {
-					dst.SetPixel(x, y, c, sum);
-				} else if(maxChannel == 1) {
+				switch(src.GetColorModel()) {
+				case ImageBase::cm_Grey:
 					dst.SetPixel(x, y, 0, sum);
 					dst.SetPixel(x, y, 1, sum);
 					dst.SetPixel(x, y, 2, sum);
-				} else {
-					assert(false);
+					break;
+				case ImageBase::cm_RGB:
+				case ImageBase::cm_HSV:
+					dst.SetPixel(x, y, c, sum);
+					break;
+				/* case ImageBase::cm_HSV:
+					dst.SetPixel(x, y, 2, sum);
+					dst.SetPixel(x, y, 0, src.GetPixel(x, y, 0));
+					dst.SetPixel(x, y, 1, src.GetPixel(x, y, 1));
+					break; */
 				}
 			}
 		}
