@@ -107,9 +107,9 @@ Filter *Filter::CreateIdentity(int width, int height) {
 	return new Filter(result);
 }
 
-Filter *Filter::CreateBinomial(int width, int height) {
+Filter *Filter::CreateBinomial(int width) {
 
-	assert(width % 2 == 1 && height % 2 == 1);
+	assert(width % 2 == 1);
 
 	vector<int> firstRow;
 
@@ -119,7 +119,7 @@ Filter *Filter::CreateBinomial(int width, int height) {
 
 	vector< vector<int> > result;
 
-	for(int j = 0; j < height; j++) {
+	for(int j = 0; j < width; j++) {
 
 		vector<int> row;
 

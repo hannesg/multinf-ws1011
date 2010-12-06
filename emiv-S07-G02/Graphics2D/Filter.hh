@@ -19,7 +19,7 @@ public:
 	void FilterImage(const Image &src, Image &dst) const;
 	
 	static Filter *CreateMean(int width, int height);
-	static Filter *CreateBinomial(int width, int height);
+	static Filter *CreateBinomial(int width);
 
 	// Filter zum Testen
 	static Filter *CreateIdentity(int width, int height);

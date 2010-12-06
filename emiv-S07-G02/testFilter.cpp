@@ -105,7 +105,7 @@ int main(int argc, char *argv[]) {
 
 	cout << "------------------- 1. Binomialfilter -------------------------------" << endl;
 
-	Filter *binomialFilter = Filter::CreateBinomial(7, 7);
+	Filter *binomialFilter = Filter::CreateBinomial(7);
 
 	gettimeofday(&t1, NULL);
 	binomialFilter->FilterImage(src, dst);
