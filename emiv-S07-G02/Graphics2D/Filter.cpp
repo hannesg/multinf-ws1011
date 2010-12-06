@@ -53,6 +53,7 @@ Filter::Filter(const vector<vector <int> > &mask) {
 	for(unsigned int i = 0; i < height_; i++) {
 		const vector<int> &row = mask[i];
 		
+		// all rows must have the same width
 		if(row.size() != width_) {
 			throw out_of_range("No matrix");
 		}
@@ -72,10 +73,12 @@ Filter *Filter::CreateMean(int width, int height) {
 	vector<int> row;
 	vector<vector <int> > matrix;
 	
+	// Einen Zeilenvektor erstellen
 	for(int i = 0; i < width; i++) {
 		row.push_back(1);
 	}
 	
+	// Zeilenvektor kopieren
 	for(int j = 0; j < height; j++) {
 		matrix.push_back(row);
 	}
@@ -94,6 +97,9 @@ Filter *Filter::CreateIdentity(int width, int height) {
 		
 		for(int j = 0; j < width; j++) {
 
+			/* Nur eine einzelne 1 in der Mitte, sonst nur 
+			 * Nullen 
+			 */
 			if(i == (height-1)/2 && j == (width-1)/2) {
 				row.push_back(1);
 			} else {
@@ -111,6 +117,7 @@ Filter *Filter::CreateBinomial(int width) {
 
 	assert(width % 2 == 1);
 
+	// Die erste Zeile/Spalte erstellen
 	vector<int> firstRow;
 
 	for(int i = 0; i < width; i++) {
@@ -123,6 +130,7 @@ Filter *Filter::CreateBinomial(int width) {
 
 		vector<int> row;
 
+		// Matrix-Multiplikation
 		for(int i = 0; i < width; i++) {
 			row.push_back(firstRow[i]*firstRow[j]);
 		}
@@ -180,11 +188,14 @@ void Filter::FilterImage(const Image &src, Image &dst) const {
 		break;
 	}
 
+	// Channel durchgehen 
 	for(; c < maxChannel; c++) {
 
+		// Bild durchgehen
 		for(unsigned int x = dx; x < src.GetWidth()-dx; x++) {
 			for(unsigned int y = dy; y < src.GetHeight() - dy; y++) {
 
+				// Filter anwenden
 				int sum = 0;
 			
 				for(int i = -dx; i <= dx; i++) {

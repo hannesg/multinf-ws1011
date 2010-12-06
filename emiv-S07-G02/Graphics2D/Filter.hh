@@ -16,12 +16,14 @@ namespace Graphics2D {
 class Filter
 {
 public:
+	// execute filter on image
 	void FilterImage(const Image &src, Image &dst) const;
 	
+	// returns the corresponding filter
 	static Filter *CreateMean(int width, int height);
 	static Filter *CreateBinomial(int width);
 
-	// Filter zum Testen
+	// Filter zum Testen (laesst das Bild unveraendert)
 	static Filter *CreateIdentity(int width, int height);
 
 	// debugging function
@@ -34,9 +36,14 @@ protected:
 	
 	
 private:
+	// the sum of all values in the filter
 	int sum_;
+
+	// width and height of the filter
 	unsigned int width_;
 	unsigned int height_;
+
+	// the filter mask
 	vector <vector<int> > mask_;
 	
 };
