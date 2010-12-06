@@ -13,6 +13,19 @@ Hannes Georg, 850360
 using namespace std;
 using namespace Graphics2D;
 
+// Hilfsfunktion
+int Save(const Image &img, const string &filename) {
+	// Save image
+	int res = img.SavePPM(filename);
+
+	if(res) {
+		cerr << "Couldn't write image " << filename << "! " << endl;
+		return 1;
+	}
+
+	return 0;
+}
+
 int main(int argc, char *argv[]) {
 	
 	argc--;
@@ -42,11 +55,14 @@ int main(int argc, char *argv[]) {
 
 	Image dst;
 	Image tmp;
-	string filename;
 
 	// ------------------- 1. Binomialfilter -------------------------------
 
+	Filter *binomialFilter = Filter::CreateBinomial(7, 7);
 
+	binomialFilter->FilterImage(src, dst);
+
+	Save(dst, outFilename + "_binomial.ppm");
 
 	// ------------------- 2. Mittelwertfilter -------------------------------
 	
@@ -55,14 +71,7 @@ int main(int argc, char *argv[]) {
 		
 	meanFilter->FilterImage(src, dst);
 
-	// Save image
-	filename = outFilename + "_mean.ppm";
-	res = dst.SavePPM(filename);
-
-	if(res) {
-		cerr << "Couldn't write image " << filename << "! " << endl;
-		return 1;
-	}
+	Save(dst, outFilename + "_mean.ppm");
 
 	// ------------------- 3. Mittelwertfilter, separabel ---------------------
 	
@@ -72,14 +81,7 @@ int main(int argc, char *argv[]) {
 	meanFilter1->FilterImage(src, tmp);
 	meanFilter2->FilterImage(tmp, dst);
 
-	// Save image
-	filename = outFilename + "_mean_separatable.ppm";
-	res = dst.SavePPM(filename);
-
-	if(res) {
-		cerr << "Couldn't write image " << filename << "! " << endl;
-		return 1;
-	}
+	Save(dst, outFilename + "_mean_separatable.ppm");
 
 	// ------------------------------------------------------------------------
 

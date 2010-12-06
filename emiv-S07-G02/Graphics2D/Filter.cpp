@@ -14,6 +14,16 @@ using namespace std;
 
 namespace Graphics2D {
 
+// Hilfsfunktion zur Berechnung von Binomialkoeffizienten
+int binkoeff(int n, int k) {
+
+	if(k == 0 || k == n) {
+		return 1;
+	} else {
+		return binkoeff(n-1, k-1) + binkoeff(n-1, k);
+	}
+}
+
 
 Filter::Filter(const vector<vector <int> > &mask) {
 
@@ -89,6 +99,32 @@ Filter *Filter::CreateIdentity(int width, int height) {
 			} else {
 				row.push_back(0);
 			}
+		}
+
+		result.push_back(row);
+	}
+
+	return new Filter(result);
+}
+
+Filter *Filter::CreateBinomial(int width, int height) {
+
+	assert(width % 2 == 1 && height % 2 == 1);
+
+	vector<int> firstRow;
+
+	for(int i = 0; i < width; i++) {
+		firstRow.push_back(binkoeff(width-1, i));
+	}
+
+	vector< vector<int> > result;
+
+	for(int j = 0; j < height; j++) {
+
+		vector<int> row;
+
+		for(int i = 0; i < width; i++) {
+			row.push_back(firstRow[i]*firstRow[j]);
 		}
 
 		result.push_back(row);
