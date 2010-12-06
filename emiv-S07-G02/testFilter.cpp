@@ -29,6 +29,8 @@ int main(int argc, char *argv[]) {
 	
 	// do filtering
 
+	// test working of filtering in general
+
 	Image dst;
 	
 	Filter *meanFilter = Filter::CreateMean(7, 7);
@@ -36,19 +38,13 @@ int main(int argc, char *argv[]) {
 	Image tmp;
 
 	// ColorConversion::ToGrey(src, tmp);
-	// tmp = src;
-	ColorConversion::ToHSV(src, tmp);
+	tmp = src;
 	
 	meanFilter->FilterImage(tmp, dst);
 
-	Image tmp2;
-
-	ColorConversion::ToRGB(dst, tmp2);
-	// tmp2 = dst;
-	
 	// Save image
 	
-	res = tmp2.SavePPM(argv[1]);
+	res = dst.SavePPM(argv[1]);
 	
 	if(res) {
 		cerr << "Couldn't write image " << argv[1] << "! " << endl;

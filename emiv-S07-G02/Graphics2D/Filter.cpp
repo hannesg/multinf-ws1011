@@ -104,6 +104,10 @@ void Filter::printFilter() const {
 }
 
 void Filter::FilterImage(const Image &src, Image &dst) const {
+
+	if(src.GetColorModel() == ImageBase::cm_HSV) {
+		throw out_of_range("This color model is not supported! ");
+	}
 	
 	// Abstand von Rahmen
 	/*unsigned */int dx = (width_-1)/2;
@@ -125,14 +129,13 @@ void Filter::FilterImage(const Image &src, Image &dst) const {
 		maxChannel = 1;
 		break;
 	case ImageBase::cm_RGB:
-	case ImageBase::cm_HSV:
 		c = 0;
 		maxChannel = 3;
 		break;
-	/* case ImageBase::cm_HSV:
+	case ImageBase::cm_HSV:
 		c = 2;
 		maxChannel = 3;
-		break;  */
+		break;
 	}
 
 	for(; c < maxChannel; c++) {
@@ -159,14 +162,13 @@ void Filter::FilterImage(const Image &src, Image &dst) const {
 					dst.SetPixel(x, y, 2, sum);
 					break;
 				case ImageBase::cm_RGB:
-				case ImageBase::cm_HSV:
 					dst.SetPixel(x, y, c, sum);
 					break;
-				/* case ImageBase::cm_HSV:
+				case ImageBase::cm_HSV:
 					dst.SetPixel(x, y, 2, sum);
 					dst.SetPixel(x, y, 0, src.GetPixel(x, y, 0));
 					dst.SetPixel(x, y, 1, src.GetPixel(x, y, 1));
-					break; */
+					break; 
 				}
 			}
 		}
