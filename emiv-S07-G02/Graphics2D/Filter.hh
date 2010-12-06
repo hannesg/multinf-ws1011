@@ -1,4 +1,10 @@
- 
+ /*
+Gruppe: 02
+Serie 07
+Matthias Boehm, 895778
+Hannes Georg, 850360
+*/
+
 #ifndef __FILTER_HH
 #define __FILTER_HH
 

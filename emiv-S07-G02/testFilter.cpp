@@ -1,4 +1,9 @@
- 
+/*
+Gruppe: 02
+Serie 07
+Matthias Boehm, 895778
+Hannes Georg, 850360
+*/ 
  
 #include <iostream>
 #include <Image.hh>
