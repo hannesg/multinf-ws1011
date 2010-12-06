@@ -12,6 +12,8 @@ ADD_LIBRARY(Graphics2D
 	ColorConversion.hh
 	Histogram.cpp
 	Histogram.hh
+	Filter.cpp
+	Filter.hh
 	
 	# Primitives
 	PrimitivePoint.cpp
