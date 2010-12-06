@@ -3,6 +3,7 @@
 #include <iostream>
 #include <Image.hh>
 #include <Filter.hh>
+#include <ColorConversion.hh>
 
 using namespace std;
 using namespace Graphics2D;
@@ -31,7 +32,12 @@ int main(int argc, char *argv[]) {
 	
 	Filter *meanFilter = Filter::CreateMean(7, 7);
 	
-	meanFilter->FilterImage(src, dst);
+	Image tmp;
+	ColorConversion::ToGrey(src, tmp);
+	
+	tmp.SavePPM("wasserturm-grey.ppm");
+	
+	meanFilter->FilterImage(tmp, dst);
 	
 	// Save image
 	
