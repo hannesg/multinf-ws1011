@@ -62,7 +62,7 @@ Filter::Filter(const vector<vector <int> > &mask) {
 		}
 	}
 
-	printFilter();
+	// printFilter();
 }
 
 Filter *Filter::CreateMean(int width, int height) {
