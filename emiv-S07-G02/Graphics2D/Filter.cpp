@@ -270,8 +270,13 @@ void Filter::MeanRecursive(const Image &src, Image &dst, unsigned int width, uns
 	// Channel durchgehen 
 	for(; c < maxChannel; c++) {
 
+		Image tmp;
+		tmp.Init(src.GetWidth(), src.GetHeight());
+		tmp.SetColorModel(src.GetColorModel());
+		tmp.FillZero();
+
 		// ------------ Horizontal filtern --------------
-		for(unsigned int y = dy; y < src.GetHeight()-dy; y++) {
+		for(unsigned int y = 0; y < src.GetHeight(); y++) {
 
 			int sum = 0;
 
@@ -289,17 +294,17 @@ void Filter::MeanRecursive(const Image &src, Image &dst, unsigned int width, uns
 				// je nachdem, ob Grau oder Bunt, einen oder drei channel wegschreiben
 				switch(src.GetColorModel()) {
 				case ImageBase::cm_Grey:
-					dst.SetPixel(x, y, 0, value);
-					dst.SetPixel(x, y, 1, value);
-					dst.SetPixel(x, y, 2, value);
+					tmp.SetPixel(x, y, 0, value);
+					tmp.SetPixel(x, y, 1, value);
+					tmp.SetPixel(x, y, 2, value);
 					break;
 				case ImageBase::cm_RGB:
-					dst.SetPixel(x, y, c, value);
+					tmp.SetPixel(x, y, c, value);
 					break;
 				case ImageBase::cm_HSV:
-					dst.SetPixel(x, y, 2, value);
-					dst.SetPixel(x, y, 0, src.GetPixel(x, y, 0));
-					dst.SetPixel(x, y, 1, src.GetPixel(x, y, 1));
+					tmp.SetPixel(x, y, 2, value);
+					tmp.SetPixel(x, y, 0, src.GetPixel(x, y, 0));
+					tmp.SetPixel(x, y, 1, src.GetPixel(x, y, 1));
 					break; 
 				}
 
@@ -313,23 +318,23 @@ void Filter::MeanRecursive(const Image &src, Image &dst, unsigned int width, uns
 		} /* Ende horizontal filtern */
 
 		// --------------- Vertikal filtern --------------------
-		for(unsigned int x = dx; x < src.GetWidth()-dx; x++) {
+		for(unsigned int x = 0; x < tmp.GetWidth(); x++) {
 
 			int sum = 0;
 
 			// Startwert ermitteln
 			for(unsigned int ys = 0; ys < height; ys++) {
-				sum += src.GetPixel(x, ys, c);
+				sum += tmp.GetPixel(x, ys, c);
 			}
 
 			// Spalte durchgehen
-			for(unsigned int y = dy; y < src.GetHeight()-dy; y++) {
+			for(unsigned int y = dy; y < tmp.GetHeight()-dy; y++) {
 
 				// Filterwert berechnen
 				int value = sum/height;
 
 				// je nachdem, ob Grau oder Bunt, einen oder drei channel wegschreiben
-				switch(src.GetColorModel()) {
+				switch(tmp.GetColorModel()) {
 				case ImageBase::cm_Grey:
 					dst.SetPixel(x, y, 0, value);
 					dst.SetPixel(x, y, 1, value);
@@ -340,20 +345,19 @@ void Filter::MeanRecursive(const Image &src, Image &dst, unsigned int width, uns
 					break;
 				case ImageBase::cm_HSV:
 					dst.SetPixel(x, y, 2, value);
-					dst.SetPixel(x, y, 0, src.GetPixel(x, y, 0));
-					dst.SetPixel(x, y, 1, src.GetPixel(x, y, 1));
+					dst.SetPixel(x, y, 0, tmp.GetPixel(x, y, 0));
+					dst.SetPixel(x, y, 1, tmp.GetPixel(x, y, 1));
 					break; 
 				}
 
 				// Rekursion
-				sum -= src.GetPixel(x, y-dy, c);
+				sum -= tmp.GetPixel(x, y-dy, c);
 				// Ende beachten!
-				if(y + dy + 1 < src.GetHeight()) {
-					sum += src.GetPixel(x, y+dy+1, c);
+				if(y + dy + 1 < tmp.GetHeight()) {
+					sum += tmp.GetPixel(x, y+dy+1, c);
 				}
 			}
 		} /* Ende Vertikal filtern */
-
 
 	} /* Ende channel durchgehen */
 

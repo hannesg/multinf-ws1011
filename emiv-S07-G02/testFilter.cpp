@@ -140,7 +140,7 @@ int main(int argc, char *argv[]) {
 	displayPeriod(t1, t2);
 
 	// debugging
-	Save(tmp, outFilename + "_mean_1.ppm");
+	// Save(tmp, outFilename + "_mean_1.ppm");
 	Save(dst, outFilename + "_mean_separatable.ppm");
 
 	cout << "------------------- 4. Mittelwertfilter, rekursiv, 7x7 ---------------------" << endl;
