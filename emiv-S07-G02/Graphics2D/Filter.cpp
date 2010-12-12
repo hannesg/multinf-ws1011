@@ -130,7 +130,7 @@ Filter *Filter::CreateBinomial(int width) {
 
 		vector<int> row;
 
-		// Matrix-Multiplikation
+		// "Matrix-Multiplikation", um die inneren Werte zu ermitteln
 		for(int i = 0; i < width; i++) {
 			row.push_back(firstRow[i]*firstRow[j]);
 		}
