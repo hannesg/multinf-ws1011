@@ -27,9 +27,12 @@ int binkoeff(int n, int k) {
 }
 
 
-Filter::Filter(const vector<vector <int> > &mask) {
+Filter::Filter(const vector<vector <int> > &mask, int scale = 1) {
 
 	mask_ = mask;
+	
+	scale_ = scale;
+	offset_ = 0;
 	
 	height_ = mask.size();
 	
@@ -52,6 +55,9 @@ Filter::Filter(const vector<vector <int> > &mask) {
 	// Summe ermitteln
 	sum_ = 0;
 	
+	int min = 0;
+	int max = 0;
+	
 	for(unsigned int i = 0; i < height_; i++) {
 		const vector<int> &row = mask[i];
 		
@@ -62,8 +68,22 @@ Filter::Filter(const vector<vector <int> > &mask) {
 		
 		for(unsigned int j = 0; j < width_; j++) {
 			sum_ += mask_[i][j];
+			
+			if(mask_[i][j] < 0) {
+				min += mask_[i][j];
+			} 
+			if(mask_[i][j] > 0) {
+				max += mask_[i][j];
+			}
 		}
 	}
+	
+	min *= 255;
+	max *= 255;
+	
+	offset_ = -min;
+	
+	
 
 	// printFilter();
 }
@@ -113,6 +133,19 @@ Filter *Filter::CreateIdentity(int width, int height) {
 	}
 
 	return new Filter(result);
+}
+
+Filter *Filter::CreateGradX() {
+	vector<int> row;
+	
+	row.push_back(-1);
+	row.push_back(0);
+	row.push_back(1);
+	
+	vector <vector<int> > matrix;
+	matrix.push_back(row);
+	
+	return new Filter(matrix, 2);
 }
 
 Filter *Filter::CreateBinomial(int width) {
@@ -208,7 +241,12 @@ void Filter::FilterImage(const Image &src, Image &dst) const {
 					}
 				}
 		
-				sum /= sum_;
+				if(sum_ != 0) {
+					sum /= sum_;
+				}
+				
+				sum += offset_;
+				sum /= scale_;
 			
 				// je nachdem, ob Grau oder Bunt, einen oder drei channel wegschreiben
 				switch(src.GetColorModel()) {
