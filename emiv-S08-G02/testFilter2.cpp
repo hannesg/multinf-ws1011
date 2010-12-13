@@ -90,6 +90,14 @@ int main(int argc, char *argv[]) {
 	gradXFilter->FilterImage(src, dst);
 	
 	Save(dst, outFilename + "_gradx.ppm");
+
+	cout << "------ GradY ----------- " << endl;
+	
+	Filter *gradYFilter = Filter::CreateGradY();
+	
+	gradYFilter->FilterImage(src, dst);
+	
+	Save(dst, outFilename + "_grady.ppm");
 	
 	cout << "Fertig! " << endl;
 	

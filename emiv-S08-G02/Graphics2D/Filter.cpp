@@ -89,7 +89,7 @@ Filter::Filter(const vector<vector <int> > &mask, int scale = 1) {
 	
 	offset_ = -min;
 
-	printFilter();
+	// printFilter();
 }
 
 Filter *Filter::CreateMean(int width, int height) {
@@ -151,6 +151,24 @@ Filter *Filter::CreateGradX() {
 	matrix.push_back(row);
 	
 	return new Filter(matrix, 2);
+}
+
+Filter *Filter::CreateGradY() {
+
+	// Zeile erstellen
+	vector<int> row;
+	
+	vector <vector <int> > matrix;
+
+	row.push_back(-1);
+	matrix.push_back(row);
+	row[0] = 0;
+	matrix.push_back(row);
+	row[0] = 1;
+	matrix.push_back(row);
+
+	return new Filter(matrix, 2);
+
 }
 
 Filter *Filter::CreateBinomial(int width) {
@@ -253,6 +271,11 @@ void Filter::FilterImage(const Image &src, Image &dst) const {
 				
 				sum += offset_;
 				sum /= scale_;
+
+				// Testen, ob sum im gueltigen Bereich
+				if(sum < 0 || sum > 255) {
+					throw out_of_range("sum nicht im gueltigen Bereich! ");
+				}
 			
 				// je nachdem, ob Grau oder Bunt, einen oder drei channel wegschreiben
 				switch(src.GetColorModel()) {

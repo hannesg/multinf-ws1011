@@ -29,6 +29,9 @@ public:
 	// Gradientfilter in x-Richtung
 	static Filter *CreateGradX();
 
+	// Gradientenfilter in y-Richtung
+	static Filter *CreateGradY();
+
 	// Rekursiven Mittelwert berechnen
 	static void MeanRecursive(const Image &src, Image &dst, unsigned int width, unsigned int height);
 	
