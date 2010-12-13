@@ -10,6 +10,7 @@ Hannes Georg, 850360
 #include <Filter.hh>
 #include <ColorConversion.hh>
 #include <sys/time.h>
+#include <cstdlib>
 
 using namespace std;
 using namespace Graphics2D;

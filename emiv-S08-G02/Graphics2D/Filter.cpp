@@ -9,6 +9,7 @@ Hannes Georg, 850360
 #include <cassert>
 #include <cmath>
 #include <list>
+#include <algorithm>
 #include "Filter.hh"
 #include "ColorConversion.hh"
 
@@ -31,6 +32,7 @@ Filter::Filter(const vector<vector <int> > &mask, int scale = 1) {
 
 	mask_ = mask;
 	
+	// scale und offset initialisieren
 	scale_ = scale;
 	offset_ = 0;
 	
@@ -69,6 +71,8 @@ Filter::Filter(const vector<vector <int> > &mask, int scale = 1) {
 		for(unsigned int j = 0; j < width_; j++) {
 			sum_ += mask_[i][j];
 			
+			// Wenn ein Wert kleiner/groesser als null ist, ihn
+			// zu den min/max - Werten addieren (fuer das Offset spaeter)
 			if(mask_[i][j] < 0) {
 				min += mask_[i][j];
 			} 
@@ -78,14 +82,14 @@ Filter::Filter(const vector<vector <int> > &mask, int scale = 1) {
 		}
 	}
 	
+	// maximalen/minimalen Wert ermittelt, die die Anwendung des Filters 
+	// ergeben kann
 	min *= 255;
 	max *= 255;
 	
 	offset_ = -min;
-	
-	
 
-	// printFilter();
+	printFilter();
 }
 
 Filter *Filter::CreateMean(int width, int height) {
@@ -138,6 +142,7 @@ Filter *Filter::CreateIdentity(int width, int height) {
 Filter *Filter::CreateGradX() {
 	vector<int> row;
 	
+	// Zeile erstellen
 	row.push_back(-1);
 	row.push_back(0);
 	row.push_back(1);
@@ -178,7 +183,8 @@ Filter *Filter::CreateBinomial(int width) {
 
 void Filter::printFilter() const {
 
-	cout << width_ << " " << height_ << " " << sum_ << endl;
+	cout << "(" << width_ << ", " << height_ << "), sum: " << sum_ << 
+		", offset: " << offset_ << ", scale: " << scale_ << endl;
 
 	for(unsigned int j = 0; j < height_; j++) {
 		for(unsigned int i = 0; i < width_; i++) {
@@ -405,33 +411,41 @@ void Filter::MeanRecursive(const Image &src, Image &dst, unsigned int width, uns
 
 void Filter::Rank3x3(const Image &src2, Image &dst, int rank = 4) {
 	
+	// Offset von Rand aus
 	int dx = 1;
 	int dy = 1;
 	
+	// Falscher Rang?
 	if(rank < 0 || rank > 8) {
 		throw out_of_range("rank");
 	}
 	
+
+	// Bild eventuell nach Grau konvertieren
 	Image src;
 	
 	if(src2.GetColorModel() == ImageBase::cm_RGB) {
 		ColorConversion::ToGrey(src2, src);
 	} else if(src2.GetColorModel() == ImageBase::cm_HSV) {
-		throw exception();
+		ColorConversion::ToRGB(src2, src);
 	} else {
 		src = src2;
 	}
 	
+	// Zielbild initialisieren
 	dst.Init(src.GetWidth(), src.GetHeight());
 	dst.SetColorModel(src.GetColorModel());
 	dst.FillZero();
 	
+	// numbers-Vektor haelt alle Pixel in der 3x3-Umgebung
 	vector<int> numbers;
 	numbers.resize(9);
 	
+	// Bild durchgehen
 	for(unsigned int x = dx; x < src.GetWidth()-dx; x++) {
 		for(unsigned int y = dy; y < src.GetHeight()-dy; y++) {
 			
+			// Nummern einlesen
 			numbers.clear();
 			
 			for(int i = -1; i <= 1; i++) {
@@ -442,8 +456,10 @@ void Filter::Rank3x3(const Image &src2, Image &dst, int rank = 4) {
 				}
 			}
 			
+			// Nummern sortieren
 			sort(numbers.begin(), numbers.end());
 			
+			// dem Rang entsprechendes Pixel zurueckschreiben
 			dst.SetPixel(x, y, 0, numbers[rank]);
 			dst.SetPixel(x, y, 1, numbers[rank]);
 			dst.SetPixel(x, y, 2, numbers[rank]);
