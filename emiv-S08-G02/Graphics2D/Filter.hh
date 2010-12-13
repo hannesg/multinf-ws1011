@@ -28,6 +28,9 @@ public:
 
 	// Rekursiven Mittelwert berechnen
 	static void MeanRecursive(const Image &src, Image &dst, unsigned int width, unsigned int height);
+	
+	// Rankfilter
+	static void Rank3x3(const Image &src, Image &dst, int rank);
 
 	// debugging function
 	void printFilter() const;

@@ -8,7 +8,9 @@ Hannes Georg, 850360
 #include <stdexcept>
 #include <cassert>
 #include <cmath>
+#include <list>
 #include "Filter.hh"
+#include "ColorConversion.hh"
 
 using namespace std;
 
@@ -172,7 +174,7 @@ void Filter::FilterImage(const Image &src, Image &dst) const {
 	// je nachdem, ob Grau- oder Buntbild, nur einen Channel betrachten (Graubild)
 	// oder alle 3 (Buntbild)
 	int c;
-	int maxChannel;
+	int maxChannel = -1;
 
 	switch(src.GetColorModel()) {
 	case ImageBase::cm_Grey:
@@ -250,7 +252,7 @@ void Filter::MeanRecursive(const Image &src, Image &dst, unsigned int width, uns
 	// je nachdem, ob Grau- oder Buntbild, nur einen Channel betrachten (Graubild)
 	// oder alle 3 (Buntbild)
 	int c;
-	int maxChannel;
+	int maxChannel = -1;
 
 	switch(src.GetColorModel()) {
 	case ImageBase::cm_Grey:
@@ -362,6 +364,57 @@ void Filter::MeanRecursive(const Image &src, Image &dst, unsigned int width, uns
 	} /* Ende channel durchgehen */
 
 }
+
+void Filter::Rank3x3(const Image &src2, Image &dst, int rank = 4) {
+	
+	int dx = 1;
+	int dy = 1;
+	
+	if(rank < 0 || rank > 8) {
+		throw out_of_range("rank");
+	}
+	
+	Image src;
+	
+	if(src2.GetColorModel() == ImageBase::cm_RGB) {
+		ColorConversion::ToGrey(src2, src);
+	} else if(src2.GetColorModel() == ImageBase::cm_HSV) {
+		throw exception();
+	} else {
+		src = src2;
+	}
+	
+	dst.Init(src.GetWidth(), src.GetHeight());
+	dst.SetColorModel(src.GetColorModel());
+	dst.FillZero();
+	
+	vector<int> numbers;
+	numbers.resize(9);
+	
+	for(unsigned int x = dx; x < src.GetWidth()-dx; x++) {
+		for(unsigned int y = dy; y < src.GetHeight()-dy; y++) {
+			
+			numbers.clear();
+			
+			for(int i = -1; i <= 1; i++) {
+				for(int j = -1; j <= 1; j++) {
+					
+					numbers.push_back(src.GetPixel(x+i, y+j, 0));
+					
+				}
+			}
+			
+			sort(numbers.begin(), numbers.end());
+			
+			dst.SetPixel(x, y, 0, numbers[rank]);
+			dst.SetPixel(x, y, 1, numbers[rank]);
+			dst.SetPixel(x, y, 2, numbers[rank]);
+			
+		}
+	}
+	
+}
+
 
 }
 
