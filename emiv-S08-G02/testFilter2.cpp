@@ -98,6 +98,20 @@ int main(int argc, char *argv[]) {
 	gradYFilter->FilterImage(src, dst);
 	
 	Save(dst, outFilename + "_grady.ppm");
+
+	cout << "------ Laplace ----------- " << endl;
+	
+	Filter *laplaceFilter = Filter::CreateLaplace();
+	
+	laplaceFilter->FilterImage(src, dst);
+	
+	Save(dst, outFilename + "_laplace.ppm");
+
+	cout << "------ GradXY ----------- " << endl;
+	
+	Filter::FilterGradMag(src, dst);
+	
+	Save(dst, outFilename + "_gradmag.ppm");
 	
 	cout << "Fertig! " << endl;
 	

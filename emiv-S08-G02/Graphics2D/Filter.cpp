@@ -171,6 +171,32 @@ Filter *Filter::CreateGradY() {
 
 }
 
+Filter *Filter::CreateLaplace() {
+
+	// Zeile erstellen
+	vector<int> row;
+	
+	vector <vector <int> > matrix;
+	
+	row.resize(3);
+	
+	row[0] = 0;
+	row[1] = -1;
+	row[2] = 0;
+	matrix.push_back(row);
+	row[0] = -1;
+	row[1] = 4;
+	row[2] = -1;
+	matrix.push_back(row);
+	row[0] = 0;
+	row[1] = -1;
+	row[2] = 0;
+	matrix.push_back(row);
+
+	return new Filter(matrix,8);
+
+}
+
 Filter *Filter::CreateBinomial(int width) {
 
 	assert(width % 2 == 1);
@@ -490,6 +516,49 @@ void Filter::Rank3x3(const Image &src2, Image &dst, int rank = 4) {
 		}
 	}
 	
+}
+
+void Filter::FilterGradMag(const Image &src, Image &dst) {
+	// Offset von Rand aus
+	int dx = 1;
+	int dy = 1;
+	// Zielbild initialisieren
+	dst.Init(src.GetWidth(), src.GetHeight());
+	dst.SetColorModel(src.GetColorModel());
+	dst.FillZero();
+
+	// je nachdem, ob Grau- oder Buntbild, nur einen Channel betrachten (Graubild)
+	// oder alle 3 (Buntbild)
+	int c = 0;
+	int firstChannel = 0;
+	int maxChannel = -1;
+
+	switch(src.GetColorModel()) {
+	case ImageBase::cm_Grey:
+		maxChannel = 1;
+		break;
+	case ImageBase::cm_RGB:
+		maxChannel = 3;
+		break;
+	case ImageBase::cm_HSV:
+		firstChannel = 2;
+		maxChannel = 3;
+		break;
+	}
+
+	// Channel durchgehen
+	int maxx = src.GetWidth() - dx;
+	int maxy = src.GetHeight() - dy;
+	int value;
+	for( int x=dx; x < maxx; x++ ){
+		for( int y=dy; y < maxy; y++ ){
+			for( c = firstChannel; c < maxChannel; c++) {
+				value = (abs( src.GetPixel(x + 1, y, c) - src.GetPixel(x - 1, y, c) ) + abs( src.GetPixel(x, y + 1, c) - src.GetPixel(x, y - 1, c)));
+				value /= 2;
+				dst.SetPixel(x, y, c, value);
+			}
+		}
+	}
 }
 
 

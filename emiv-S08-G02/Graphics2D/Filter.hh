@@ -32,11 +32,16 @@ public:
 	// Gradientenfilter in y-Richtung
 	static Filter *CreateGradY();
 
+	static Filter *CreateLaplace();
+
 	// Rekursiven Mittelwert berechnen
 	static void MeanRecursive(const Image &src, Image &dst, unsigned int width, unsigned int height);
 	
 	// Rankfilter
 	static void Rank3x3(const Image &src, Image &dst, int rank);
+
+	// Rankfilter
+	static void FilterGradMag(const Image &src, Image &dst);
 
 	// debugging function
 	void printFilter() const;
