@@ -193,7 +193,7 @@ Filter *Filter::CreateLaplace() {
 	row[2] = 0;
 	matrix.push_back(row);
 
-	return new Filter(matrix,8);
+	return new Filter(matrix, 8);
 
 }
 
@@ -549,13 +549,41 @@ void Filter::FilterGradMag(const Image &src, Image &dst) {
 	// Channel durchgehen
 	int maxx = src.GetWidth() - dx;
 	int maxy = src.GetHeight() - dy;
-	int value;
+	
 	for( int x=dx; x < maxx; x++ ){
 		for( int y=dy; y < maxy; y++ ){
 			for( c = firstChannel; c < maxChannel; c++) {
-				value = (abs( src.GetPixel(x + 1, y, c) - src.GetPixel(x - 1, y, c) ) + abs( src.GetPixel(x, y + 1, c) - src.GetPixel(x, y - 1, c)));
-				value /= 2;
-				dst.SetPixel(x, y, c, value);
+				// Gradx und Grady ausrechnen
+				float gradx = (src.GetPixel(x + 1, y, c) - src.GetPixel(x - 1, y, c))/2;
+				float grady = (src.GetPixel(x, y + 1, c) - src.GetPixel(x, y - 1, c))/2;
+
+				float value = sqrt(gradx*gradx + grady*grady);
+
+				// Normieren
+				value /= sqrt(2);
+
+				int iValue = (int)rint(value);
+
+				if(iValue < 0 || iValue > 255) {
+					throw out_of_range("value out of range");
+				}
+
+				// je nachdem, ob Grau oder Bunt, einen oder drei channel wegschreiben
+				switch(src.GetColorModel()) {
+				case ImageBase::cm_Grey:
+					dst.SetPixel(x, y, 0, iValue);
+					dst.SetPixel(x, y, 1, iValue);
+					dst.SetPixel(x, y, 2, iValue);
+					break;
+				case ImageBase::cm_RGB:
+					dst.SetPixel(x, y, c, iValue);
+					break;
+				case ImageBase::cm_HSV:
+					dst.SetPixel(x, y, 2, iValue);
+					dst.SetPixel(x, y, 0, src.GetPixel(x, y, 0));
+					dst.SetPixel(x, y, 1, src.GetPixel(x, y, 1));
+					break; 
+				}
 			}
 		}
 	}
