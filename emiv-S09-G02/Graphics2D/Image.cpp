@@ -165,7 +165,7 @@ int Image::LoadPPM(const std::string &filename) {
 	return 0;
 }
 
-bool Image::readHeader(ifstream &in, bool &Binary, int &width, int &height, unsigned int &max) const
+bool Image::readHeader(ifstream &in, bool &Binary, int &width, int &height, unsigned int &max)
 {
 	const int maxLineLength = 100;
 	char line[maxLineLength+1]; 
@@ -199,6 +199,21 @@ bool Image::readHeader(ifstream &in, bool &Binary, int &width, int &height, unsi
 	while(in.peek() == '#') {
 		/* Kommentar, noch eine Zeile einlesen */
 		in.getline(line, maxLineLength);
+
+		// Windows line ending entfernen
+		if(line[strlen(line)-1] == '\r') {
+			line[strlen(line)-1] = '\0';
+		}
+
+		if (strcmp(line, "# cm_RGB")==0) {
+			colormodel_ = cm_RGB;
+		} else if (strcmp(line, "# cm_Grey")==0) {
+			colormodel_ = cm_Grey;
+		} else if (strcmp(line, "# cm_HSV")==0) {
+			colormodel_ = cm_HSV;
+		}
+
+		// cout << "Colormodel: " << (colormodel_ == cm_RGB ? " rgb " : "grey/hsv") << endl;
 	}
 
 	if(!in || in.eof()) {
@@ -237,6 +252,21 @@ int Image::SavePPM(const std::string &filename) const {
 	
 	/* Header schreiben */
 	out << "P6" << endl;
+
+	switch (colormodel_) {
+	case cm_Grey:
+		out << "# cm_Grey" << endl;
+		break;
+	case cm_RGB:
+		out << "# cm_RGB" << endl;
+		break;
+	case cm_HSV:
+		out << "# cm_HSV" << endl;
+		break;
+	default:
+		out << "# mip" << endl;
+		break;
+	}
 	
 	out << width_ << endl;
 	out << height_ << endl;
