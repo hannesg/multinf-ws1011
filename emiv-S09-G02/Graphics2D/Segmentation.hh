@@ -3,9 +3,9 @@
 
 #include <vector>
 
-#include <Graphics2D/Image.hh>
-#include <Graphics2D/Coordinate.hh>
-#include <Graphics2D/Color.hh>
+#include "Image.hh"
+#include "Coordinate.hh"
+#include "Color.hh"
 
 namespace Graphics2D {
 

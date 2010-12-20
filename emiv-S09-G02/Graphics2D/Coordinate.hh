@@ -45,11 +45,13 @@ public:
 	Coordinate operator + (const Coordinate &c) const;
 	Coordinate operator - (const Coordinate &c) const;
 	Coordinate operator * (float x) const;
+	Coordinate operator / (float x) const;
 	// Coordinate operator * (int x) const;
 	
 	Coordinate &operator += (const Coordinate &c);
 	Coordinate &operator -= (const Coordinate &c);
 	Coordinate &operator *= (float x);
+	Coordinate &operator /= (float x);
 	// Coordinate &operator *= (int x);
 	
 	/* rotation */

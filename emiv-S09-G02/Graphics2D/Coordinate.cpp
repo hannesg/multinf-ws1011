@@ -24,6 +24,10 @@ Coordinate Coordinate::operator * (float c) const {
 	return Coordinate(x_*c, y_*c);
 }
 
+Coordinate Coordinate::operator / (float c) const {
+	return Coordinate(x_/c, y_/c);
+}
+
 /*Coordinate Coordinate::operator * (int c) const {
 	return Coordinate(x_*c, y_*c);
 } */
@@ -31,6 +35,10 @@ Coordinate Coordinate::operator * (float c) const {
 Coordinate operator * (float f, const Coordinate &c) {
 	return Coordinate(f*c.GetXAsFloat(), f*c.GetYAsFloat());
 }
+
+/* Coordinate operator / (const Coordinate &c, float f) {
+	return Coordinate(c.GetXAsFloat()/f, c.GetYAsFloat()/f);
+} */
 
 /* Coordinate operator * (int f, const Coordinate &c) {
 	return Coordinate(f*c.GetXAsFloat(), f*c.GetYAsFloat());
@@ -48,6 +56,11 @@ Coordinate &Coordinate::operator -= (const Coordinate &c) {
 
 Coordinate &Coordinate::operator *= (float x) {
 	*this = *this * x;
+	return *this;
+}
+
+Coordinate &Coordinate::operator /= (float x) {
+	*this = *this / x;
 	return *this;
 }
 

@@ -14,6 +14,8 @@ ADD_LIBRARY(Graphics2D
 	Histogram.hh
 	Filter.cpp
 	Filter.hh
+	Segmentation.cpp
+	Segmentation.hh
 	
 	# Primitives
 	PrimitivePoint.cpp
