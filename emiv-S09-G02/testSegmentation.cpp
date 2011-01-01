@@ -15,7 +15,9 @@ int Save(const Image &img, const string &filename) {
 	if(res) {
 		cerr << "Couldn't write image " << filename << "! " << endl;
 		return 1;
-	}
+	} 
+
+	cout << "Stored " << filename << "! " << endl;
 
 	return 0;
 }
@@ -67,8 +69,8 @@ int main(int argc, char *argv[]) {
 		Coordinate center;
 		s.GetCenterAndArea(i, center, area);
 		
-		cout << labels[i/80-1] << " is located at " 
-				<< center.GetX() << " " << center.GetY() << " with area " 
+		cout << labels[i/80-1] << " is located at (" 
+				<< center.GetX() << ", " << center.GetY() << ") with area " 
 				<< area << endl;
 	}
 	
