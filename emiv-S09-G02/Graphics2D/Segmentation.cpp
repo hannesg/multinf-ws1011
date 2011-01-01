@@ -10,16 +10,21 @@ namespace Graphics2D {
 
 Segmentation::Segmentation(const Image &inputImage) {
 	if(inputImage.GetColorModel() == ImageBase::cm_RGB) {
+		// Convert image to hsv
 		ColorConversion::ToHSV(inputImage, hsvImage_);
+		// init label image
 		labelImage_.Init(inputImage.GetWidth(), inputImage.GetHeight());
 		labelImage_.SetColorModel(ImageBase::cm_Grey);
 		labelImage_.FillZero();
 	} else if(inputImage.GetColorModel() == ImageBase::cm_HSV) {
+		// store input image
 		hsvImage_ = inputImage;
+		// init label image
 		labelImage_.Init(inputImage.GetWidth(), inputImage.GetHeight());
 		labelImage_.SetColorModel(ImageBase::cm_Grey);
 		labelImage_.FillZero();
 	} else if(inputImage.GetColorModel() == ImageBase::cm_Grey) {
+		// store input image as label image
 		labelImage_ = inputImage;
 	}
 	
