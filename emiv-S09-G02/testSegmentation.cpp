@@ -43,6 +43,7 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 	
+	// Aufgabe 1
 	Segmentation s(src);
 	
 	// Tannenbaum
@@ -60,7 +61,8 @@ int main(int argc, char *argv[]) {
 	s.GetLabelImage(result1);
 	
 	Save(result1, "tannenbaum_labeled.ppm");
-	
+
+	// Aufgabe 2	
 	string labels[] = { "Tannenbaum", "Mond", "Geschenk" };
 	
 	for(int i = 80; i <= 240; i+= 80) {
@@ -73,6 +75,21 @@ int main(int argc, char *argv[]) {
 				<< center.GetX() << ", " << center.GetY() << ") with area " 
 				<< area << endl;
 	}
+
+	// b und c
+	vector<int> freemanCode[3];
+	Coordinate firstPixel[3];
+	Color colors[] = { Color::yellow(), Color::red(), Color::black() };
+
+	for(int i = 80; i <= 240; i+= 80) {
+
+		s.GetFreemanCode(i, firstPixel[i/80-1], freemanCode[i/80-1]);
+
+		s.DrawContourFreeman(firstPixel[i/80-1], freemanCode[i/80-1], colors[i/80-1], 
+			src);
+	}
+
+	Save(src, "tannenbaum_contours.ppm");
 	
  	return 0;
 }

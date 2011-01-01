@@ -114,11 +114,16 @@ int Segmentation::GetFreemanCode(const int label, Coordinate &firstPoint, std::v
 		return 1;
 	}
 
-	cout << "First point: (" << firstPoint.GetX() << ", " << firstPoint.GetY() << ")" << endl;
+	// cout << "First point: (" << firstPoint.GetX() << ", " << firstPoint.GetY() << ")" << endl;
 	
 	
 	
 	return 0;
+}
+
+void Segmentation::DrawContourFreeman(const Coordinate firstPoint, const std::vector<int> &freemanCode, 
+          const Color color, Image &targetImage) {
+
 }
 
 }
