@@ -85,6 +85,12 @@ int main(int argc, char *argv[]) {
 
 		s.GetFreemanCode(i, firstPixel[i/80-1], freemanCode[i/80-1]);
 
+		// debugging
+		/* for(unsigned int j = 0; j < freemanCode[i/80-1].size(); j++) {
+			cout << freemanCode[i/80-1][j] << " ";
+		}
+		cout << endl; */
+
 		s.DrawContourFreeman(firstPixel[i/80-1], freemanCode[i/80-1], colors[i/80-1], 
 			src);
 	}

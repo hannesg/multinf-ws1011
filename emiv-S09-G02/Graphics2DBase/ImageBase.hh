@@ -15,6 +15,7 @@ Hannes Georg, 850360
 
 #include <string>
 #include <iostream>
+#include "Coordinate.hh"
 
 // our library will live in Graphics2D name space
 namespace Graphics2D {
@@ -146,6 +147,9 @@ namespace Graphics2D {
 	  // returns whether the specified point lies in the image
 	  inline bool isInImage(int x, int y) const { 
 		  return x >= 0 && y >= 0 && (unsigned)x < GetWidth() && (unsigned)y < GetHeight();
+	  }
+	  inline bool isInImage(Coordinate c) const {
+		  return isInImage(c.GetX(), c.GetY());
 	  }
 
     protected:

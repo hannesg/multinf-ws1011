@@ -1,5 +1,6 @@
  
- 
+#include <stdexcept> 
+#include <cassert>
 #include "ColorConversion.hh"
 #include "Filter.hh"
 #include "Segmentation.hh"
@@ -93,21 +94,65 @@ int Segmentation::GetCenterAndArea(const int label, Coordinate &center, int &are
 	}
 }
 
+// helper function for freeman code
+int add(int x, int c) {
+	return (x+8+c)%8;
+}
+
+// return the next point specified by the freeman code f
+Coordinate nextPoint(const Coordinate &c, int f) {
+	switch(f) {
+	case 0:
+		return Coordinate(c.GetX()+1, c.GetY()+0);
+	case 1:
+		return Coordinate(c.GetX()+1, c.GetY()-1);
+	case 2:
+		return Coordinate(c.GetX()+0, c.GetY()-1);
+	case 3:
+		return Coordinate(c.GetX()-1, c.GetY()-1);
+	case 4:
+		return Coordinate(c.GetX()-1, c.GetY()+0);
+	case 5:
+		return Coordinate(c.GetX()-1, c.GetY()+1);
+	case 6:
+		return Coordinate(c.GetX()+0, c.GetY()+1);
+	case 7:
+		return Coordinate(c.GetX()+1, c.GetY()+1);
+	default:
+		throw out_of_range("illegal freeman code! ");
+		return Coordinate(0, 0);
+	}
+}
+
+
+
 int Segmentation::GetFreemanCode(const int label, Coordinate &firstPoint, std::vector<int> &freemanCode) {
 	
 	bool firstPointFound = false;
+	bool secondPointFound = false;
 	
 	// Ersten Punkt finden
 	for(unsigned int y = 0; y < labelImage_.GetHeight(); y++) {
 		for(unsigned int x = 0; x < labelImage_.GetWidth(); x++) {
 			if(labelImage_.GetPixel(x, y, 0) == label) {
-				// Erster Punkt gefunden -> abspeichern
-				firstPoint.SetX((int)x);
-				firstPoint.SetY((int)y);
-				firstPointFound = true;
-				break;
+				if(!firstPointFound) {
+					// Erster Punkt gefunden -> abspeichern
+					firstPoint.SetX((int)x);
+					firstPoint.SetY((int)y);
+					firstPointFound = true;
+				} else if(!secondPointFound) {
+					secondPointFound = true;
+					break;
+				}
 			}
 		}
+	}
+
+	if(!secondPointFound) {
+		// nothing to do
+		freemanCode.clear();
+		return 0;
+		// throw out_of_range("No contour: Single pixel! ");
 	}
 
 	if(!firstPointFound) { 
@@ -116,13 +161,79 @@ int Segmentation::GetFreemanCode(const int label, Coordinate &firstPoint, std::v
 
 	// cout << "First point: (" << firstPoint.GetX() << ", " << firstPoint.GetY() << ")" << endl;
 	
-	
+	// pavlidis algorithm
+	freemanCode.clear();
+	Coordinate currentPoint = firstPoint;
+
+	// Initialization
+	int cb = 6;
+
+	do {
+
+		int ck = getFreemanCodeOfNextCoutourPoint(label, currentPoint, cb);
+
+		// no contour point found?
+		if(ck == -1) {
+			cb = add(cb, 2);
+		}
+		else if(ck == cb || ck == add(cb, 1)) {
+			// do not change direction
+		} else if(ck == add(cb, -1)) {
+			// change direction
+			cb = add(cb, -2);
+		}
+		else {
+			// should not happen
+			throw exception();
+		}
+		if(ck != -1) {
+			// store freeman code
+			freemanCode.push_back(ck);
+			currentPoint = nextPoint(currentPoint, ck);
+		}
+		
+	} while(currentPoint != firstPoint);
 	
 	return 0;
 }
 
+int Segmentation::getFreemanCodeOfNextCoutourPoint(const int label, const Coordinate &c, int cb) const {
+
+	// von rechts nach links durchgehen
+	for(int i = -1; i <= 1; i++) {
+		Coordinate cnew = nextPoint(c, add(cb, i));
+
+		// is point within image?
+		if(!labelImage_.isInImage(cnew)) {
+			continue;
+		}
+
+		// has point the label?
+		if(labelImage_.GetPixel(cnew.GetX(), cnew.GetY(), 0) == label) {
+			return add(cb, i);
+		}
+	}
+
+	// no point with label found
+	return -1;
+}
+
 void Segmentation::DrawContourFreeman(const Coordinate firstPoint, const std::vector<int> &freemanCode, 
           const Color color, Image &targetImage) {
+
+	Coordinate currentPoint = firstPoint;
+
+	for(unsigned int i = 0; i < freemanCode.size(); i++) {
+		// paint contour point
+		targetImage.SetPixel(currentPoint.GetX(), currentPoint.GetY(), 0, color.GetR());
+		targetImage.SetPixel(currentPoint.GetX(), currentPoint.GetY(), 1, color.GetG());
+		targetImage.SetPixel(currentPoint.GetX(), currentPoint.GetY(), 2, color.GetB());
+
+		// get next point
+		currentPoint = nextPoint(currentPoint, freemanCode[i]);
+	}
+
+	assert(currentPoint == firstPoint);
 
 }
 

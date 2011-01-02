@@ -106,6 +106,10 @@ namespace Graphics2D {
       Image labelImage_;
       
       // add more variables as you need them
+
+	  // finds the next coutour point (if present) and returns freeman code, 
+	  // or returns -1
+	  int getFreemanCodeOfNextCoutourPoint(const int label, const Coordinate &c, int cb) const;
   };
 
 }
