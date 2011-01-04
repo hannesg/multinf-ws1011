@@ -187,7 +187,7 @@ int Segmentation::GetFreemanCode(const int label, Coordinate &firstPoint, std::v
 			throw exception();
 		}
 		if(ck != -1) {
-			// store freeman code
+			// store freeman code and get next point
 			freemanCode.push_back(ck);
 			currentPoint = nextPoint(currentPoint, ck);
 		}
