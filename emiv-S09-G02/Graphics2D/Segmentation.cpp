@@ -45,7 +45,17 @@ void Segmentation::AddHueSegment(const int label, const int minHue, const int ma
 			unsigned char sat = hsvImage_.GetPixel(x, y, 1);
 			
 			// Pruefen, ob in bounds
-			if(minHue <= pixel && pixel <= maxHue && minSat <= sat) {
+			bool inBounds;
+			// no wrap around
+			if(minHue <= maxHue) {
+				inBounds = minHue <= pixel && pixel <= maxHue;
+			} else {
+				// wrap around
+				inBounds = minHue <= pixel || pixel <= maxHue;
+			}
+
+			// pruefe ob in bounds
+			if(inBounds && minSat <= sat) {
 				labelImage_.SetPixel(x, y, 0, label);
 				labelImage_.SetPixel(x, y, 1, label);
 				labelImage_.SetPixel(x, y, 2, label);
