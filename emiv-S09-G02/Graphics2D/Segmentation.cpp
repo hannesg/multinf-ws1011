@@ -221,6 +221,11 @@ int Segmentation::getFreemanCodeOfNextCoutourPoint(const int label, const Coordi
 void Segmentation::DrawContourFreeman(const Coordinate firstPoint, const std::vector<int> &freemanCode, 
           const Color color, Image &targetImage) {
 
+	// target image should be rgb
+	if(targetImage.GetColorModel() != ImageBase::cm_RGB) {
+		throw out_of_range("Color model wrong! ");
+	}
+
 	Coordinate currentPoint = firstPoint;
 
 	for(unsigned int i = 0; i < freemanCode.size(); i++) {

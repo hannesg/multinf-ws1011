@@ -29,8 +29,7 @@ int main(int argc, char *argv[]) {
 	
 	if(argc < 1) {
 		cout << "Usage: testSegmentation <input image>" << endl;
-		cout << "Creates files, that have as name the filename without extension of the " << endl;
-		cout << "input image, plus some different text. " << endl;
+		cout << "Creates files tannenbaum_labeled.ppm and tannenbaum_contours.ppm" << endl;
 		return 1;
 	}
 	
