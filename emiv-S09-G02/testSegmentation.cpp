@@ -29,7 +29,8 @@ int main(int argc, char *argv[]) {
 	
 	if(argc < 1) {
 		cout << "Usage: testSegmentation <input image>" << endl;
-		cout << "Creates files tannenbaum_labeled.ppm and tannenbaum_contours.ppm" << endl;
+		cout << "Creates files tannenbaum_labeled.ppm, tannenbaum_labeled_and_closed" << endl 
+			<< "and tannenbaum_contours.ppm" << endl;
 		return 1;
 	}
 	
@@ -42,7 +43,7 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 	
-	// Aufgabe 1
+	// Aufgabe 1 a
 	Segmentation s(src);
 	
 	// Tannenbaum
@@ -53,15 +54,21 @@ int main(int argc, char *argv[]) {
 	s.AddHueSegment(240, 210, 215);
 	s.AddHueSegment(240, 125, 130);
 	
-	s.ClosingOperation();
-	
 	Image result1;
-	
 	s.GetLabelImage(result1);
 	
 	Save(result1, "tannenbaum_labeled.ppm");
 
-	// Aufgabe 2	
+	// Aufgabe 1 b
+	Segmentation s2(result1);
+	s2.ClosingOperation();
+	
+	Image result2;
+	s2.GetLabelImage(result2);
+	Save(result2, "tannenbaum_labeled_and_closed.ppm");
+	
+
+	// Aufgabe 2
 	string labels[] = { "Tannenbaum", "Mond", "Geschenk" };
 	
 	for(int i = 80; i <= 240; i+= 80) {
