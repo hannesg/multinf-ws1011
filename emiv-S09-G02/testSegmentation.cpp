@@ -69,7 +69,7 @@ int main(int argc, char *argv[]) {
 	
 
 	// Aufgabe 2
-	string labels[] = { "Tannenbaum", "Mond", "Geschenk" };
+	string labels[] = { "Tree", "Moon", "Present" };
 	
 	for(int i = 80; i <= 240; i+= 80) {
 		
