@@ -97,6 +97,8 @@ namespace Graphics2D {
        * Add more functions as you need them.
        * Consider making functions private if you intent to use them only internally. 
        */
+       
+	  float GetCircumference(const vector<int> &freeman);
       
     private:
 

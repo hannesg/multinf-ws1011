@@ -252,4 +252,22 @@ void Segmentation::DrawContourFreeman(const Coordinate firstPoint, const std::ve
 
 }
 
+float Segmentation::GetCircumference(const vector<int> &freeman) {
+	
+	int numEven = 0;
+	int numOdd = 0;
+	
+	for(unsigned int i = 0; i < freeman.size(); i++) {
+		int f = freeman[i];
+		
+		if(f % 2 == 0) {
+			numEven++;
+		} else {
+			numOdd++;
+		}
+	}
+	
+	return numEven + sqrt(2)*numOdd;
+}
+
 }
