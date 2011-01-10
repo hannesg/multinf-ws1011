@@ -35,6 +35,7 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 	
+	// Load image
 	Image src;
 	int result = src.LoadPPM(argv[0]);
 	
@@ -43,6 +44,7 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 	
+	// convert image if needed
 	if(src.GetColorModel() != ImageBase::cm_Grey) {
 		Image tmp;
 		ColorConversion::ToGrey(src, tmp);
@@ -84,6 +86,7 @@ int main(int argc, char *argv[]) {
 	float treeMin = 40;
 	float treeMax = 70;
 	
+	// Klassifizierung
 	cout << "Object is a ";
 	if(rectMin <= roundness && roundness <= rectMax) {
 		cout << "rectangle";
