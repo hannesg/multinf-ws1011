@@ -10,7 +10,7 @@
 \author{Hannes Georg (850360), Matthias Böhm (895778) }
 \maketitle
 
-\section{Aufgabe 1 b)}
+\section*{Aufgabe 1 b)}
 
 Berechnung der theoretischen Rundheit für Kreis und Quadrat: 
 
@@ -29,6 +29,32 @@ $ \frac{(2\pi r)^2}{\pi r^2} = \frac { 4 \pi^2 r^2}{\pi r^2}
 = 4\pi \approx 12,566 $. 
 
 \end{itemize}
+
+Die gemessene Rundheit der (allgemeinen) Rechtecke und der Kreise weicht nach oben hin 
+von der theoretisch errechneten ab. Da der Flächeninhalt korrekt berechnet wird, kann das nur
+daran liegen, dass der gemessene Umfang tatsächlich einen größeren Wert hat als der eigentlich erwartete
+Umfang. 
+
+Der Grund dafür ist die Diskretisierung des Randes der Rechtecke bzw. Kreise. Die anhand des 
+Freeman-Codes errechnete Länge einer Kante eines Rechtecks entspricht nämlich nur 
+der tatsächlich erwarteten Länge, wenn sie vertikal, horizontal oder diagonal mit der Steigung 1 bzw. -1 verläuft. 
+Dann nämlich sind alle Pixel "in einer Reihe", und die Linie, die der Kante entspricht, geht durch alle
+Pixelmittelpunkte. 
+
+Entspricht die Steigung der Kante eines Rechtecks nicht den obigen Steigungen, so wird die eigentliche Kante
+durch Pixel angenähert, deren Pixelmittelpunkte nicht auf der eigentlichen Kante liegen. Da bei der Verwendung des 
+Freeman-Codes für die Ermittlung der Länge einer Kante immer von Pixelmittelpunkt zu Pixelmittelpunkt 
+gegangen wird, ist also die so ermittelte Länge größer als die tatsächliche. Auch beim Kreis ist deshalb 
+die durch den Freeman-Code gemessene Länge größer als die tatsächliche Länge, da die Mittelpunkte der 
+Randpixel nicht auf der idealen Kreislinie liegen. 
+
+Lediglich bei einem Quadrat, dessen Kanten achsenparallel verlaufen, ist die gemessene Länge \em{kürzer} 
+als die erwartete Länge. Dies liegt daran, dass der Freeman-Code die Länge von Pixelmittelpunkt zu
+Pixelmittelpunkt misst. Die tatsächlich durch den Freeman-Code gemessene Länge einer Kante ist also immer um ein Pixel zu klein, 
+da links und rechts bzw. oben und unten jeweils ein halbes Pixel fehlt. Hat das Quadrat beispielsweise die Kantenlänge
+3, so ermittelt die Prozedur, die den Freeman-Code zur Längenmessung verwendet, nur eine Länge von 2. 
+
+
 
 
 \end{document}
