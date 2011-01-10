@@ -1,4 +1,10 @@
- 
+/*
+Gruppe: 02
+Serie 10
+Matthias Boehm, 895778
+Hannes Georg, 850360
+*/
+
 #include <stdexcept> 
 #include <cassert>
 #include "ColorConversion.hh"
