@@ -50,6 +50,7 @@ int main(int argc, char *argv[]) {
 		src = tmp;
 	}
 	
+	// calculation of all values
 	Segmentation s(src);
 	
 	int area;
@@ -72,6 +73,29 @@ int main(int argc, char *argv[]) {
 			<< " with area " << area << endl;
 	cout << "Object has roundness of " << roundness << endl;
 	cout << "Object has circumference of " << circumference << endl;
+	
+	// Klassifizierungsgrenzwerte
+	float rectMin = 15.5;
+	float rectMax = 19.0;
+	
+	float circleMin = 13.5;
+	float circleMax = 14.3;
+	
+	float treeMin = 40;
+	float treeMax = 70;
+	
+	cout << "Object is a ";
+	if(rectMin <= roundness && roundness <= rectMax) {
+		cout << "rectangle";
+	} else if(circleMin <= roundness && roundness <= circleMax) {
+		cout << "circle"; 
+	} else if(treeMin <= roundness && roundness <= treeMax) {
+		cout << "tree";
+	} else {
+		cout << "unknown";
+	}
+	cout << endl;
+		
 	
 	
 	return 0;
