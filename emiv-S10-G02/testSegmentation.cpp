@@ -71,6 +71,10 @@ int main(int argc, char *argv[]) {
 	// Aufgabe 2
 	string labels[] = { "Tree", "Moon", "Present" };
 	
+	vector<int> freemanCode[3];
+	Coordinate firstPixel[3];
+	Color colors[] = { Color::yellow(), Color::red(), Color::black() };
+	
 	for(int i = 80; i <= 240; i+= 80) {
 		
 		int area;
@@ -80,15 +84,8 @@ int main(int argc, char *argv[]) {
 		cout << labels[i/80-1] << " is located at (" 
 				<< center.GetX() << ", " << center.GetY() << ") with area " 
 				<< area << endl;
-	}
-
-	// b und c
-	vector<int> freemanCode[3];
-	Coordinate firstPixel[3];
-	Color colors[] = { Color::yellow(), Color::red(), Color::black() };
-
-	for(int i = 80; i <= 240; i+= 80) {
-
+		
+		// b und c
 		s.GetFreemanCode(i, firstPixel[i/80-1], freemanCode[i/80-1]);
 
 		// debugging
@@ -99,9 +96,38 @@ int main(int argc, char *argv[]) {
 
 		s.DrawContourFreeman(firstPixel[i/80-1], freemanCode[i/80-1], colors[i/80-1], 
 			src);
+		
+		// Aufgabe 9.1
+		float circumference = s.GetCircumference(freemanCode[i/80-1]);
+		float roundness = pow(circumference, 2)/area;
+		
+		float rectMin = 15.5;
+		float rectMax = 19.0;
+	
+		float circleMin = 13.5;
+		float circleMax = 14.3;
+	
+		float treeMin = 40;
+		float treeMax = 70;
+	
+		cout << "Object is a ";
+		if(rectMin <= roundness && roundness <= rectMax) {
+			cout << "rectangle";
+		} else if(circleMin <= roundness && roundness <= circleMax) {
+			cout << "circle"; 
+		} else if(treeMin <= roundness && roundness <= treeMax) {
+			cout << "tree";
+		} else {
+			cout << "unknown";
+		}
+		cout << endl;
+		cout << "Features: Circumference " << circumference << 
+				" Roundness: " << roundness << endl;
 	}
 
 	Save(src, "tannenbaum_contours.ppm");
+	
+	
 	
  	return 0;
 }
