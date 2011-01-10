@@ -38,7 +38,7 @@ Umfang.
 Der Grund dafür ist die Diskretisierung des Randes der Rechtecke bzw. Kreise. Die anhand des 
 Freeman-Codes errechnete Länge einer Kante eines Rechtecks entspricht nämlich nur 
 der tatsächlich erwarteten Länge, wenn sie vertikal, horizontal oder diagonal mit der Steigung 1 bzw. -1 verläuft. 
-Dann nämlich sind alle Pixel "in einer Reihe", und die Linie, die der Kante entspricht, geht durch alle
+Dann nämlich sind alle Pixel ,,in einer Reihe``, und die Linie, die der Kante entspricht, geht durch alle
 Pixelmittelpunkte. 
 
 Entspricht die Steigung der Kante eines Rechtecks nicht den obigen Steigungen, so wird die eigentliche Kante
@@ -46,12 +46,12 @@ durch Pixel angenähert, deren Pixelmittelpunkte nicht auf der eigentlichen Kante
 Freeman-Codes für die Ermittlung der Länge einer Kante immer von Pixelmittelpunkt zu Pixelmittelpunkt 
 gegangen wird, ist also die so ermittelte Länge größer als die tatsächliche, denn die kürzeste Verbindung 
 zwischen zwei Ecken einer Kante eines Rechtecks ist ja gerade die gerade Linie zwischen ihnen. Liegen
-Pixelmittelpunkte nicht auf dieser Geraden, so müssen "Umwege" gegangen werden, die die gemessene 
+Pixelmittelpunkte nicht auf dieser Geraden, so müssen ,,Umwege`` gegangen werden, die die gemessene 
 Länge der Kante vergrößern. 
 Auch beim Kreis ist deshalb die durch den Freeman-Code gemessene Länge größer als die tatsächliche Länge, da die Mittelpunkte der 
 Randpixel nicht auf der idealen Kreislinie liegen. 
 
-Lediglich bei einem Quadrat, dessen Kanten achsenparallel verlaufen, ist die gemessene Länge \em{kürzer} 
+Lediglich bei einem Quadrat, dessen Kanten achsenparallel verlaufen, ist die gemessene Länge \emph{kürzer} 
 als die erwartete Länge. Dies liegt daran, dass der Freeman-Code die Länge von Pixelmittelpunkt zu
 Pixelmittelpunkt misst. Die tatsächlich durch den Freeman-Code gemessene Länge einer Kante ist also immer um ein Pixel zu klein, 
 da links und rechts bzw. oben und unten jeweils ein halbes Pixel fehlt. Hat das Quadrat beispielsweise die Kantenlänge
