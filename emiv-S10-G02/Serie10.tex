@@ -8,7 +8,7 @@
 
 \title{Serie 10}
 \author{Hannes Georg (850360), Matthias Böhm (895778) }
-\maketitle
+%\maketitle
 
 \section*{Aufgabe 1 b)}
 
@@ -41,7 +41,7 @@ der tatsächlich erwarteten Länge, wenn sie vertikal, horizontal oder diagonal mi
 Dann nämlich sind alle Pixel ,,in einer Reihe``, und die Linie, die der Kante entspricht, geht durch alle
 Pixelmittelpunkte. 
 
-Entspricht die Steigung der Kante eines Rechtecks nicht den obigen Steigungen, so wird die eigentliche Kante
+Entspricht die Richtung der Kante eines Rechtecks nicht den oben genannten Richtungen, so wird die eigentliche Kante
 durch Pixel angenähert, deren Pixelmittelpunkte nicht auf der eigentlichen Kante liegen. Da bei der Verwendung des 
 Freeman-Codes für die Ermittlung der Länge einer Kante immer von Pixelmittelpunkt zu Pixelmittelpunkt 
 gegangen wird, ist also die so ermittelte Länge größer als die tatsächliche, denn die kürzeste Verbindung 
@@ -57,7 +57,58 @@ Pixelmittelpunkt misst. Die tatsächlich durch den Freeman-Code gemessene Länge e
 da links und rechts bzw. oben und unten jeweils ein halbes Pixel fehlt. Hat das Quadrat beispielsweise die Kantenlänge
 3, so ermittelt die Prozedur, die den Freeman-Code zur Längenmessung verwendet, nur eine Länge von 2. 
 
+\newpage
 
+\section*{Aufgabe 2 b)}
 
+Ich lege fest, dass die Klasse ,,Positive`` den runden Objekten, und die Klasse ,,Negative`` den eckigen Objekten 
+entsprechen soll. 
+
+Dann ergeben sich folgende Werte (die man aus den Histogrammen auslesen kann):
+
+\subsection*{\underline{$\tau = 14$}}
+
+\[ t_p = 5, f_n = 10, t_n = 20, f_p = 0 \]
+
+Daraus ergeben sich die TPR und die FPR:
+
+\[ TPR = \frac{t_p}{t_p + f_n} = \frac{5}{15} = \frac{1}{3} \approx 0.333 = 33.3 \% \]
+
+\[ FPR = \frac{f_p}{t_n + f_p} = \frac{0}{20} = 0 = 0 \% \]
+
+\subsection*{\underline{$\tau = 17$}}
+
+Hier ergeben sich folgende Werte:
+
+\[ t_p = 15, f_n = 0, t_n = 4, f_p = 16 \]
+
+Daraus ergeben sich folgende TPR und FPR:
+
+\[ TPR = \frac{t_p}{t_p + f_n} = \frac{15}{15} = 1 = 100 \% \]
+
+\[ FPR = \frac{f_p}{t_n + f_p} = \frac{16}{20} = \frac{4}{5} = 0.8 = 80 \% \]
+
+\section*{Aufgabe 2 c)}
+
+Es muss gelten: $f_p = f_n$. 
+
+Diese Gleichheit ergibt sich gerade zum Beispiel bei $\tau = 14.95$. Hier gilt gerade, 
+wie man aus der Liste der Rundheitswerte ablesen kann, dass:
+$f_p = f_n = 3$. 
+
+Außerdem gilt für dieses $\tau$:
+$t_p = 12, t_n = 17$. 
+
+Damit ergeben sich folgende TPR und FPR:
+
+\[ TPR = \frac{t_p}{t_p + f_n} = \frac{12}{15} = \frac{4}{5} = 0.8 = 80 \% \]
+
+\[ FPR = \frac{f_p}{t_n + f_p} = \frac{3}{20} = 0.15 = 15 \% \]
+
+Die Klassifikationsrate für dieses $\tau$ beträgt 
+$\frac{t_p+t_n}{t_p+t_n+f_p+f_n} = \frac{29}{35} \approx 0.829 = 82.9 \% $. 
+Die Fehlklassifikationsrate beträgt $\frac{f_p+f_n}{t_p+t_n+f_p+f_n} = \frac{6}{35} \approx 0.171 = 17.1 \% $. 
+
+Die Skizze der ROC-Kurve befindet sich auf der folgenden Seite. 
 
 \end{document}
