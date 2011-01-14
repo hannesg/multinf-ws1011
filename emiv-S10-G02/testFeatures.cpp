@@ -12,6 +12,8 @@ Hannes Georg, 850360
 #include <Image.hh>
 #include <ColorConversion.hh>
 
+#include "RoundnessLimits.hh"
+
 using namespace std;
 using namespace Graphics2D;
 
@@ -78,19 +80,9 @@ int main(int argc, char *argv[]) {
 	// Ausgabe
 	
 	cout << "Object has its center at " << center.GetX() << ", " << center.GetY() 
-			<< " with area " << area << endl;
+			<< " with area " << area <<  " pixel" << endl;
 	cout << "Object has roundness of " << roundness << endl;
 	cout << "Object has circumference of " << circumference << endl;
-	
-	// Klassifizierungsgrenzwerte
-	float rectMin = 15.5;
-	float rectMax = 19.0;
-	
-	float circleMin = 13.5;
-	float circleMax = 14.3;
-	
-	float treeMin = 40;
-	float treeMax = 70;
 	
 	// Klassifizierung
 	cout << "Object is a ";

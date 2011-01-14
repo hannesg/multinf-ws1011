@@ -10,6 +10,8 @@ Hannes Georg, 850360
 #include <Segmentation.hh>
 #include <Image.hh>
 
+#include "RoundnessLimits.hh"
+
 using namespace std;
 using namespace Graphics2D;
 
@@ -107,15 +109,6 @@ int main(int argc, char *argv[]) {
 		float circumference = s.GetCircumference(freemanCode[i/80-1]);
 		float roundness = pow(circumference, 2)/area;
 		
-		float rectMin = 15.5;
-		float rectMax = 19.0;
-	
-		float circleMin = 13.5;
-		float circleMax = 14.3;
-	
-		float treeMin = 40;
-		float treeMax = 70;
-	
 		cout << "Object is a ";
 		if(rectMin <= roundness && roundness <= rectMax) {
 			cout << "rectangle";
