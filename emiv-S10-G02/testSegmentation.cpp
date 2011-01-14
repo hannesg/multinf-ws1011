@@ -89,7 +89,7 @@ int main(int argc, char *argv[]) {
 		Coordinate center;
 		s.GetCenterAndArea(i, center, area);
 		
-		cout << labels[i/80-1] << " is located at (" 
+		cout << endl << labels[i/80-1] << " is located at (" 
 				<< center.GetX() << ", " << center.GetY() << ") with area " 
 				<< area << endl;
 		
@@ -121,8 +121,10 @@ int main(int argc, char *argv[]) {
 		}
 		cout << endl;
 		cout << "Features: Circumference " << circumference << 
-				" Roundness: " << roundness << endl;
+				". Roundness: " << roundness << endl;
 	}
+
+	cout << endl;
 
 	Save(src, "tannenbaum_contours.ppm");
 	
