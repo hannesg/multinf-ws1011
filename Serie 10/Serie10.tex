@@ -31,7 +31,10 @@ $ \frac{(2\pi r)^2}{\pi r^2} = \frac { 4 \pi^2 r^2}{\pi r^2}
 
 \end{itemize}
 
-Die gemessene Rundheit der (allgemeinen) Rechtecke und der Kreise weicht nach oben hin 
+Die vom Programm errechneten Rundheitswerte sind im Allgemeinen größer als die theoretischen Rundheitswerte. 
+Nur der Rundheitswert des Quadrats liegt unter dem theoretischen Rundheitswert. 
+
+Die gemessene Rundheit der (allgemeinen) Rechtecke und der Kreise weicht also nach oben hin 
 von der theoretisch errechneten ab. Da der Flächeninhalt korrekt berechnet wird, kann das nur
 daran liegen, dass der gemessene Umfang tatsächlich einen größeren Wert hat als der eigentlich erwartete
 Umfang. 
@@ -60,20 +63,21 @@ da links und rechts bzw. oben und unten jeweils ein halbes Pixel fehlt. Hat das 
 
 \newpage
 
-\section*{Aufgabe 2 a)}
+\section*{Aufgabe 2}
+\subsection*{a)}
 
 \includegraphics{Histogramme.jpg}
 
 \newpage
 
-\section*{Aufgabe 2 b)}
+\subsection*{b)}
 
 Ich lege fest, dass die Klasse ,,Positive`` den runden Objekten, und die Klasse ,,Negative`` den eckigen Objekten 
 entsprechen soll. 
 
 Dann ergeben sich folgende Werte (die man aus den Histogrammen auslesen kann):
 
-\subsection*{\underline{$\tau = 14$}}
+\subsubsection*{\underline{$\tau = 14$}}
 
 \[ t_p = 5, f_n = 10, t_n = 20, f_p = 0 \]
 
@@ -83,7 +87,7 @@ Daraus ergeben sich die TPR und die FPR:
 
 \[ FPR = \frac{f_p}{t_n + f_p} = \frac{0}{20} = 0 = 0 \% \]
 
-\subsection*{\underline{$\tau = 17$}}
+\subsubsection*{\underline{$\tau = 17$}}
 
 Hier ergeben sich folgende Werte:
 
@@ -95,7 +99,7 @@ Daraus ergeben sich folgende TPR und FPR:
 
 \[ FPR = \frac{f_p}{t_n + f_p} = \frac{16}{20} = \frac{4}{5} = 0.8 = 80 \% \]
 
-\section*{Aufgabe 2 c)}
+\subsection*{c)}
 
 Es muss gelten: $f_p = f_n$. 
 
