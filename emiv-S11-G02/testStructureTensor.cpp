@@ -92,9 +92,19 @@ int main(int argc, char *argv[]) {
 
 	cout << "Fertig Harris! " << endl;
 
-	// save picture
+	// get appendix to filename
 	char thresString[30];
 	sprintf(thresString, "_%.3f_%.3f", thres1, thres2);
+
+	// save greyscale harris corner image
+	Image greyHC;
+	FloatImage hc = st.GetHarrisCornerImage();
+
+	hc.GetAsGreyImage(greyHC);
+
+	Save(greyHC, string(argv[0]) + string(thresString) + string("_hc.ppm"));
+
+	// save rgb picture
 	Save(marked, string(argv[0]) + string(thresString) + string("_marked.ppm"));
 
 	

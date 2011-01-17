@@ -41,6 +41,9 @@ namespace Graphics2D {
        * @param corners image on which result is drawn. blue pixels indicate Harris Corners 
        */
       void HarrisCornerDetector(float thres, Image &corners);
+
+	  // return harris corner image
+	  FloatImage GetHarrisCornerImage() { return harrisCornerImage; }
       
     private:
 
@@ -56,6 +59,9 @@ namespace Graphics2D {
       
       // the result
       FloatImage Jxx_, Jxy_, Jyy_;
+
+	  // harris corner image
+	  FloatImage harrisCornerImage;
   };
 
 }

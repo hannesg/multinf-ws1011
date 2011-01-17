@@ -23,7 +23,7 @@ StructureTensor::StructureTensor(int filterSize) {
 	filterGy_ = Filter::CreateGradY();
 	filterBinomial_ = Filter::CreateBinomial(filterSize);
 
-	halfWinSize_ = (filterSize-1)/2;
+	halfwinSize_ = (filterSize-1)/2;
 }
 
 StructureTensor::~StructureTensor() {
@@ -110,7 +110,33 @@ void StructureTensor::FoerstnerDetector(float thres, Image &corners) {
 }
 
 void StructureTensor::HarrisCornerDetector(float thres, Image &corners) {
+	unsigned int width = Jxx_.GetWidth();
+	unsigned int height = Jxx_.GetHeight();
 
+	harrisCornerImage.Init(width, height);
+
+	for(unsigned int y = 0; y < height; y++) {
+		for(unsigned int x = 0; x < width; x++) {
+
+			// Werte lesen
+			float jxx = Jxx_.GetPixel(x, y);
+			float jyy = Jyy_.GetPixel(x, y);
+			float jxy = Jxy_.GetPixel(x, y);
+
+			// Spur und Determinante berechnen
+			float trace = jxx+jyy;
+			float det = jxx*jyy-jxy*jxy;
+
+			// festlegung
+			float k = 0.04;
+
+			// implizite Funktion berechnen
+			float ch = det - k*trace*trace;
+
+			harrisCornerImage.SetPixel(x, y, ch);
+
+		}
+	}
 }
 
 }
