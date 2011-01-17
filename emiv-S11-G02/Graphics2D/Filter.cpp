@@ -620,7 +620,7 @@ void Filter::FilterImage(const Image& src, FloatImage &dst) {
 			curdata = srcdata + idx + windowOffset;
 			for (unsigned int yw=0;yw<height_;yw++) {
 				for (unsigned int xw=0;xw<width_;xw++) {
-					val += (*curdata * mask_[xw][yw])/ 255.0f;
+					val += (*curdata * mask_[yw][xw])/ 255.0f;
 					curdata+=3;
 				}
 				curdata+=nextLineOffset;
@@ -663,7 +663,7 @@ void Filter::FilterImage(const FloatImage& src, FloatImage &dst) {
 			curdata = srcdata + idx + windowOffset;
 			for (unsigned int yw=0;yw<height_;yw++) {
 				for (unsigned int xw=0;xw<width_;xw++) {
-					val += *curdata * (float)(mask_[xw][yw]);
+					val += *curdata * (float)(mask_[yw][xw]);
 					curdata++;
 				}
 				curdata+=nextLineOffset;

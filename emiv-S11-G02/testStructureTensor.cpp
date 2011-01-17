@@ -53,16 +53,23 @@ int main(int argc, char *argv[]) {
 	}
 	
 	// convert image if needed
+	Image greySrc = src;
 	if(src.GetColorModel() != ImageBase::cm_Grey) {
-		Image tmp;
-		ColorConversion::ToGrey(src, tmp);
-		
-		src = tmp;
-	}
+		ColorConversion::ToGrey(src, greySrc);
+	} 
 	
+	// Initialization of structure tensor
 	StructureTensor st;
 	
-	st.SetFromImage(src);
+	st.SetFromImage(greySrc);
+	
+	Image marked = src;
+
+	st.FoerstnerDetector(0.0, marked);
+
+	Save(marked, "Foerstner.ppm");
+
+	cout << "Fertig! " << endl;
 	
 	return 0;
 }

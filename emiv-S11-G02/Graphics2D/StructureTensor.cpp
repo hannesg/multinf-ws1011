@@ -23,21 +23,24 @@ StructureTensor::~StructureTensor() {
 
 void StructureTensor::SetFromImage(const Image &input) {
 	
+	unsigned int width = input.GetWidth();
+	unsigned int height = input.GetHeight();
+
 	// Bestimme Gradienten
-	gx_.Init(input.GetWidth(), input.GetHeight());
-	gy_.Init(input.GetWidth(), input.GetHeight());
+	gx_.Init(width, height);
+	gy_.Init(width, height);
 	
 	filterGx_->FilterImage(input, gx_);
 	filterGy_->FilterImage(input, gy_);
 	
 	// Bestime Produkt
 	
-	gxx_.Init(input.GetWidth(), input.GetHeight());
-	gxy_.Init(input.GetWidth(), input.GetHeight());
-	gyy_.Init(input.GetWidth(), input.GetHeight());
-	
-	for(unsigned int y = 0; y < input.GetHeight(); y++) {
-		for(unsigned int x = 0; x < input.GetWidth(); x++) {
+	gxx_.Init(width, height);
+	gxy_.Init(width, height);
+	gyy_.Init(width, height);
+
+	for(unsigned int y = 0; y < height; y++) {
+		for(unsigned int x = 0; x < width; x++) {
 			gxx_.SetPixel(x, y, gx_.GetPixel(x, y)*gx_.GetPixel(x, y));
 			gxy_.SetPixel(x, y, gx_.GetPixel(x, y)*gy_.GetPixel(x, y));
 			gyy_.SetPixel(x, y, gy_.GetPixel(x, y)*gy_.GetPixel(x, y));
@@ -45,10 +48,9 @@ void StructureTensor::SetFromImage(const Image &input) {
 	}
 	
 	// Bestimme mit Binomialfilter
-	
-	Jxx_.Init(input.GetWidth(), input.GetHeight());
-	Jxy_.Init(input.GetWidth(), input.GetHeight());
-	Jyy_.Init(input.GetWidth(), input.GetHeight());
+	Jxx_.Init(width, height);
+	Jxy_.Init(width, height);
+	Jyy_.Init(width, height);
 	
 	filterBinomial_->FilterImage(gxx_, Jxx_);
 	filterBinomial_->FilterImage(gxy_, Jxy_);
@@ -56,9 +58,47 @@ void StructureTensor::SetFromImage(const Image &input) {
 }
 
 void StructureTensor::FoerstnerDetector(float thres, Image &corners) {
+
+	unsigned int width = Jxx_.GetWidth();
+	unsigned int height = Jxx_.GetHeight();
+
+	for(unsigned int y = 0; y < height; y++) {
+		for(unsigned int x = 0; x < width; x++) {
+
+			// Werte lesen
+			float jxx = Jxx_.GetPixel(x, y);
+			float jyy = Jyy_.GetPixel(x, y);
+			float jxy = Jxy_.GetPixel(x, y);
+
+			// Spur und Determinante berechnen
+			float trace = jxx+jyy;
+			float det = jxx*jyy-jxy*jxy;
+
+			// Schwelle beachten
+			if(trace > thres) {
+				// q berechnen
+				float q = 4*det/(trace*trace);
+
+				// Kante?
+				if(q <= 0.5) {
+					corners.SetPixel(x, y, 0, Color::green().GetR());
+					corners.SetPixel(x, y, 1, Color::green().GetG());
+					corners.SetPixel(x, y, 2, Color::green().GetB());
+				} // Punkt
+				else {
+					corners.SetPixel(x, y, 0, Color::red().GetR());
+					corners.SetPixel(x, y, 1, Color::red().GetG());
+					corners.SetPixel(x, y, 2, Color::red().GetB());
+				}
+			}
+
+		}
+	}
+
 }
 
 void StructureTensor::HarrisCornerDetector(float thres, Image &corners) {
 }
 
 }
+
