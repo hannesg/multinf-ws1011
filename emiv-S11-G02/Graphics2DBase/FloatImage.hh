@@ -1,6 +1,8 @@
 #ifndef FLOATIMAGE_HH_
 #define FLOATIMAGE_HH_
 #include <Graphics2DBase/ImageBase.hh>
+#include <stdexcept>
+using namespace std;
 
 namespace Graphics2D {
 
@@ -32,10 +34,16 @@ namespace Graphics2D {
       virtual void FillZero();
       
       virtual inline float GetPixel(const int &x, const int &y) const {
+		  if(x < 0 || x >= (signed)GetWidth() || y < 0 || y >= (signed)GetHeight()) {
+			  throw out_of_range("getpixel");
+		  }
         return data_[y*width_+x];
       }
       
       virtual inline void SetPixel(const int &x, const int &y, const float &value) {
+		  if(x < 0 || x >= (signed)GetWidth() || y < 0 || y >= (signed)GetHeight()) {
+			  throw out_of_range("setpixel");
+		  }
         data_[y*width_+x] = value;
       }
       
