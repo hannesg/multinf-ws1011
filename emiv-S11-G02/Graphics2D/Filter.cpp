@@ -564,7 +564,7 @@ void Filter::FilterGradMag(const Image &src, Image &dst) {
 				float value = sqrt(gradx*gradx + grady*grady);
 
 				// Normieren
-				value /= sqrt(2);
+				value /= sqrt(2)/2;
 
 				int iValue = (int)rint(value);
 

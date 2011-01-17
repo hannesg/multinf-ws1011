@@ -12,6 +12,7 @@ Hannes Georg, 850360
 #include <Segmentation.hh>
 #include <Image.hh>
 #include <ColorConversion.hh>
+#include <StructureTensor.hh>
 
 using namespace std;
 using namespace Graphics2D;
