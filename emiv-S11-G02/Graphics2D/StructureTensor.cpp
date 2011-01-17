@@ -5,15 +5,25 @@ Matthias Boehm, 895778
 Hannes Georg, 850360
 */
  
+#include <stdexcept>
 #include "StructureTensor.hh"
- 
+
+using namespace std;
+
 namespace Graphics2D {
 
 StructureTensor::StructureTensor(int filterSize) {
+
+	if(filterSize % 2 != 1) {
+		throw out_of_range("filtersize");
+	}
+
 	// initialize filters
 	filterGx_ = Filter::CreateGradX();
 	filterGy_ = Filter::CreateGradY();
 	filterBinomial_ = Filter::CreateBinomial(filterSize);
+
+	halfWinSize_ = (filterSize-1)/2;
 }
 
 StructureTensor::~StructureTensor() {
