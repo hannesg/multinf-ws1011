@@ -44,11 +44,12 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 
-	float thres = 0.05;
+	// set default (best) threshold
+	float thres = 0.02;
 	if(argc > 1) {
 		thres = atof(argv[1]);
 	}
-	cout << "Threashold: " << thres << endl;
+	cout << "Threshold: " << thres << endl;
 	
 	// Load image
 	Image src;
@@ -74,7 +75,9 @@ int main(int argc, char *argv[]) {
 
 	st.FoerstnerDetector(thres, marked);
 
-	Save(marked, string(argv[0]) + string("_foerstner.ppm"));
+	char thresString[10];
+	sprintf(thresString, "%.3f", thres);
+	Save(marked, string(argv[0]) + string("_") + string(thresString) + string("_foerstner.ppm"));
 
 	cout << "Fertig! " << endl;
 	
