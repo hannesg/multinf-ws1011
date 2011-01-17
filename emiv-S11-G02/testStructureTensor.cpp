@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
 	argv++;
 	
 	if(argc < 1) {
-		cout << "Usage: testStructureTensor <input image> [optional: threashold]" << endl;
+		cout << "Usage: testStructureTensor <input image> [optional: threashold (uses best when not specified)]" << endl;
 		
 		return 1;
 	}
@@ -66,15 +66,17 @@ int main(int argc, char *argv[]) {
 		ColorConversion::ToGrey(src, greySrc);
 	} 
 	
-	// Initialization of structure tensor
+	// Initialization of structure tensor J for each pixel of src
 	StructureTensor st;
 	
 	st.SetFromImage(greySrc);
 	
+	// detect points and borders
 	Image marked = src;
 
 	st.FoerstnerDetector(thres, marked);
 
+	// save picture
 	char thresString[10];
 	sprintf(thresString, "%.3f", thres);
 	Save(marked, string(argv[0]) + string("_") + string(thresString) + string("_foerstner.ppm"));

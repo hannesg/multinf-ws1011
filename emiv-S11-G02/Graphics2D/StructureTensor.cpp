@@ -10,12 +10,14 @@ Hannes Georg, 850360
 namespace Graphics2D {
 
 StructureTensor::StructureTensor(int filterSize) {
+	// initialize filters
 	filterGx_ = Filter::CreateGradX();
 	filterGy_ = Filter::CreateGradY();
 	filterBinomial_ = Filter::CreateBinomial(filterSize);
 }
 
 StructureTensor::~StructureTensor() {
+	// delete filters
 	delete filterGx_;
 	delete filterGy_;
 	delete filterBinomial_;
