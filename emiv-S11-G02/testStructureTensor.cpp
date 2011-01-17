@@ -9,6 +9,7 @@ Hannes Georg, 850360
 #include <iostream>
 #include <string>
 #include <cmath>
+#include <cstdlib>
 #include <Segmentation.hh>
 #include <Image.hh>
 #include <ColorConversion.hh>
@@ -38,10 +39,16 @@ int main(int argc, char *argv[]) {
 	argv++;
 	
 	if(argc < 1) {
-		cout << "Usage: testStructureTensor <input image>" << endl;
+		cout << "Usage: testStructureTensor <input image> [optional: threashold]" << endl;
 		
 		return 1;
 	}
+
+	float thres = 0.05;
+	if(argc > 1) {
+		thres = atof(argv[1]);
+	}
+	cout << "Threashold: " << thres << endl;
 	
 	// Load image
 	Image src;
@@ -65,9 +72,9 @@ int main(int argc, char *argv[]) {
 	
 	Image marked = src;
 
-	st.FoerstnerDetector(0.0, marked);
+	st.FoerstnerDetector(thres, marked);
 
-	Save(marked, "Foerstner.ppm");
+	Save(marked, string(argv[0]) + string("_foerstner.ppm"));
 
 	cout << "Fertig! " << endl;
 	
