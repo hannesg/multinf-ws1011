@@ -45,6 +45,7 @@ add_executable(testFilter testFilter.cpp)
 add_executable(testFilter2 testFilter2.cpp)
 add_executable(testSegmentation testSegmentation.cpp)
 add_executable(testFeatures testFeatures.cpp)
+add_executable(testStructureTensor testStructureTensor.cpp)
 
 target_link_libraries(testGraphics2D Graphics2DBase Graphics2D)
 target_link_libraries(testPrimitives Graphics2DBase Graphics2D)
@@ -56,5 +57,6 @@ target_link_libraries(testFilter Graphics2DBase Graphics2D)
 target_link_libraries(testFilter2 Graphics2DBase Graphics2D)
 target_link_libraries(testSegmentation Graphics2DBase Graphics2D)
 target_link_libraries(testFeatures Graphics2DBase Graphics2D)
+target_link_libraries(testStructureTensor Graphics2DBase Graphics2D)
 
 

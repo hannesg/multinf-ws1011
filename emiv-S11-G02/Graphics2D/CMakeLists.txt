@@ -16,6 +16,8 @@ ADD_LIBRARY(Graphics2D
 	Filter.hh
 	Segmentation.cpp
 	Segmentation.hh
+	StructureTensor.cpp
+	StructureTensor.hh
 	
 	# Primitives
 	PrimitivePoint.cpp
