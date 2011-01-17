@@ -100,6 +100,7 @@ void StructureTensor::FoerstnerDetector(float thres, Image &corners) {
 }
 
 void StructureTensor::HarrisCornerDetector(float thres, Image &corners) {
+
 }
 
 }
