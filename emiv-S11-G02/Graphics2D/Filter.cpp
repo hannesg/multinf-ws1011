@@ -90,6 +90,10 @@ Filter::Filter(const vector<vector <int> > &mask, int scale = 1) {
 	offset_ = -min;
 
 	// printFilter();
+	
+	// Aus anderer Implementierung
+	hmw_ = (width_-1) / 2;
+	hmh_ = (height_-1) / 2;
 }
 
 Filter *Filter::CreateMean(int width, int height) {
@@ -589,6 +593,90 @@ void Filter::FilterGradMag(const Image &src, Image &dst) {
 	}
 }
 
+void Filter::FilterImage(const Image& src, FloatImage &dst) {
+	if (!src.Valid() || src.GetColorModel() != ImageBase::cm_Grey) {
+		cout << "FilterImage to float only accepts grey images" << endl;
+		return;
+	}
+
+	int w = src.GetWidth();
+	int h = src.GetHeight();
+	
+	dst.Init(w,h);
+	
+	register const unsigned char *srcdata = src.GetData();
+	register float *dstdata = dst.GetData();
+	
+	register const unsigned char *curdata;
+	
+	register int idx;
+	float val;
+	register int nextLineOffset = w*3-3*width_;
+	register int windowOffset = -hmh_*w*3 -hmw_*3;
+	for (int y=hmh_;y<h-hmh_;y++) {
+		for (int x=hmw_;x<w-hmw_;x++) {
+			val = 0.0f;
+			idx = (y*w+x)*3;
+			curdata = srcdata + idx + windowOffset;
+			for (unsigned int yw=0;yw<height_;yw++) {
+				for (unsigned int xw=0;xw<width_;xw++) {
+					val += (*curdata * mask_[xw][yw])/ 255.0f;
+					curdata+=3;
+				}
+				curdata+=nextLineOffset;
+			}
+			if (sum_ == 0) {
+				dstdata[y*w+x] = (float)val / (float)scale_; 
+			} else {
+				dstdata[y*w+x] = (float)val / (float)sum_; 
+			}
+		}
+	}
+}
+
+void Filter::FilterImage(const FloatImage& src, FloatImage &dst) {
+	if (!src.Valid()) {
+		cout << "FilterImage not valid" << endl;
+		return;
+	}
+
+	int w = src.GetWidth();
+	int h = src.GetHeight();
+	
+	dst.Init(w,h);
+	dst.FillZero();
+	
+	register float *srcdata = src.GetData();
+	register float *dstdata = dst.GetData();
+	
+	register float *curdata;
+	
+	register int idx;
+	float val;
+	register int nextLineOffset = w-width_;
+	register int windowOffset = -hmh_*w -hmw_;
+
+	for (int y=hmh_;y<h-hmh_;y++) {
+		for (int x=hmw_;x<w-hmw_;x++) {
+			val = 0.0f;
+			idx = (y*w+x);
+			curdata = srcdata + idx + windowOffset;
+			for (unsigned int yw=0;yw<height_;yw++) {
+				for (unsigned int xw=0;xw<width_;xw++) {
+					val += *curdata * (float)(mask_[xw][yw]);
+					curdata++;
+				}
+				curdata+=nextLineOffset;
+			}
+			curdata = dstdata + idx;
+			if (sum_ == 0) {
+				*curdata = val / (float)scale_; 
+			} else {
+				*curdata = val / (float)sum_; 
+			}
+		}
+	}
+}
 
 }
 

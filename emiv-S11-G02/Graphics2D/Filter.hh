@@ -10,6 +10,7 @@ Hannes Georg, 850360
 
 #include <vector>	
 #include "Image.hh"
+#include "FloatImage.hh"
 
 namespace Graphics2D {
 
@@ -46,6 +47,35 @@ public:
 	// debugging function
 	void printFilter() const;
 	
+	/**
+	* Filtering a Greyscale Image to a one-channel FloatImage
+	* It is not necessary to shift, scale or discretize the result, so it is often better suited for image processing.
+	* 
+	* Usage example:
+	* Image rgbImage, greyImage;
+	* FloatImage gx;
+	* 
+	* rgbImage.LoadPPM("myholidaypic.ppm");
+	* ColorConversion::ToGrey(rgbImage, greyImage);
+	* 
+	* Filter *filterGradX = Filter::CreateGradX();
+	* filterGradX->FilterImage(greyImage, gx);
+	* delete filterGradX;
+	* gx.GetAsGreyImage(greyImage);
+	* greyImage.SavePPM("myholidaypic-gradX.ppm");
+	* 
+	* @param src Input image, will be scaled from [0..255] to [0.0f..1.0f]!
+	* @param dst float valued output image (any range!)
+	*/
+	void FilterImage(const Image& src, FloatImage &dst);
+	
+	/**
+	* Filtering from FloatImage to FloatImage
+	* @param src input image
+	* @param dst output image
+	*/
+	void FilterImage(const FloatImage& src, FloatImage &dst);
+	
 protected:
 	Filter(const vector<vector <int> > & mask, int scale);
 	
@@ -63,6 +93,11 @@ private:
 	// the scale factor
 	int scale_;
 	int offset_;
+	
+	/// half mask width
+    int hmw_;
+    /// half mask height
+    int hmh_;
 
 	// the filter mask
 	vector <vector<int> > mask_;
