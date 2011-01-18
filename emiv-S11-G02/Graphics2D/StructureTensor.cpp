@@ -6,7 +6,11 @@ Hannes Georg, 850360
 */
  
 #include <stdexcept>
+#include <cmath>
+#include <cstdlib>
+#include <list>
 #include "StructureTensor.hh"
+#include "Coordinate.hh"
 
 using namespace std;
 
@@ -109,12 +113,43 @@ void StructureTensor::FoerstnerDetector(float thres, Image &corners) {
 
 }
 
+// helping class
+class CornerPoint {
+
+public:
+	Coordinate c;
+	float value;
+
+	bool operator <(const CornerPoint &c2) {
+		if(this->value < c2.value) {
+			return true; 
+		} else if(this->value > c2.value) {
+			return false;
+		} else {
+			int pos1 = c.GetX()  + c.GetY()*width;
+			int pos2 = c2.c.GetX() + c2.c.GetY()*width;
+			return pos1 < pos2;
+		}
+	}
+
+	int width;
+
+};
+
+
+
 void StructureTensor::HarrisCornerDetector(float thres, Image &corners) {
 	unsigned int width = Jxx_.GetWidth();
 	unsigned int height = Jxx_.GetHeight();
 
-	harrisCornerImage.Init(width, height);
+	// initialization
+	harrisCornerImage_.Init(width, height);
 
+	labelCornerImage_.Init(width, height);
+	labelCornerImage_.SetColorModel(ImageBase::cm_Grey);
+	labelCornerImage_.FillZero();
+
+	// Berechne grey-scale-harris-corner image
 	for(unsigned int y = 0; y < height; y++) {
 		for(unsigned int x = 0; x < width; x++) {
 
@@ -133,10 +168,128 @@ void StructureTensor::HarrisCornerDetector(float thres, Image &corners) {
 			// implizite Funktion berechnen
 			float ch = det - k*trace*trace;
 
-			harrisCornerImage.SetPixel(x, y, ch);
+			// in Bild speichern
+			harrisCornerImage_.SetPixel(x, y, ch);
+
+			// in label Image auch speichern, wenn Punkt
+			if(ch > thres) {
+				labelCornerImage_.SetPixel(x, y, 0, 255);
+				labelCornerImage_.SetPixel(x, y, 1, 255);
+				labelCornerImage_.SetPixel(x, y, 2, 255);
+			}
+		}
+	}
+
+	
+
+	// Maximum ermitteln und non-maximum suppression
+	// Dazu wird ein Fenster ueber das gesamte Bild geschoben, und nur wenn 
+	// die "Punktflaeche" vollstaendig im Fenster ist, wird das Maximum ermittelt
+	// und gefaerbt
+	unsigned int window = 13;
+	unsigned int halfwindow = (window-1)/2; 
+
+	// einmal ueber gesamtes grayscale-Bild laufen, und jeweils Maximum ermitteln
+	for(unsigned int y = halfwindow; y < height-halfwindow; y++) {
+		for(unsigned int x = halfwindow; x < width-halfwindow; x++) {
+
+			// In vier Schritten den gesamten Rand auf Punkte absuchen
+			bool windowFits = true;
+
+			// upper bound
+			for(unsigned int i = x-halfwindow; i <= x+halfwindow; i++) {
+
+				float p = harrisCornerImage_.GetPixel(i, y+halfwindow);
+				if(p > thres) {
+					windowFits = false;
+					break;
+				}
+			}
+
+			// lower bound
+			for(unsigned int i = x-halfwindow; i <= x+halfwindow; i++) {
+
+				float p = harrisCornerImage_.GetPixel(i, y-halfwindow);
+				if(p > thres) {
+					windowFits = false;
+					break;
+				}
+			}
+
+			// left bound
+			for(unsigned int j = y-halfwindow; j <= y+halfwindow; j++) {
+
+				float p = harrisCornerImage_.GetPixel(x-halfwindow, j);
+
+				if(p > thres) {
+					windowFits = false;
+					break;
+				}
+			}
+
+			// right bound
+			for(unsigned int j = y-halfwindow; j <= y+halfwindow; j++) {
+
+				float p = harrisCornerImage_.GetPixel(x+halfwindow, j);
+
+				if(p > thres) {
+					windowFits = false;
+					break;
+				}
+			}
+
+			// window ist nicht vollstaendig ueber punkt?
+			if(!windowFits) {
+				continue;
+			}
+
+			list<CornerPoint> points;
+
+			// einmal ueber Bildausschnitt laufen, Punkte und Werte speichern
+			for(unsigned int j = y-halfwindow; j <= y+halfwindow; j++) {
+
+				for(unsigned int i = x-halfwindow; i <= x+halfwindow; i++) {
+
+					float p = harrisCornerImage_.GetPixel(i, j);
+
+					// add p to list of points
+					if(p > thres) {
+
+						CornerPoint pnt;
+						pnt.c = Coordinate(i, j);
+						pnt.value = p;
+						pnt.width = width;
+
+						points.push_back(pnt);
+					}
+				}
+			}
+
+			// wenn Vektor leer, kein Punkt
+			if(points.empty()) {
+				continue;
+			}
+
+			// sortiere Vektor
+			points.sort();
+
+			// print vector
+			/* cout << "(" << x << ", " << y << ")" << endl;
+			for(list<CornerPoint>::iterator i = points.begin(); i != points.end(); i++) {
+				cout << i->value << " ";
+			}
+			cout << endl; */
+
+			// Nehme maximalen Wert, und faerbe Bild an dieser Stelle 
+			CornerPoint max = points.back();
+
+			corners.SetPixel(max.c.GetX(), max.c.GetY(), 0, Color::blue().GetR());
+			corners.SetPixel(max.c.GetX(), max.c.GetY(), 1, Color::blue().GetG());
+			corners.SetPixel(max.c.GetX(), max.c.GetY(), 2, Color::blue().GetB());
 
 		}
 	}
+
 }
 
 }

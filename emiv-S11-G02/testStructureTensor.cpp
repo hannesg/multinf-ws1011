@@ -105,8 +105,8 @@ int main(int argc, char *argv[]) {
 	Save(greyHC, string(argv[0]) + string(thresString) + string("_hc.ppm"));
 
 	// save label image (debugging)
-	Image tmp = st.GetLabelCornerImage();
-	Save(tmp, "tmp.ppm");
+	// Image tmp = st.GetLabelCornerImage();
+	// Save(tmp, "tmp.ppm");
 
 	// save rgb picture
 	Save(marked, string(argv[0]) + string(thresString) + string("_marked.ppm"));

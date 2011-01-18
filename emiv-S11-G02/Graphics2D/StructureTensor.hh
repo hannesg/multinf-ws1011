@@ -43,7 +43,10 @@ namespace Graphics2D {
       void HarrisCornerDetector(float thres, Image &corners);
 
 	  // return harris corner image
-	  FloatImage GetHarrisCornerImage() { return harrisCornerImage; }
+	  FloatImage GetHarrisCornerImage() { return harrisCornerImage_; }
+
+	  // return label image for corners
+	  Image GetLabelCornerImage() { return labelCornerImage_; }
       
     private:
 
@@ -61,7 +64,10 @@ namespace Graphics2D {
       FloatImage Jxx_, Jxy_, Jyy_;
 
 	  // harris corner image
-	  FloatImage harrisCornerImage;
+	  FloatImage harrisCornerImage_;
+
+	  // label of harris corner image
+	  Image labelCornerImage_;
   };
 
 }
