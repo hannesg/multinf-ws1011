@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
 	cout << "Foerster Threshold: " << thres1 << endl;
 
 	// set default (best) threshold
-	float thres2 = 0.0;
+	float thres2 = 0.0002;
 	if(argc > 2) {
 		thres2 = atof(argv[2]);
 	}
@@ -94,7 +94,7 @@ int main(int argc, char *argv[]) {
 
 	// get appendix to filename
 	char thresString[30];
-	sprintf(thresString, "_%.3f_%.3f", thres1, thres2);
+	sprintf(thresString, "_%.3f_%.5f", thres1, thres2);
 
 	// save greyscale harris corner image
 	Image greyHC;
@@ -104,9 +104,14 @@ int main(int argc, char *argv[]) {
 
 	Save(greyHC, string(argv[0]) + string(thresString) + string("_hc.ppm"));
 
+	// save label image (debugging)
+	Image tmp = st.GetLabelCornerImage();
+	Save(tmp, "tmp.ppm");
+
 	// save rgb picture
 	Save(marked, string(argv[0]) + string(thresString) + string("_marked.ppm"));
 
+	cout << "Fertig! " << endl;
 	
 	return 0;
 }
