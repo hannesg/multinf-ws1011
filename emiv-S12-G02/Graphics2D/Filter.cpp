@@ -1,0 +1,693 @@
+/*
+Gruppe: 02
+Serie 07
+Matthias Boehm, 895778
+Hannes Georg, 850360
+*/
+
+#include <stdexcept>
+#include <cassert>
+#include <cmath>
+#include <list>
+#include <algorithm>
+#include "Filter.hh"
+#include "ColorConversion.hh"
+
+using namespace std;
+
+namespace Graphics2D {
+
+// Hilfsfunktion zur Berechnung von Binomialkoeffizienten
+int binkoeff(int n, int k) {
+
+	if(k == 0 || k == n) {
+		return 1;
+	} else {
+		return binkoeff(n-1, k-1) + binkoeff(n-1, k);
+	}
+}
+
+
+Filter::Filter(const vector<vector <int> > &mask, int scale = 1) {
+
+	mask_ = mask;
+	
+	// scale und offset initialisieren
+	scale_ = scale;
+	offset_ = 0;
+	
+	height_ = mask.size();
+	
+	// Fehler! 
+	if(height_ == 0) {
+		throw out_of_range("height 0");
+	}
+	
+	width_ = mask[0].size();
+	
+	if(width_ == 0) {
+		throw out_of_range("width 0");
+	}
+	
+	// ungerade Hoehe/Breite notwendig!
+	if(height_ % 2 != 1 || width_ % 2 != 1) {
+		throw out_of_range("height/width even");
+	}
+	
+	// Summe ermitteln
+	sum_ = 0;
+	
+	int min = 0;
+	int max = 0;
+	
+	for(unsigned int i = 0; i < height_; i++) {
+		const vector<int> &row = mask[i];
+		
+		// all rows must have the same width
+		if(row.size() != width_) {
+			throw out_of_range("No matrix");
+		}
+		
+		for(unsigned int j = 0; j < width_; j++) {
+			sum_ += mask_[i][j];
+			
+			// Wenn ein Wert kleiner/groesser als null ist, ihn
+			// zu den min/max - Werten addieren (fuer das Offset spaeter)
+			if(mask_[i][j] < 0) {
+				min += mask_[i][j];
+			} 
+			if(mask_[i][j] > 0) {
+				max += mask_[i][j];
+			}
+		}
+	}
+	
+	// maximalen/minimalen Wert ermittelt, die die Anwendung des Filters 
+	// ergeben kann
+	min *= 255;
+	max *= 255;
+	
+	offset_ = -min;
+
+	// printFilter();
+	
+	// Aus anderer Implementierung
+	hmw_ = (width_-1) / 2;
+	hmh_ = (height_-1) / 2;
+}
+
+Filter *Filter::CreateMean(int width, int height) {
+
+	assert(width % 2 == 1 && height % 2 == 1);
+
+	vector<int> row;
+	vector<vector <int> > matrix;
+	
+	// Einen Zeilenvektor erstellen
+	for(int i = 0; i < width; i++) {
+		row.push_back(1);
+	}
+	
+	// Zeilenvektor kopieren
+	for(int j = 0; j < height; j++) {
+		matrix.push_back(row);
+	}
+	
+	return new Filter(matrix);
+}
+
+Filter *Filter::CreateIdentity(int width, int height) {
+
+	assert(width % 2 == 1 && height % 2 == 1);
+
+	vector <vector <int> > result;
+
+	for(int i = 0;  i < height; i++) {
+		vector <int> row;
+		
+		for(int j = 0; j < width; j++) {
+
+			/* Nur eine einzelne 1 in der Mitte, sonst nur 
+			 * Nullen 
+			 */
+			if(i == (height-1)/2 && j == (width-1)/2) {
+				row.push_back(1);
+			} else {
+				row.push_back(0);
+			}
+		}
+
+		result.push_back(row);
+	}
+
+	return new Filter(result);
+}
+
+Filter *Filter::CreateGradX() {
+	vector<int> row;
+	
+	// Zeile erstellen
+	row.push_back(-1);
+	row.push_back(0);
+	row.push_back(1);
+	
+	vector <vector<int> > matrix;
+	matrix.push_back(row);
+	
+	return new Filter(matrix, 2);
+}
+
+Filter *Filter::CreateGradY() {
+
+	// Zeile erstellen
+	vector<int> row;
+	
+	vector <vector <int> > matrix;
+
+	row.push_back(-1);
+	matrix.push_back(row);
+	row[0] = 0;
+	matrix.push_back(row);
+	row[0] = 1;
+	matrix.push_back(row);
+
+	return new Filter(matrix, 2);
+
+}
+
+Filter *Filter::CreateLaplace() {
+
+	// Zeile erstellen
+	vector<int> row;
+	
+	vector <vector <int> > matrix;
+	
+	row.resize(3);
+	
+	row[0] = 0;
+	row[1] = -1;
+	row[2] = 0;
+	matrix.push_back(row);
+	row[0] = -1;
+	row[1] = 4;
+	row[2] = -1;
+	matrix.push_back(row);
+	row[0] = 0;
+	row[1] = -1;
+	row[2] = 0;
+	matrix.push_back(row);
+
+	return new Filter(matrix, 8);
+
+}
+
+Filter *Filter::CreateBinomial(int width) {
+
+	assert(width % 2 == 1);
+
+	// Die erste Zeile/Spalte erstellen
+	vector<int> firstRow;
+
+	for(int i = 0; i < width; i++) {
+		firstRow.push_back(binkoeff(width-1, i));
+	}
+
+	vector< vector<int> > result;
+
+	for(int j = 0; j < width; j++) {
+
+		vector<int> row;
+
+		// "Matrix-Multiplikation", um die inneren Werte zu ermitteln
+		for(int i = 0; i < width; i++) {
+			row.push_back(firstRow[i]*firstRow[j]);
+		}
+
+		result.push_back(row);
+	}
+
+	return new Filter(result);
+}
+
+void Filter::printFilter() const {
+
+	cout << "(" << width_ << ", " << height_ << "), sum: " << sum_ << 
+		", offset: " << offset_ << ", scale: " << scale_ << endl;
+
+	for(unsigned int j = 0; j < height_; j++) {
+		for(unsigned int i = 0; i < width_; i++) {
+			cout << mask_[j][i] << "\t";
+		}
+		cout << endl;
+	}
+}
+
+void Filter::FilterImage(const Image &src, Image &dst) const {
+
+	if(src.GetColorModel() == ImageBase::cm_HSV) {
+		throw out_of_range("This color model is not supported! ");
+	}
+	
+	// Abstand von Rahmen
+	/*unsigned */int dx = (width_-1)/2;
+	/*unsigned */int dy = (height_-1)/2;
+	
+	assert(dx >= 0 && dy >= 0);
+	
+	dst.Init(src.GetWidth(), src.GetHeight());
+	dst.SetColorModel(src.GetColorModel());
+	dst.FillZero();
+
+	// je nachdem, ob Grau- oder Buntbild, nur einen Channel betrachten (Graubild)
+	// oder alle 3 (Buntbild)
+	int c;
+	int maxChannel = -1;
+
+	switch(src.GetColorModel()) {
+	case ImageBase::cm_Grey:
+		c = 0; 
+		maxChannel = 1;
+		break;
+	case ImageBase::cm_RGB:
+		c = 0;
+		maxChannel = 3;
+		break;
+	case ImageBase::cm_HSV:
+		c = 2;
+		maxChannel = 3;
+		break;
+	}
+
+	// Channel durchgehen 
+	for(; c < maxChannel; c++) {
+
+		// Bild durchgehen
+		for(unsigned int x = dx; x < src.GetWidth()-dx; x++) {
+			for(unsigned int y = dy; y < src.GetHeight() - dy; y++) {
+
+				// Filter anwenden
+				int sum = 0;
+			
+				for(int i = -dx; i <= dx; i++) {
+				
+					for(int j = -dy; j <= dy; j++) {
+						sum += mask_[j+dy][i+dx]*src.GetPixel(x+i, y+j, c);
+					}
+				}
+		
+				if(sum_ != 0) {
+					sum /= sum_;
+				}
+				
+				sum += offset_;
+				sum /= scale_;
+
+				// Testen, ob sum im gueltigen Bereich
+				if(sum < 0 || sum > 255) {
+					throw out_of_range("sum nicht im gueltigen Bereich! ");
+				}
+			
+				// je nachdem, ob Grau oder Bunt, einen oder drei channel wegschreiben
+				switch(src.GetColorModel()) {
+				case ImageBase::cm_Grey:
+					dst.SetPixel(x, y, 0, sum);
+					dst.SetPixel(x, y, 1, sum);
+					dst.SetPixel(x, y, 2, sum);
+					break;
+				case ImageBase::cm_RGB:
+					dst.SetPixel(x, y, c, sum);
+					break;
+				case ImageBase::cm_HSV:
+					dst.SetPixel(x, y, 2, sum);
+					dst.SetPixel(x, y, 0, src.GetPixel(x, y, 0));
+					dst.SetPixel(x, y, 1, src.GetPixel(x, y, 1));
+					break; 
+				}
+			}
+		} /* Ende Bild durchgehen */
+	} /* Ende channels durchgehen */
+}
+
+void Filter::MeanRecursive(const Image &src, Image &dst, unsigned int width, unsigned int height) {
+
+	if(width % 2 != 1 || height % 2 != 1) {
+		throw out_of_range("width/height even! ");
+	}
+
+	dst.Init(src.GetWidth(), src.GetHeight());
+	dst.SetColorModel(src.GetColorModel());
+	dst.FillZero();
+
+	// Bild zu klein?
+	if(src.GetWidth() < width || src.GetHeight() < height) {
+		return;
+	}
+
+	int dx = (width-1)/2;
+	int dy = (height-1)/2;
+
+	// je nachdem, ob Grau- oder Buntbild, nur einen Channel betrachten (Graubild)
+	// oder alle 3 (Buntbild)
+	int c;
+	int maxChannel = -1;
+
+	switch(src.GetColorModel()) {
+	case ImageBase::cm_Grey:
+		c = 0; 
+		maxChannel = 1;
+		break;
+	case ImageBase::cm_RGB:
+		c = 0;
+		maxChannel = 3;
+		break;
+	case ImageBase::cm_HSV:
+		c = 2;
+		maxChannel = 3;
+		break;
+	}
+
+	// Channel durchgehen 
+	for(; c < maxChannel; c++) {
+
+		Image tmp;
+		tmp.Init(src.GetWidth(), src.GetHeight());
+		tmp.SetColorModel(src.GetColorModel());
+		tmp.FillZero();
+
+		// ------------ Horizontal filtern --------------
+		for(unsigned int y = 0; y < src.GetHeight(); y++) {
+
+			int sum = 0;
+
+			// Startwert ermitteln
+			for(unsigned int xs = 0; xs < width; xs++) {
+				sum += src.GetPixel(xs, y, c);
+			}
+
+			// Zeile durchgehen
+			for(unsigned int x = dx; x < src.GetWidth()-dx; x++) {
+
+				// Filterwert berechnen
+				int value = sum/width;
+
+				// je nachdem, ob Grau oder Bunt, einen oder drei channel wegschreiben
+				switch(src.GetColorModel()) {
+				case ImageBase::cm_Grey:
+					tmp.SetPixel(x, y, 0, value);
+					tmp.SetPixel(x, y, 1, value);
+					tmp.SetPixel(x, y, 2, value);
+					break;
+				case ImageBase::cm_RGB:
+					tmp.SetPixel(x, y, c, value);
+					break;
+				case ImageBase::cm_HSV:
+					tmp.SetPixel(x, y, 2, value);
+					tmp.SetPixel(x, y, 0, src.GetPixel(x, y, 0));
+					tmp.SetPixel(x, y, 1, src.GetPixel(x, y, 1));
+					break; 
+				}
+
+				// Rekursion
+				sum -= src.GetPixel(x-dx, y, c);
+				// Ende beachten!
+				if(x + dx + 1 < src.GetWidth()) {
+					sum += src.GetPixel((x+dx+1) , y, c);
+				}
+			}
+		} /* Ende horizontal filtern */
+
+		// --------------- Vertikal filtern --------------------
+		for(unsigned int x = 0; x < tmp.GetWidth(); x++) {
+
+			int sum = 0;
+
+			// Startwert ermitteln
+			for(unsigned int ys = 0; ys < height; ys++) {
+				sum += tmp.GetPixel(x, ys, c);
+			}
+
+			// Spalte durchgehen
+			for(unsigned int y = dy; y < tmp.GetHeight()-dy; y++) {
+
+				// Filterwert berechnen
+				int value = sum/height;
+
+				// je nachdem, ob Grau oder Bunt, einen oder drei channel wegschreiben
+				switch(tmp.GetColorModel()) {
+				case ImageBase::cm_Grey:
+					dst.SetPixel(x, y, 0, value);
+					dst.SetPixel(x, y, 1, value);
+					dst.SetPixel(x, y, 2, value);
+					break;
+				case ImageBase::cm_RGB:
+					dst.SetPixel(x, y, c, value);
+					break;
+				case ImageBase::cm_HSV:
+					dst.SetPixel(x, y, 2, value);
+					dst.SetPixel(x, y, 0, tmp.GetPixel(x, y, 0));
+					dst.SetPixel(x, y, 1, tmp.GetPixel(x, y, 1));
+					break; 
+				}
+
+				// Rekursion
+				sum -= tmp.GetPixel(x, y-dy, c);
+				// Ende beachten!
+				if(y + dy + 1 < tmp.GetHeight()) {
+					sum += tmp.GetPixel(x, y+dy+1, c);
+				}
+			}
+		} /* Ende Vertikal filtern */
+
+	} /* Ende channel durchgehen */
+
+}
+
+void Filter::Rank3x3(const Image &src2, Image &dst, int rank = 4) {
+	
+	// Offset von Rand aus
+	int dx = 1;
+	int dy = 1;
+	
+	// Falscher Rang?
+	if(rank < 0 || rank > 8) {
+		throw out_of_range("rank");
+	}
+	
+
+	// Bild eventuell nach Grau konvertieren
+	Image src;
+	
+	if(src2.GetColorModel() == ImageBase::cm_RGB) {
+		ColorConversion::ToGrey(src2, src);
+	} else if(src2.GetColorModel() == ImageBase::cm_HSV) {
+		ColorConversion::ToRGB(src2, src);
+	} else {
+		src = src2;
+	}
+	
+	// Zielbild initialisieren
+	dst.Init(src.GetWidth(), src.GetHeight());
+	dst.SetColorModel(src.GetColorModel());
+	dst.FillZero();
+	
+	// numbers-Vektor haelt alle Pixel in der 3x3-Umgebung
+	vector<int> numbers;
+	numbers.resize(9);
+	
+	// Bild durchgehen
+	for(unsigned int x = dx; x < src.GetWidth()-dx; x++) {
+		for(unsigned int y = dy; y < src.GetHeight()-dy; y++) {
+			
+			// Nummern einlesen
+			numbers.clear();
+			
+			for(int i = -1; i <= 1; i++) {
+				for(int j = -1; j <= 1; j++) {
+					
+					numbers.push_back(src.GetPixel(x+i, y+j, 0));
+					
+				}
+			}
+			
+			// Nummern sortieren
+			sort(numbers.begin(), numbers.end());
+			
+			// dem Rang entsprechendes Pixel zurueckschreiben
+			dst.SetPixel(x, y, 0, numbers[rank]);
+			dst.SetPixel(x, y, 1, numbers[rank]);
+			dst.SetPixel(x, y, 2, numbers[rank]);
+			
+		}
+	}
+	
+}
+
+void Filter::FilterGradMag(const Image &src, Image &dst) {
+	// Offset von Rand aus
+	int dx = 1;
+	int dy = 1;
+	// Zielbild initialisieren
+	dst.Init(src.GetWidth(), src.GetHeight());
+	dst.SetColorModel(src.GetColorModel());
+	dst.FillZero();
+
+	// je nachdem, ob Grau- oder Buntbild, nur einen Channel betrachten (Graubild)
+	// oder alle 3 (Buntbild)
+	int c = 0;
+	int firstChannel = 0;
+	int maxChannel = -1;
+
+	switch(src.GetColorModel()) {
+	case ImageBase::cm_Grey:
+		maxChannel = 1;
+		break;
+	case ImageBase::cm_RGB:
+		maxChannel = 3;
+		break;
+	case ImageBase::cm_HSV:
+		firstChannel = 2;
+		maxChannel = 3;
+		break;
+	}
+
+	// Channel durchgehen
+	int maxx = src.GetWidth() - dx;
+	int maxy = src.GetHeight() - dy;
+	
+	for( int x=dx; x < maxx; x++ ){
+		for( int y=dy; y < maxy; y++ ){
+			for( c = firstChannel; c < maxChannel; c++) {
+				// Gradx und Grady ausrechnen
+				float gradx = (src.GetPixel(x + 1, y, c) - src.GetPixel(x - 1, y, c))/2;
+				float grady = (src.GetPixel(x, y + 1, c) - src.GetPixel(x, y - 1, c))/2;
+
+				float value = sqrt(gradx*gradx + grady*grady);
+
+				// Normieren
+				value /= sqrt(2)/2;
+
+				int iValue = (int)rint(value);
+
+				if(iValue < 0 || iValue > 255) {
+					throw out_of_range("value out of range");
+				}
+
+				// je nachdem, ob Grau oder Bunt, einen oder drei channel wegschreiben
+				switch(src.GetColorModel()) {
+				case ImageBase::cm_Grey:
+					dst.SetPixel(x, y, 0, iValue);
+					dst.SetPixel(x, y, 1, iValue);
+					dst.SetPixel(x, y, 2, iValue);
+					break;
+				case ImageBase::cm_RGB:
+					dst.SetPixel(x, y, c, iValue);
+					break;
+				case ImageBase::cm_HSV:
+					dst.SetPixel(x, y, 2, iValue);
+					dst.SetPixel(x, y, 0, src.GetPixel(x, y, 0));
+					dst.SetPixel(x, y, 1, src.GetPixel(x, y, 1));
+					break; 
+				}
+			}
+		}
+	}
+}
+
+void Filter::FilterImage(const Image& src, FloatImage &dst) {
+	if (!src.Valid() || src.GetColorModel() != ImageBase::cm_Grey) {
+		cout << "FilterImage to float only accepts grey images" << endl;
+		return;
+	}
+
+	int w = src.GetWidth();
+	int h = src.GetHeight();
+	
+	dst.Init(w,h);
+	
+	register const unsigned char *srcdata = src.GetData();
+	register float *dstdata = dst.GetData();
+	
+	register const unsigned char *curdata;
+	
+	register int idx;
+	float val;
+	register int nextLineOffset = w*3-3*width_;
+	register int windowOffset = -hmh_*w*3 -hmw_*3;
+	for (int y=hmh_;y<h-hmh_;y++) {
+		for (int x=hmw_;x<w-hmw_;x++) {
+			val = 0.0f;
+			idx = (y*w+x)*3;
+			curdata = srcdata + idx + windowOffset;
+			for (unsigned int yw=0;yw<height_;yw++) {
+				for (unsigned int xw=0;xw<width_;xw++) {
+					val += (*curdata * mask_[yw][xw])/ 255.0f;
+					curdata+=3;
+				}
+				curdata+=nextLineOffset;
+			}
+			if (sum_ == 0) {
+				dstdata[y*w+x] = (float)val / (float)scale_; 
+			} else {
+				dstdata[y*w+x] = (float)val / (float)sum_; 
+			}
+		}
+	}
+}
+
+void Filter::FilterImage(const FloatImage& src, FloatImage &dst) {
+	if (!src.Valid()) {
+		cout << "FilterImage not valid" << endl;
+		return;
+	}
+
+	int w = src.GetWidth();
+	int h = src.GetHeight();
+	
+	dst.Init(w,h);
+	dst.FillZero();
+	
+	register float *srcdata = src.GetData();
+	register float *dstdata = dst.GetData();
+	
+	register float *curdata;
+	
+	register int idx;
+	float val;
+	register int nextLineOffset = w-width_;
+	register int windowOffset = -hmh_*w -hmw_;
+
+	for (int y=hmh_;y<h-hmh_;y++) {
+		for (int x=hmw_;x<w-hmw_;x++) {
+			val = 0.0f;
+			idx = (y*w+x);
+			curdata = srcdata + idx + windowOffset;
+			for (unsigned int yw=0;yw<height_;yw++) {
+				for (unsigned int xw=0;xw<width_;xw++) {
+					val += *curdata * (float)(mask_[yw][xw]);
+					curdata++;
+				}
+				curdata+=nextLineOffset;
+			}
+			curdata = dstdata + idx;
+			if (sum_ == 0) {
+				*curdata = val / (float)scale_; 
+			} else {
+				*curdata = val / (float)sum_; 
+			}
+		}
+	}
+}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
