@@ -18,6 +18,8 @@ ADD_LIBRARY(Graphics2D
 	Segmentation.hh
 	StructureTensor.cpp
 	StructureTensor.hh
+	HoughTransform.cpp
+	HoughTransform.hh
 	
 	# Primitives
 	PrimitivePoint.cpp
