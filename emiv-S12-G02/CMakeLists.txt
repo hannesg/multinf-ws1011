@@ -47,6 +47,7 @@ add_executable(testSegmentation testSegmentation.cpp)
 add_executable(testFeatures testFeatures.cpp)
 add_executable(testStructureTensor testStructureTensor.cpp)
 add_executable(generateHoughTestImages generateHoughTestImages.cpp)
+add_executable(houghTransform houghTransform.cpp)
 
 target_link_libraries(testGraphics2D Graphics2DBase Graphics2D)
 target_link_libraries(testPrimitives Graphics2DBase Graphics2D)
@@ -60,5 +61,6 @@ target_link_libraries(testSegmentation Graphics2DBase Graphics2D)
 target_link_libraries(testFeatures Graphics2DBase Graphics2D)
 target_link_libraries(testStructureTensor Graphics2DBase Graphics2D)
 target_link_libraries(generateHoughTestImages Graphics2DBase Graphics2D)
+target_link_libraries(houghTransform Graphics2DBase Graphics2D)
 
 
