@@ -33,15 +33,19 @@ void HoughTransform::FastHoughTransform(const StructureTensor &input, const int 
 void HoughTransform::Create2DHistogram_(const Image &input, const int resolution) {
 	// calculate hough transform
 	// for all pixels with magnitude of gradients > 100 (fixed threshold)
+	int width = input.GetWidth();
+	int height = input.GetHeight();
+	const int threshold = 50;
+	
 	Image filtered = input;
 	Filter::FilterGradMag(input, filtered);
-	filtered.SavePPM("tmp1.ppm");
-	
+	Image mask;
+	mask.Init(width, height); 
+	mask.FillZero();
+		
 	// consider needed size for 2d histogram!
 	
 	// Init hough space
-	int width = input.GetWidth();
-	int height = input.GetHeight();
 	int maxSize = ceil(sqrt(pow(width, 2.0) + pow(height, 2.0)));
 	
 	houghspace_.Init(180*resolution, maxSize);
@@ -52,12 +56,36 @@ void HoughTransform::Create2DHistogram_(const Image &input, const int resolution
 		for(int x = 0; x < width; x++) {
 			
 			// over threshold?
-			if(filtered.GetPixel(x, y, 0) > 100) {
+			if(filtered.GetPixel(x, y, 0) > threshold) {
+				// debugging
+				mask.SetPixel(x, y, 0, 255);
+				mask.SetPixel(x, y, 1, 255);
+				mask.SetPixel(x, y, 2, 255);
 				
+				for(float phi = 0; phi < 180; phi += 1.0/resolution) {
+					
+					float rad = phi/180.0*M_PI;
+					
+					int d = fabs(cos(rad)*x + sin(rad)*y);
+					
+					if(d < 0) {
+						cerr << "Error: d< 0 " << phi << " " << rad << endl;
+					}
+					
+					int bin = phi*resolution;
+					
+					houghspace_.SetPixel(bin, d, 
+										 houghspace_.GetPixel(bin, d)+1);
+				}
 			}
 			
 		}
 	}
+	
+	mask.SavePPM("tmp_mask1.ppm");
+	Image greyhs;
+	houghspace_.GetAsGreyImage(greyhs);
+	greyhs.SavePPM("tmp_houghspace.ppm");
 	
 	// save hough image for debugging
 }

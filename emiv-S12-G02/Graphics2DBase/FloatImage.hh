@@ -35,14 +35,18 @@ namespace Graphics2D {
       
       virtual inline float GetPixel(const int &x, const int &y) const {
 		  if(x < 0 || x >= (signed)GetWidth() || y < 0 || y >= (signed)GetHeight()) {
-			  throw out_of_range("getpixel");
+		      char *errStr = new char[1000];
+		      sprintf(errStr, "getpixel: %i, %i", x, y);
+			  throw out_of_range(errStr);
 		  }
         return data_[y*width_+x];
       }
       
       virtual inline void SetPixel(const int &x, const int &y, const float &value) {
 		  if(x < 0 || x >= (signed)GetWidth() || y < 0 || y >= (signed)GetHeight()) {
-			  throw out_of_range("setpixel");
+			  char *errStr = new char[1000];
+			  sprintf(errStr, "setpixel: %i, %i", x, y);
+			  throw out_of_range(errStr);
 		  }
         data_[y*width_+x] = value;
       }
