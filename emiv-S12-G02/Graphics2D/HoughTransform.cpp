@@ -48,7 +48,9 @@ void HoughTransform::Create2DHistogram_(const Image &input, const int resolution
 	// Init hough space
 	int maxSize = ceil(sqrt(pow(width, 2.0) + pow(height, 2.0)));
 	
-	houghspace_.Init(180*resolution, maxSize);
+	// hough space *must* have 360 degrees width, because
+	// the computed distance d can be negative
+	houghspace_.Init(360*resolution, maxSize);
 	
 	// create histogram
 	
@@ -64,15 +66,19 @@ void HoughTransform::Create2DHistogram_(const Image &input, const int resolution
 				
 				for(float phi = 0; phi < 180; phi += 1.0/resolution) {
 					
-					float rad = phi/180.0*M_PI;
+					float myPhi = phi;
+					float rad = myPhi/180.0*M_PI;
 					
-					int d = fabs(cos(rad)*x + sin(rad)*y);
+					int d = cos(rad)*x + sin(rad)*y;
 					
 					if(d < 0) {
-						cerr << "Error: d< 0 " << phi << " " << rad << endl;
+						// Normalenvektor umkehren
+						d = -d;
+						myPhi += 180;
+						// cerr << "Error: d< 0 " << phi << " " << rad << endl;
 					}
 					
-					int bin = phi*resolution;
+					int bin = floor(myPhi*resolution);
 					
 					houghspace_.SetPixel(bin, d, 
 										 houghspace_.GetPixel(bin, d)+1);

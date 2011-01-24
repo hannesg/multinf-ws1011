@@ -2,6 +2,8 @@
 #define FLOATIMAGE_HH_
 #include <Graphics2DBase/ImageBase.hh>
 #include <stdexcept>
+#include <cstdio>
+
 using namespace std;
 
 namespace Graphics2D {
