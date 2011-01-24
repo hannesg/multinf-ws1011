@@ -47,6 +47,15 @@ namespace Graphics2D {
 
 	  // return label image for corners
 	  Image GetLabelCornerImage() { return labelCornerImage_; }
+	  
+	  inline void GetStructureTensor(FloatImage &Jxx, FloatImage &Jxy, FloatImage &Jyy) const {
+        Jxx = gxx_;
+        Jxy = gxy_;
+        Jyy = gyy_;
+}
+      
+      inline int GetWidth() const { return gxx_.GetWidth(); }
+      inline int GetHeight() const { return gxx_.GetHeight(); }
       
     private:
 
