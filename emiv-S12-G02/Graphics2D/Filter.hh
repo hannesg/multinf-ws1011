@@ -76,6 +76,8 @@ public:
 	*/
 	void FilterImage(const FloatImage& src, FloatImage &dst);
 	
+	static void NonMaximumSuppression(const FloatImage &src, FloatImage &dst, float threshold, int size=21);
+	
 protected:
 	Filter(const vector<vector <int> > & mask, int scale);
 	

@@ -678,6 +678,47 @@ void Filter::FilterImage(const FloatImage& src, FloatImage &dst) {
 	}
 }
 
+void Filter::NonMaximumSuppression(const FloatImage &src, FloatImage &dst, float threshold, int size) {
+	int w = src.GetWidth();
+	int h = src.GetHeight();
+	
+	dst = src;
+	
+	float *dstdata = dst.GetData();
+	
+	for (int y=0;y<h;y++) {
+		for (int x=0;x<w;x++) {
+
+			float val = dstdata[y*w+x];
+			if (val<threshold) {
+				dstdata[y*w+x] = 0.0f;
+				continue;
+			}
+			int maxidx = y*w+x;
+			for (int yw=y;yw<=y+size;yw++) {
+				for (int xw=x-size;xw<=x+size;xw++) {
+					if (xw<0 || xw>=w) continue;
+					if (yw>=h) continue;
+					if (dstdata[yw*w+xw]>val) {
+						maxidx = yw*w+xw;
+						val = dstdata[yw*w+xw];
+					}
+				}
+			}
+			for (int yw=y;yw<=y+size;yw++) {
+				for (int xw=x-size;xw<=x+size;xw++) {
+					if (xw<0 || xw>=w) continue;
+					if (yw>=h) continue;
+					if (yw*w+xw != maxidx) {
+						dstdata[yw*w+xw] = 0.0f;
+					} 
+				}
+			}
+		}
+	}
+}
+
+
 }
 
 
