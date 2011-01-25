@@ -64,6 +64,10 @@ namespace Graphics2D {
       FloatImage houghspace_;
 	  // image representation of the hough histogram, after maximum suppression
 	  FloatImage houghspaceMax_;
+	  // the resolution
+	  int resolution_;
+	  // the max d
+	  int maxD_;
   };
 
 }
