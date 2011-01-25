@@ -62,6 +62,8 @@ namespace Graphics2D {
       
       /// image representation of 2d hough histogram
       FloatImage houghspace_;
+	  // image representation of the hough histogram, after maximum suppression
+	  FloatImage houghspaceMax_;
   };
 
 }

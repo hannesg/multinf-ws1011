@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
 	vector<PrimitiveLine> lines;
 	
 	HoughTransform ht;
-	ht.StandardHoughTransform(greySrc, 2, lines);
+	ht.StandardHoughTransform(greySrc, 1, lines);
 
 	// save hough space
 	FloatImage houghSpace = ht.GetHoughSpace();

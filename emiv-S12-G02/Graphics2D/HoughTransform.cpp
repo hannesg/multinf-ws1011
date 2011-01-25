@@ -1,4 +1,5 @@
 #include <Graphics2D/HoughTransform.hh>
+#include <cassert>
 
 using namespace std;
 
@@ -17,13 +18,14 @@ void HoughTransform::StandardHoughTransform(const Image &input, const int resolu
 	// call Create2DHistogram_
 	Create2DHistogram_(input, resolution);
 	// apply non maximum suppression
-	FloatImage tmp;
-	Filter::NonMaximumSuppression(houghspace_, tmp, 200);
-	Image tmp2;
-	tmp.GetAsGreyImage(tmp2);
-	tmp2.SavePPM("tmp_sht_after_max_suppr.ppm");
+	Filter::NonMaximumSuppression(houghspace_, houghspaceMax_, 200);
 	// save houghimage for debugging (optional)
+	Image tmp;
+	houghspaceMax_.GetAsGreyImage(tmp);
+	tmp.SavePPM("tmp_houghspace_after_max_suppr.ppm");
+	
 	// call GetLines_
+	GetLines_(houghspace_.GetWidth(), houghspace_.GetHeight(), lines);
 }
 
 void HoughTransform::FastHoughTransform(const StructureTensor &input, const int resolution, vector<PrimitiveLine> &lines) {
@@ -94,12 +96,9 @@ void HoughTransform::Create2DHistogram_(const Image &input, const int resolution
 		}
 	}
 	
+	// debugging
 	// mask.SavePPM("tmp_mask1.ppm");
-	// Image greyhs;
-	// houghspace_.GetAsGreyImage(greyhs);
-	// greyhs.SavePPM("tmp_houghspace.ppm");
 	
-	// save hough image for debugging
 }
 
 void HoughTransform::Create2DHistogramFromStructureTensor_(const StructureTensor &input, const int resolution) {
@@ -115,5 +114,21 @@ void HoughTransform::GetLines_(int imWidth, int imHeight, std::vector<PrimitiveL
 	// calculate a line from one image border to another
 	// by calculating the intersection points with the image borders
 	// consider vertical/horizontal lines, you might need to consider different cases
+
+	assert(houghspaceMax_.Valid());
+
+	for(int y = 0; y < imHeight; y++) {
+		for(int x = 0; x < imWidth; x++) {
+
+			if(houghspaceMax_.GetPixel(x, y) != 0) {
+
+				cout << "Maximum found at " << x << ", " << y << "! Value: " << houghspace_.GetPixel(x, y) << ". " << endl;
+
+
+			}
+
+		}
+	}
+
 }
 }
