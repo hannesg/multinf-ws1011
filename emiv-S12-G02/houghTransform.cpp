@@ -60,10 +60,18 @@ int main(int argc, char *argv[]) {
 		ColorConversion::ToGrey(src, greySrc);
 	} 
 	
+	// standard hough transformation
 	vector<PrimitiveLine> lines;
 	
 	HoughTransform ht;
-	ht.StandardHoughTransform(greySrc, 1, lines);
+	ht.StandardHoughTransform(greySrc, 2, lines);
+
+	// save hough space
+	FloatImage houghSpace = ht.GetHoughSpace();
+	Image tmp;
+	houghSpace.GetAsGreyImage(tmp);
+
+	Save(tmp, string(argv[0]) + "_standardht_houghspace.ppm");
 
 	cout << "Fertig! " << endl;
 	

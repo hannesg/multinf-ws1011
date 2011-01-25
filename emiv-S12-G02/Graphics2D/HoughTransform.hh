@@ -32,6 +32,9 @@ namespace Graphics2D {
        * @param lines a vector of lines in 2-point parametrization from one image border to another
        */
       void FastHoughTransform(const StructureTensor &input, const int resolution, std::vector<PrimitiveLine> &lines);
+
+	  // returns the hough space
+	  FloatImage GetHoughSpace() const { return houghspace_; }
       
     protected:
       

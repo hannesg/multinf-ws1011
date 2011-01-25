@@ -89,10 +89,10 @@ void HoughTransform::Create2DHistogram_(const Image &input, const int resolution
 		}
 	}
 	
-	mask.SavePPM("tmp_mask1.ppm");
-	Image greyhs;
-	houghspace_.GetAsGreyImage(greyhs);
-	greyhs.SavePPM("tmp_houghspace.ppm");
+	// mask.SavePPM("tmp_mask1.ppm");
+	// Image greyhs;
+	// houghspace_.GetAsGreyImage(greyhs);
+	// greyhs.SavePPM("tmp_houghspace.ppm");
 	
 	// save hough image for debugging
 }
