@@ -13,11 +13,12 @@ using namespace std;
 namespace Graphics2D {
 
 HoughTransform::HoughTransform() {
-	// nothing
+	houghspace_.FillZero();
+	houghspaceMax_.FillZero();
 }
 
 HoughTransform::~HoughTransform() {
-	// nothing
+	
 }
 
 
@@ -80,19 +81,11 @@ void HoughTransform::Create2DHistogram_(const Image &input, const int resolution
 				
 				for(float phi = 0; phi < 180; phi += 1.0/resolution) {
 					
-					float myPhi = phi;
-					float rad = myPhi/180.0*M_PI;
+					float rad = phi/180.0*M_PI;
 					
-					int d = cos(rad)*x + sin(rad)*y;
+					int d = cos(rad)*(float)x + sin(rad)*(float)y;
 					
-					/* if(d < 0) {
-						// Normalenvektor umkehren
-						d = -d;
-						myPhi += 180;
-						// cerr << "Error: d< 0 " << phi << " " << rad << endl;
-					} */
-					
-					int bin = floor(myPhi*resolution);
+					int bin = phi*resolution;
 					
 					houghspace_.SetPixel(bin, d+maxD_, 
 										 houghspace_.GetPixel(bin, d+maxD_)+1);
@@ -138,7 +131,7 @@ void HoughTransform::GetLines_(int imWidth, int imHeight, std::vector<PrimitiveL
 				cout << "Maximum found at deg: " << x << ", d: " << d << "! " << endl;
 
 				// re-get phi information
-				float phiGrad = x/resolution_;
+				float phiGrad = ((float)x)/resolution_;
 
 				if(d < 0) {
 					// Normalenvektor umkehren
@@ -194,10 +187,10 @@ void HoughTransform::GetLines_(int imWidth, int imHeight, std::vector<PrimitiveL
 					px[3] = x2;
 					py[3] = imHeight;
 
-					cout << "Points: " << endl;
+					/* cout << "Points: " << endl;
 					for(int i = 0; i < 4; i++) {
 						cout << "    (" << px[i] << " " << py[i] << ")" << endl;
-					}
+					} */
 
 					// Berechne tatsaechliche Punkte
 
