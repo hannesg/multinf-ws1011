@@ -59,6 +59,7 @@ void HoughTransform::Create2DHistogram_(const Image &input, const int resolution
 			
 			// over threshold?
 			if(filtered.GetPixel(x, y, 0) > threshold) {
+			// if(true) {
 				// debugging
 				mask.SetPixel(x, y, 0, 255);
 				mask.SetPixel(x, y, 1, 255);

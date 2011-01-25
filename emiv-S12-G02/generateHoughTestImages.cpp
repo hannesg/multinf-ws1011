@@ -57,6 +57,7 @@ int main(int argc, char *argv[]) {
   poly.Draw(&image);
   
   filtered = image;
+  filtered.SavePPM("test-hough-one-line1-unf.ppm");
   if (mean) mean->FilterImage(image, filtered);
   filtered.SavePPM("test-hough-one-line1.ppm");
   
@@ -72,6 +73,7 @@ int main(int argc, char *argv[]) {
   poly.Draw(&image);
   
   filtered = image;
+  filtered.SavePPM("test-hough-one-line2-unf.ppm");
   if (mean) mean->FilterImage(image, filtered);
   filtered.SavePPM("test-hough-one-line2.ppm");
   
@@ -88,6 +90,7 @@ int main(int argc, char *argv[]) {
   poly.Draw(&image);
   
   filtered = image;
+  filtered.SavePPM("test-hough-two-line1-unf.ppm");
   if (mean) mean->FilterImage(image, filtered);
   filtered.SavePPM("test-hough-two-line1.ppm");
   
@@ -102,6 +105,7 @@ int main(int argc, char *argv[]) {
   poly.Draw(&image);
   
   filtered = image;
+  filtered.SavePPM("test-hough-two-line2-unf.ppm");
   if (mean) mean->FilterImage(image, filtered);
   filtered.SavePPM("test-hough-two-line2.ppm");
   
@@ -121,6 +125,7 @@ int main(int argc, char *argv[]) {
   poly.Draw(&image);
   
   filtered = image;
+  filtered.SavePPM("test-hough-four-line1-unf.ppm");
   if (mean) mean->FilterImage(image, filtered);
   filtered.SavePPM("test-hough-four-line1.ppm");
   
@@ -138,6 +143,7 @@ int main(int argc, char *argv[]) {
   poly.Draw(&image);
   
   filtered = image;
+  filtered.SavePPM("test-hough-polygon-unf.ppm");
   if (mean) mean->FilterImage(image, filtered);
   filtered.SavePPM("test-hough-polygon.ppm");
   

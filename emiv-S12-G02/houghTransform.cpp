@@ -63,7 +63,7 @@ int main(int argc, char *argv[]) {
 	vector<PrimitiveLine> lines;
 	
 	HoughTransform ht;
-	ht.StandardHoughTransform(greySrc, 4, lines);
+	ht.StandardHoughTransform(greySrc, 1, lines);
 
 	cout << "Fertig! " << endl;
 	
