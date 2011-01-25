@@ -194,12 +194,17 @@ void HoughTransform::GetLines_(int imWidth, int imHeight, std::vector<PrimitiveL
 					px[3] = x2;
 					py[3] = imHeight;
 
+					cout << "Points: " << endl;
+					for(int i = 0; i < 4; i++) {
+						cout << "    (" << px[i] << " " << py[i] << ")" << endl;
+					}
+
 					// Berechne tatsaechliche Punkte
 
 					int i1 = 0;
 
 					// ermittele ersten Punkt
-					while(i1 < 3) {
+					while(i1 < 4) {
 
 						if(0 <= px[i1] && px[i1] <= imWidth
 							&& 0 <= py[i1] && py[i1] <= imHeight) {
@@ -210,7 +215,7 @@ void HoughTransform::GetLines_(int imWidth, int imHeight, std::vector<PrimitiveL
 					}
 
 					// keinen Punkt gefunden?
-					if(i1 == 3) {
+					if(i1 == 4) {
 						cerr << "Gerade ausserhalb des Bildbereichs! " << endl;
 					}
 
@@ -218,7 +223,7 @@ void HoughTransform::GetLines_(int imWidth, int imHeight, std::vector<PrimitiveL
 
 					int i2 = i1+1;
 
-					while(i2 < 3) {
+					while(i2 < 4) {
 
 						if(0 <= px[i2] && px[i2] <= imWidth
 							&& 0 <= py[i2] && py[i2] <= imHeight
@@ -232,7 +237,7 @@ void HoughTransform::GetLines_(int imWidth, int imHeight, std::vector<PrimitiveL
 					}
 
 					// keinen Punkt gefunden?
-					if(i2 == 3) {
+					if(i2 == 4) {
 						// Gerade geht durch Ecke
 						i2 = i1;
 					}
