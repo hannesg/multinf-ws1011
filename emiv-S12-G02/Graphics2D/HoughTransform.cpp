@@ -38,9 +38,16 @@ void HoughTransform::StandardHoughTransform(const Image &input, const int resolu
 
 void HoughTransform::FastHoughTransform(const StructureTensor &input, const int resolution, vector<PrimitiveLine> &lines) {
 	// call Create2DHistogramFromStructureTensor_
+	Create2DHistogramFromStructureTensor_(input, resolution);
 	// apply non maximum suppression
+	Filter::NonMaximumSuppression(houghspace_, houghspaceMax_, 200);
 	// save hough image for debugging (optional)
+	Image tmp;
+	houghspaceMax_.GetAsGreyImage(tmp);
+	tmp.SavePPM("tmp_houghspace_after_max_suppr_fast.ppm");
+
 	// call GetLines_ (extend StructureTensor class for getting width and height)
+	GetLines_(input.GetWidth(), input.GetHeight(), lines);
 }
 
 // ---- protected
@@ -101,9 +108,45 @@ void HoughTransform::Create2DHistogram_(const Image &input, const int resolution
 }
 
 void HoughTransform::Create2DHistogramFromStructureTensor_(const StructureTensor &input, const int resolution) {
+	int width = input.GetWidth();
+	int height = input.GetHeight();
+	resolution_ = resolution;
+	
 	// get elements of structure tensor  (extend StructureTensor class for getting Jxx, Jxy, Jyy)
+	FloatImage Jxx, Jxy, Jyy;
+	input.GetStructureTensor(Jxx, Jxy, Jyy);
+
 	// calculate hough transform using structure tensor orientation
 	// consider needed size for 2d histogram!
+
+	Image mask;
+	mask.Init(width, height);
+	mask.FillZero();
+
+	// create histogram
+	for(int y = 0; y < height; y++) {
+		for(int x= 0; x < width; x++) {
+
+			float jxx = Jxx.GetPixel(x, y);
+			float jxy = Jxy.GetPixel(x, y);
+			float jyy = Jyy.GetPixel(x, y);
+
+			float Spur = jxx + jyy;
+			// float det = jxx*jyy - jxy*jxy;
+
+			// float q = 4*det/(Spur*Spur);
+
+			if(Spur > 0.02 /*&& q <= 0.8*/) {
+				mask.SetPixel(x, y, 0, 255);
+				mask.SetPixel(x, y, 1, 255);
+				mask.SetPixel(x, y, 2, 255);
+			}
+
+		}
+	}
+
+	mask.SavePPM("tmp_mask2.ppm");
+
 	// save hough image for debugging
 }
 
@@ -128,7 +171,7 @@ void HoughTransform::GetLines_(int imWidth, int imHeight, std::vector<PrimitiveL
 				float d = y-maxD_;
 
 				// print maximum for debugging purposes
-				cout << "Maximum found at deg: " << x << ", d: " << d << "! " << endl;
+				// cout << "Maximum found at deg: " << x << ", d: " << d << "! " << endl;
 
 				// re-get phi information
 				float phiGrad = ((float)x)/resolution_;
@@ -140,7 +183,7 @@ void HoughTransform::GetLines_(int imWidth, int imHeight, std::vector<PrimitiveL
 				}
 
 				// print new maximum: 
-				cout << "    That is deg: " << phiGrad << ", d: " << d << "! " << endl;
+				// cout << "    That is deg: " << phiGrad << ", d: " << d << "! " << endl;
 
 				// ************** compute line **************//
 

@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
 	argv++;
 	
 	if(argc < 1) {
-		cout << "Usage: houghTransform <input image>" << endl;
+		cout << "Usage: houghTransform <input image> [resolution (optional)]" << endl;
 		return 1;
 	}
 	
@@ -53,6 +53,11 @@ int main(int argc, char *argv[]) {
 		cerr << "Cannot open file! " << endl;
 		return 1;
 	}
+
+	int resolution = 1;
+	if(argc > 1) {
+		resolution = atoi(argv[1]);
+	}
 	
 	// convert image if needed
 	Image greySrc = src;
@@ -60,7 +65,7 @@ int main(int argc, char *argv[]) {
 		ColorConversion::ToGrey(src, greySrc);
 	} 
 	
-	// standard hough transformation
+	// ---------- standard hough transformation ------------
 	vector<PrimitiveLine> lines;
 	
 	HoughTransform ht;
@@ -83,7 +88,33 @@ int main(int argc, char *argv[]) {
 		lines[i].Draw(&linesImg);
 	}
 
-	Save(linesImg, string(argv[0]) + "_with_lines.ppm");
+	Save(linesImg, string(argv[0]) + "_with_lines_standardht.ppm");
+
+	// ---------- fast hough transformation ------------
+
+	lines.clear();
+
+	StructureTensor J;
+	J.SetFromImage(greySrc);
+
+	HoughTransform ht2;
+	ht2.FastHoughTransform(J, 1, lines);
+
+	// save hough space
+	houghSpace = ht2.GetHoughSpace();
+	houghSpace.GetAsGreyImage(tmp);
+
+	Save(tmp, string(argv[0]) + "_fastht_houghspace.ppm");
+
+	// paint lines
+	ColorConversion::ToRGB(greySrc, linesImg);
+
+	for(unsigned int i = 0; i < lines.size(); i++) {
+		lines[i].SetColor(Color::green());
+		lines[i].Draw(&linesImg);
+	}
+
+	Save(linesImg, string(argv[0]) + "_with_lines_fastht.ppm");
 
 	cout << "Fertig! " << endl;
 	
