@@ -32,7 +32,7 @@ void HoughTransform::StandardHoughTransform(const Image &input, const int resolu
 	tmp.SavePPM("tmp_houghspace_after_max_suppr.ppm");
 	
 	// call GetLines_
-	GetLines_(houghspace_.GetWidth(), houghspace_.GetHeight(), lines);
+	GetLines_(input.GetWidth(), input.GetHeight(), lines);
 }
 
 void HoughTransform::FastHoughTransform(const StructureTensor &input, const int resolution, vector<PrimitiveLine> &lines) {
@@ -124,6 +124,7 @@ void HoughTransform::GetLines_(int imWidth, int imHeight, std::vector<PrimitiveL
 	assert(houghspaceMax_.Valid());
 	int width = houghspaceMax_.GetWidth();
 	int height = houghspaceMax_.GetHeight();
+	cout << "Image size: " << imWidth << ", " << imHeight << endl;
 
 	for(int y = 0; y < height; y++) {
 		for(int x = 0; x < width; x++) {
@@ -178,37 +179,71 @@ void HoughTransform::GetLines_(int imWidth, int imHeight, std::vector<PrimitiveL
 					float y2 = (d-nx*imWidth)/ny;
 					float x2 = (d-ny*imHeight)/nx;
 
-					// Berechne tatsaechliche Punkte
-					float ps_x, ps_y;
-					float pd_x, pd_y;
+					float px[4];
+					float py[4];
 
-					if(0 <= y1 && y1 <= imHeight) {
-						ps_x = 0; 
-						ps_y = y1;
-					} else if(0 <= y2 && y2 <= imHeight) {
-						ps_x = imWidth;
-						ps_y = y2;
-					} else {
-						assert(false);
+					px[0] = 0;
+					py[0] = y1;
+
+					px[1] = x1;
+					py[1] = 0;
+
+					px[2] = imWidth;
+					py[2] = y2;
+
+					px[3] = x2;
+					py[3] = imHeight;
+
+					// Berechne tatsaechliche Punkte
+
+					int i1 = 0;
+
+					// ermittele ersten Punkt
+					while(i1 < 3) {
+
+						if(0 <= px[i1] && px[i1] <= imWidth
+							&& 0 <= py[i1] && py[i1] <= imHeight) {
+								break;
+						} else {
+							i1++;
+						}
 					}
 
-					if(0 <= x1 && x1 <= imWidth) {
-						pd_x = x1;
-						pd_y = 0;
-					} else if(0 <= x2 && x2 <= imWidth) {
-						pd_x = x2;
-						pd_y = imHeight;
-					} else {
-						assert(false);
+					// keinen Punkt gefunden?
+					if(i1 == 3) {
+						cerr << "Gerade ausserhalb des Bildbereichs! " << endl;
+					}
+
+					// ermittele zweiten (verschiedenen!) Punkt
+
+					int i2 = i1+1;
+
+					while(i2 < 3) {
+
+						if(0 <= px[i2] && px[i2] <= imWidth
+							&& 0 <= py[i2] && py[i2] <= imHeight
+							// verschieden!
+							&& (px[i1] != px[i2] || py[i1] != py[i2])) {
+								break;
+						} else {
+							i2++;
+						}
+
+					}
+
+					// keinen Punkt gefunden?
+					if(i2 == 3) {
+						// Gerade geht durch Ecke
+						i2 = i1;
 					}
 					
-					lines.push_back(PrimitiveLine(ps_x, ps_y, pd_x, pd_y));
+					lines.push_back(PrimitiveLine(px[i1], py[i1], px[i2], py[i2]));
 
 				}
 
 				cout << "Created Line from (" << lines.back().GetStartingPoint().GetX() <<
 					", " << lines.back().GetStartingPoint().GetY() << 
-					" to (" << lines.back().GetEndingPoint().GetX() << 
+					") to (" << lines.back().GetEndingPoint().GetX() << 
 					", " << lines.back().GetEndingPoint().GetY() << ")!" << endl;
 			}
 

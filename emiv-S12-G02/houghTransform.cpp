@@ -73,6 +73,18 @@ int main(int argc, char *argv[]) {
 
 	Save(tmp, string(argv[0]) + "_standardht_houghspace.ppm");
 
+	// paint lines
+	Image linesImg;
+
+	ColorConversion::ToRGB(greySrc, linesImg);
+
+	for(unsigned int i = 0; i < lines.size(); i++) {
+		lines[i].SetColor(Color::red());
+		lines[i].Draw(&linesImg);
+	}
+
+	Save(linesImg, string(argv[0]) + "_with_lines.ppm");
+
 	cout << "Fertig! " << endl;
 	
 	return 0;
