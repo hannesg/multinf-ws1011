@@ -98,7 +98,8 @@ int main(int argc, char *argv[]) {
 	// times
 	timeval startStandard;
 	timeval endStandard;
-	timeval startFast;
+	timeval start1Fast;
+	timeval start2Fast;
 	timeval endFast;
 	
 	// ---------- standard hough transformation ------------
@@ -134,10 +135,11 @@ int main(int argc, char *argv[]) {
 	lines.clear();
 
 	StructureTensor J;
+	gettimeofday(&start1Fast, NULL);
 	J.SetFromImage(greySrc);
 
 	HoughTransform ht2;
-	gettimeofday(&startFast, NULL);
+	gettimeofday(&start2Fast, NULL);
 	ht2.FastHoughTransform(J, resolution, lines);
 	gettimeofday(&endFast, NULL);
 
@@ -160,17 +162,20 @@ int main(int argc, char *argv[]) {
 	// ---------- Ausgabe benoetigte Zeit -------------
 
 	timeval standard;
-	timeval fast;
+	timeval fast1, fast2;
 
 	timeval_subtract(&standard, &endStandard, &startStandard);
-	timeval_subtract(&fast, &endFast, &startFast);
+	timeval_subtract(&fast1, &endFast, &start1Fast);
+	timeval_subtract(&fast2, &endFast, &start2Fast);
 
 	long msecStandard = standard.tv_sec *1000 + standard.tv_usec/1000;
-	long msecFast = fast.tv_sec *1000 + fast.tv_usec/1000;
+	long msecFast1 = fast1.tv_sec *1000 + fast1.tv_usec/1000;
+	long msecFast2 = fast2.tv_sec *1000 + fast2.tv_usec/1000;
 
 	cout << endl << endl;
 	cout << "Standard hough transformation: " << msecStandard << " msec" << endl;
-	cout << "Fast hough transformation:     " << msecFast << " msec" << endl;
+	cout << "Fast hough transformation (with Structure Tensor calculation): " << msecFast1 << " msec" << endl;
+	cout << "Fast hough transformation (without Structure Tensor calculation): " << msecFast2 << " msec" << endl;
 
 	cout << "Fertig! " << endl;
 	
