@@ -10,6 +10,8 @@ Hannes Georg, 850360
 #include <string>
 #include <cmath>
 #include <cstdlib>
+#include <ctime>
+#include <sys/time.h>
 #include <Segmentation.hh>
 #include <Image.hh>
 #include <ColorConversion.hh>
@@ -34,6 +36,34 @@ int Save(const Image &img, const string &filename) {
 
 	return 0;
 }
+
+// Hilsfunktion um Zeit zwischen zwei Zeitpunkten zu messen
+/* Subtract the `struct timeval' values X and Y,
+storing the result in RESULT.
+Return 1 if the difference is negative, otherwise 0.  */
+int	timeval_subtract (timeval *result, timeval *x, timeval *y)
+{
+	/* Perform the carry for the later subtraction by updating y. */
+	if (x->tv_usec < y->tv_usec) {
+		int nsec = (y->tv_usec - x->tv_usec) / 1000000 + 1;
+		y->tv_usec -= 1000000 * nsec;
+		y->tv_sec += nsec;
+	}
+	if (x->tv_usec - y->tv_usec > 1000000) {
+		int nsec = (x->tv_usec - y->tv_usec) / 1000000;
+		y->tv_usec += 1000000 * nsec;
+		y->tv_sec -= nsec;
+	}
+
+	/* Compute the time remaining to wait.
+	tv_usec is certainly positive. */
+	result->tv_sec = x->tv_sec - y->tv_sec;
+	result->tv_usec = x->tv_usec - y->tv_usec;
+
+	/* Return 1 if result is negative. */
+	return x->tv_sec < y->tv_sec;
+}
+
 
 int main(int argc, char *argv[]) {
 
@@ -64,12 +94,20 @@ int main(int argc, char *argv[]) {
 	if(src.GetColorModel() != ImageBase::cm_Grey) {
 		ColorConversion::ToGrey(src, greySrc);
 	} 
+
+	// times
+	timeval startStandard;
+	timeval endStandard;
+	timeval startFast;
+	timeval endFast;
 	
 	// ---------- standard hough transformation ------------
 	vector<PrimitiveLine> lines;
 	
 	HoughTransform ht;
+	gettimeofday(&startStandard, NULL);
 	ht.StandardHoughTransform(greySrc, resolution, lines);
+	gettimeofday(&endStandard, NULL);
 
 	// save hough space
 	FloatImage houghSpace = ht.GetHoughSpace();
@@ -91,6 +129,7 @@ int main(int argc, char *argv[]) {
 	Save(linesImg, string(argv[0]) + "_standardht_lines.ppm");
 
 	// ---------- fast hough transformation ------------
+	cout << endl;
 
 	lines.clear();
 
@@ -98,7 +137,9 @@ int main(int argc, char *argv[]) {
 	J.SetFromImage(greySrc);
 
 	HoughTransform ht2;
+	gettimeofday(&startFast, NULL);
 	ht2.FastHoughTransform(J, resolution, lines);
+	gettimeofday(&endFast, NULL);
 
 	// save hough space
 	houghSpace = ht2.GetHoughSpace();
@@ -115,6 +156,21 @@ int main(int argc, char *argv[]) {
 	}
 
 	Save(linesImg, string(argv[0]) + "_fastht_lines.ppm");
+
+	// ---------- Ausgabe benoetigte Zeit -------------
+
+	timeval standard;
+	timeval fast;
+
+	timeval_subtract(&standard, &endStandard, &startStandard);
+	timeval_subtract(&fast, &endFast, &startFast);
+
+	long msecStandard = standard.tv_sec *1000 + standard.tv_usec/1000;
+	long msecFast = fast.tv_sec *1000 + fast.tv_usec/1000;
+
+	cout << endl << endl;
+	cout << "Standard hough transformation: " << msecStandard << " msec" << endl;
+	cout << "Fast hough transformation:     " << msecFast << " msec" << endl;
 
 	cout << "Fertig! " << endl;
 	
