@@ -69,7 +69,7 @@ int main(int argc, char *argv[]) {
 	vector<PrimitiveLine> lines;
 	
 	HoughTransform ht;
-	ht.StandardHoughTransform(greySrc, 1, lines);
+	ht.StandardHoughTransform(greySrc, resolution, lines);
 
 	// save hough space
 	FloatImage houghSpace = ht.GetHoughSpace();
@@ -88,7 +88,7 @@ int main(int argc, char *argv[]) {
 		lines[i].Draw(&linesImg);
 	}
 
-	Save(linesImg, string(argv[0]) + "_with_lines_standardht.ppm");
+	Save(linesImg, string(argv[0]) + "_standardht_lines.ppm");
 
 	// ---------- fast hough transformation ------------
 
@@ -98,7 +98,7 @@ int main(int argc, char *argv[]) {
 	J.SetFromImage(greySrc);
 
 	HoughTransform ht2;
-	ht2.FastHoughTransform(J, 1, lines);
+	ht2.FastHoughTransform(J, resolution, lines);
 
 	// save hough space
 	houghSpace = ht2.GetHoughSpace();
@@ -110,11 +110,11 @@ int main(int argc, char *argv[]) {
 	ColorConversion::ToRGB(greySrc, linesImg);
 
 	for(unsigned int i = 0; i < lines.size(); i++) {
-		lines[i].SetColor(Color::green());
+		lines[i].SetColor(Color::blue());
 		lines[i].Draw(&linesImg);
 	}
 
-	Save(linesImg, string(argv[0]) + "_with_lines_fastht.ppm");
+	Save(linesImg, string(argv[0]) + "_fastht_lines.ppm");
 
 	cout << "Fertig! " << endl;
 	

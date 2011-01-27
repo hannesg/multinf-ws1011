@@ -26,7 +26,7 @@ void HoughTransform::StandardHoughTransform(const Image &input, const int resolu
 	// call Create2DHistogram_
 	Create2DHistogram_(input, resolution);
 	// apply non maximum suppression
-	Filter::NonMaximumSuppression(houghspace_, houghspaceMax_, 200);
+	Filter::NonMaximumSuppression(houghspace_, houghspaceMax_, 200, 27);
 	// save houghimage for debugging (optional)
 	Image tmp;
 	houghspaceMax_.GetAsGreyImage(tmp);
@@ -40,7 +40,7 @@ void HoughTransform::FastHoughTransform(const StructureTensor &input, const int 
 	// call Create2DHistogramFromStructureTensor_
 	Create2DHistogramFromStructureTensor_(input, resolution);
 	// apply non maximum suppression
-	Filter::NonMaximumSuppression(houghspace_, houghspaceMax_, 200);
+	Filter::NonMaximumSuppression(houghspace_, houghspaceMax_, 30, 37);
 	// save hough image for debugging (optional)
 	Image tmp;
 	houghspaceMax_.GetAsGreyImage(tmp);
@@ -123,6 +123,11 @@ void HoughTransform::Create2DHistogramFromStructureTensor_(const StructureTensor
 	mask.Init(width, height);
 	mask.FillZero();
 
+	// Init hough space
+	maxD_ = ceil(sqrt(pow(width, 2.0) + pow(height, 2.0)));
+
+	houghspace_.Init(180*resolution, 2*maxD_);
+
 	// create histogram
 	for(int y = 0; y < height; y++) {
 		for(int x= 0; x < width; x++) {
@@ -140,6 +145,27 @@ void HoughTransform::Create2DHistogramFromStructureTensor_(const StructureTensor
 				mask.SetPixel(x, y, 0, 255);
 				mask.SetPixel(x, y, 1, 255);
 				mask.SetPixel(x, y, 2, 255);
+
+				float twophiRad = atan2(2*jxy, jyy-jxx);
+				if(twophiRad < 0) {
+					twophiRad += 2*M_PI;
+				}
+				float phiRad = -twophiRad/2;
+
+				phiRad += M_PI/2;
+				if(phiRad < 0) {
+					phiRad += M_PI;
+				}
+
+				float phiDeg = phiRad/M_PI*180.0;
+				// cout << ", " << phiDeg << flush;
+
+				int bin = phiDeg*resolution;
+
+				int d = cos(phiRad)*(float)x + sin(phiRad)*(float)y;
+
+				houghspace_.SetPixel(bin, d+maxD_, 
+					houghspace_.GetPixel(bin, d+maxD_)+1);
 			}
 
 		}
