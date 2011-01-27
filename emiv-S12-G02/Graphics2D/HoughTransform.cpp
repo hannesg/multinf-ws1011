@@ -26,7 +26,7 @@ void HoughTransform::StandardHoughTransform(const Image &input, const int resolu
 	// call Create2DHistogram_
 	Create2DHistogram_(input, resolution);
 	// apply non maximum suppression
-	Filter::NonMaximumSuppression(houghspace_, houghspaceMax_, 200, 27);
+	Filter::NonMaximumSuppression(houghspace_, houghspaceMax_, 250, 27);
 	// save houghimage for debugging (optional)
 	Image tmp;
 	houghspaceMax_.GetAsGreyImage(tmp);
