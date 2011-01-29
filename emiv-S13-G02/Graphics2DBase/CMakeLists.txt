@@ -1,0 +1,60 @@
+SET(GRAPHICS2DBASE_SRC
+    ImageBase.cpp 
+    ImageBase.hh
+    PainterBase.hh
+    Canvas2D.hh
+    PrimitiveBase.cpp
+    PrimitiveBase.hh
+    FloatImage.cpp
+    FloatImage.hh
+    
+    # muss hinzugefuegt werden, da bei mingw sonst Fehler erscheinen
+    ../Graphics2D/Coordinate.cpp
+    ../Graphics2D/Coordinate.hh
+)
+
+
+IF(USE_GTK)
+    FIND_PACKAGE(GTK2)
+    IF(NOT GTK2_FOUND)
+    MESSAGE(SEND_ERROR "GTK not found.")
+    ENDIF(NOT GTK2_FOUND)
+    
+    INCLUDE_DIRECTORIES(${INCLUDE_DIRECTORIES} ${GTK2_INCLUDE_DIRS})
+
+    SET(EXT_LIBRARIES ${GTK2_LIBRARIES})
+    SET(GRAPHICS2DBASE_SRC
+      ${GRAPHICS2DBASE_SRC}
+      Canvas2Dgtk.hh
+      Canvas2Dgtk.cpp
+    )
+ELSE(USE_GTK)
+    FIND_PACKAGE(OpenGL)
+    IF(NOT OPENGL_FOUND)
+    MESSAGE(SEND_ERROR "OpenGL not found.")
+    ENDIF(NOT OPENGL_FOUND)
+    
+    FIND_PACKAGE(GLUT)
+    IF(NOT GLUT_FOUND)
+    MESSAGE(SEND_ERROR "GLUT not found.")
+    ENDIF(NOT GLUT_FOUND)
+    
+    INCLUDE_DIRECTORIES(${OPENGL_INCLUDE_DIR} ${GLUT_INCLUDE_DIR})
+    
+    SET(EXT_LIBRARIES ${GLUT_LIBRARIES} ${OPENGL_LIBRARIES})
+    
+    SET(GRAPHICS2DBASE_SRC
+      ${GRAPHICS2DBASE_SRC}
+      Canvas2Dglut.hh
+      Canvas2Dglut.cpp
+    )
+    
+ENDIF(USE_GTK)
+
+
+
+ADD_LIBRARY(Graphics2DBase 
+    ${GRAPHICS2DBASE_SRC}
+)
+
+TARGET_LINK_LIBRARIES(Graphics2DBase ${EXT_LIBRARIES})
