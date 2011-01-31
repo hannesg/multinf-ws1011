@@ -5,7 +5,11 @@ Matthias Boehm, 895778
 Hannes Georg, 850360
 */
 
+#include <cassert>
+#include <cmath>
 #include "PrimitiveLine.hh"
+
+using namespace std;
 
 namespace Graphics2D {
 
@@ -111,6 +115,29 @@ int PrimitiveLine::getXValue(float y0) const {
 
 		return x1 + (int)rint(
 			((y0-y1)*(x2-x1))/(float)(y2-y1));
+}
+
+float PrimitiveLine::Distance(const Coordinate &point) const {
+
+	// compute "line vector"
+	Coordinate p = points_[1]-points_[0];
+
+	// compute normal vector
+	Coordinate n(-p.GetYAsFloat(), p.GetXAsFloat());
+
+	assert(p*n == 0);
+	
+	n /= p.length();
+
+	// compute distance
+	float dist = n*(point-points_[0]);
+
+	return fabs(dist);
+}
+
+bool PrimitiveLine::Intersection(const PrimitiveLine &other, Coordinate &intersection) const {
+	
+	return false;
 }
 
 }

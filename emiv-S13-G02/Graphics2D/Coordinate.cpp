@@ -82,5 +82,15 @@ void Coordinate::Rotate(const Coordinate &c, float angle) {
 	*this += c;
 }
 
+float Coordinate::scalarProduct(const Coordinate &c) const {
+
+	return x_*c.x_ + y_*c.y_;
+}
+
+ostream & operator << (ostream &out, const Coordinate &c) {
+
+	out << "(" << c.GetXAsFloat() << ", " << c.GetYAsFloat() << ")";
+	return out;
+}
 
 }

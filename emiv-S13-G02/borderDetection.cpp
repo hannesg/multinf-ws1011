@@ -120,6 +120,21 @@ int main(int argc, char *argv[]) {
 		it->Draw(&src);
 	}
 
+	// ------------------- c ----------------------
+
+	for(int i = 0; i < corners.size(); i++) {
+
+		for(int j = 0; j < lines.size(); j++) {
+
+
+			float dist = lines[j].Distance(corners[i]);
+
+			cout << "Distance corner " << i << ", line " << j << ": " << dist << endl;
+		}
+		cout << endl;
+
+	}
+
 	// Save image
 	Save(src, string(argv[0]) + "_with_lines.ppm");
 

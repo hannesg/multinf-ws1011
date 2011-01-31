@@ -8,6 +8,7 @@ Hannes Georg, 850360
 #define __COORDINATE_HH
 
 #include <cmath>
+#include <iostream>
 
 using namespace std;
 
@@ -53,6 +54,13 @@ public:
 	Coordinate &operator *= (float x);
 	Coordinate &operator /= (float x);
 	// Coordinate &operator *= (int x);
+
+	// Skalarprodukt
+	float operator * (const Coordinate &c) const { return scalarProduct(c); }
+	float scalarProduct(const Coordinate &c) const;
+
+	// computes the length of the vector represented by this coordinate
+	float length() const { return sqrt(x_*x_ + y_*y_); }
 	
 	/* rotation */
 	void Rotate(const Coordinate &c, float angle);
@@ -63,6 +71,8 @@ private:
 
 Coordinate operator * (float x, const Coordinate &c);
 // Coordinate operator * (int x, const Coordinate &c);
+
+ostream & operator << (ostream &out, const Coordinate &c);
 
 }
 

@@ -51,6 +51,12 @@ public:
 	/* Draw-Funktion */
 	virtual void Draw(ImageBase *img) const;
 
+	// computes distance from point to this line
+	float Distance(const Coordinate &point) const;
+
+	// computes the intersection with another line
+	bool Intersection(const PrimitiveLine &other, Coordinate &intersection) const;
+
 
 protected:
 	/* Anzahl der erlaubten Punkte */
