@@ -136,9 +136,19 @@ public:
 
 };
 
+void StructureTensor::HarrisCornerDetector(float thres, Image &imgCorners) {
+	
+	vector <Coordinate> corners;
+	HarrisCornerDetector(thres, corners);
+	
+	for(unsigned int i = 0; i < corners.size(); i++) {
+		imgCorners.SetPixel(corners[i].GetX(), corners[i].GetY(), 0, Color::blue().GetR());
+		imgCorners.SetPixel(corners[i].GetX(), corners[i].GetY(), 1, Color::blue().GetG());
+		imgCorners.SetPixel(corners[i].GetX(), corners[i].GetY(), 2, Color::blue().GetB());
+	}
+}
 
-
-void StructureTensor::HarrisCornerDetector(float thres, Image &corners) {
+void StructureTensor::HarrisCornerDetector(float thres, vector<Coordinate> &outCorners) {
 	unsigned int width = Jxx_.GetWidth();
 	unsigned int height = Jxx_.GetHeight();
 
@@ -283,9 +293,7 @@ void StructureTensor::HarrisCornerDetector(float thres, Image &corners) {
 			// Nehme maximalen Wert, und faerbe Bild an dieser Stelle 
 			CornerPoint max = points.back();
 
-			corners.SetPixel(max.c.GetX(), max.c.GetY(), 0, Color::blue().GetR());
-			corners.SetPixel(max.c.GetX(), max.c.GetY(), 1, Color::blue().GetG());
-			corners.SetPixel(max.c.GetX(), max.c.GetY(), 2, Color::blue().GetB());
+			outCorners.push_back(Coordinate(max.c.GetX(), max.c.GetY()));
 
 		}
 	}

@@ -48,6 +48,7 @@ add_executable(testFeatures testFeatures.cpp)
 add_executable(testStructureTensor testStructureTensor.cpp)
 add_executable(generateHoughTestImages generateHoughTestImages.cpp)
 add_executable(houghTransform houghTransform.cpp)
+add_executable(borderDetection borderDetection.cpp)
 
 target_link_libraries(testGraphics2D Graphics2DBase Graphics2D)
 target_link_libraries(testPrimitives Graphics2DBase Graphics2D)
@@ -62,5 +63,5 @@ target_link_libraries(testFeatures Graphics2DBase Graphics2D)
 target_link_libraries(testStructureTensor Graphics2DBase Graphics2D)
 target_link_libraries(generateHoughTestImages Graphics2DBase Graphics2D)
 target_link_libraries(houghTransform Graphics2DBase Graphics2D)
-
+target_link_libraries(borderDetection Graphics2DBase Graphics2D)
 

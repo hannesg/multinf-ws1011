@@ -69,7 +69,7 @@ void HoughTransform::Create2DHistogram_(const Image &input, const int resolution
 	// consider needed size for 2d histogram!
 	
 	// Init hough space
-	maxD_ = ceil(sqrt(pow(width, 2.0) + pow(height, 2.0)));
+	maxD_ = (int)ceil(sqrt(pow(width, 2.0) + pow(height, 2.0)));
 	
 	houghspace_.Init(180*resolution, 2*maxD_);
 	
@@ -90,9 +90,9 @@ void HoughTransform::Create2DHistogram_(const Image &input, const int resolution
 					
 					float rad = phi/180.0*M_PI;
 					
-					int d = cos(rad)*(float)x + sin(rad)*(float)y;
+					int d = (int)(cos(rad)*(float)x + sin(rad)*(float)y);
 					
-					int bin = phi*resolution;
+					int bin = (int)(phi*resolution);
 					
 					houghspace_.SetPixel(bin, d+maxD_, 
 										 houghspace_.GetPixel(bin, d+maxD_)+1);
@@ -124,7 +124,7 @@ void HoughTransform::Create2DHistogramFromStructureTensor_(const StructureTensor
 	mask.FillZero();
 
 	// Init hough space
-	maxD_ = ceil(sqrt(pow(width, 2.0) + pow(height, 2.0)));
+	maxD_ = (int)ceil(sqrt(pow(width, 2.0) + pow(height, 2.0)));
 
 	houghspace_.Init(180*resolution, 2*maxD_);
 
@@ -160,9 +160,9 @@ void HoughTransform::Create2DHistogramFromStructureTensor_(const StructureTensor
 				float phiDeg = phiRad/M_PI*180.0;
 				// cout << ", " << phiDeg << flush;
 
-				int bin = phiDeg*resolution;
+				int bin = (int)(phiDeg*resolution);
 
-				int d = cos(phiRad)*(float)x + sin(phiRad)*(float)y;
+				int d = (int)(cos(phiRad)*(float)x + sin(phiRad)*(float)y);
 
 				houghspace_.SetPixel(bin, d+maxD_, 
 					houghspace_.GetPixel(bin, d+maxD_)+1);
