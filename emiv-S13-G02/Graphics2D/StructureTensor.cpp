@@ -293,7 +293,14 @@ void StructureTensor::HarrisCornerDetector(float thres, vector<Coordinate> &outC
 			// Nehme maximalen Wert, und faerbe Bild an dieser Stelle 
 			CornerPoint max = points.back();
 
-			outCorners.push_back(Coordinate(max.c.GetX(), max.c.GetY()));
+			Coordinate newCorner = Coordinate(max.c.GetX(), max.c.GetY());
+			
+			// check, whether corner is already in list
+			bool contained = false;
+			
+			if(!outCorners.contains(newCorner)) {
+				outCorners.push_back(newCorner);
+			}
 
 		}
 	}
