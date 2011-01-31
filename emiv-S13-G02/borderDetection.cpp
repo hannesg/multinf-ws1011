@@ -39,23 +39,15 @@ int main(int argc, char *argv[]) {
 	argv++;
 	
 	if(argc < 1) {
-		cout << "Usage: testStructureTensor <input image> [optional: threashold foerstner] [optional: threshold harris corner]" << endl;
-		cout << " If threshold not specified, uses best threshold" << endl;
+		cout << "Usage: borderDetection <input image>" << endl;
 		return 1;
 	}
 
 	// set default (best) threshold
-	float thres1 = 0.02;
-	if(argc > 1) {
-		thres1 = atof(argv[1]);
-	}
-	cout << "Foerster Threshold: " << thres1 << endl;
-
-	// set default (best) threshold
-	float thres2 = 0.0002;
-	if(argc > 2) {
+	float thres2 = 0.00005;
+	/* if(argc > 2) {
 		thres2 = atof(argv[2]);
-	}
+	} */
 
 	cout << "Harris Corner Threshold: " << thres2 << endl;
 	
@@ -74,42 +66,47 @@ int main(int argc, char *argv[]) {
 		ColorConversion::ToGrey(src, greySrc);
 	} 
 	
+	// ------------------- a ----------------------
 	// Initialization of structure tensor J for each pixel of src
 	StructureTensor st;
 	
 	st.SetFromImage(greySrc);
 	
-	// detect points and borders (foerstner)
-	Image marked = src;
-
-	st.FoerstnerDetector(thres1, marked);
-
-	cout << "Fertig foerestner! " << endl;
-
 	// detect points and borders (harris corner)
+	// Image marked = src;
+	// st.HarrisCornerDetector(thres2, marked);
 	
-	st.HarrisCornerDetector(thres2, marked);
+	vector<Coordinate> corners;
+	st.HarrisCornerDetector(thres2, corners);
+	
+	// print corners
+	cout << corners.size() << " corners found! " << endl;
+	
+	for(unsigned int i = 0; i < corners.size(); i++) {
+		cout << "    (" << corners[i].GetX() << ", " << corners[i].GetY() << ")" << endl;
+	}
 
 	cout << "Fertig Harris! " << endl;
-
-	// get appendix to filename
-	char thresString[30];
-	sprintf(thresString, "_%.3f_%.5f", thres1, thres2);
+	
+	// the following commented stuff is for debugging
+	/* Image label = st.GetLabelCornerImage();
+	
+	Save(label, "tmp_label.ppm");
+	*/
 
 	// save greyscale harris corner image
-	Image greyHC;
+	/* Image greyHC;
 	FloatImage hc = st.GetHarrisCornerImage();
 
 	hc.GetAsGreyImage(greyHC);
 
-	Save(greyHC, string(argv[0]) + string(thresString) + string("_hc.ppm"));
-
-	// save label image (debugging)
-	// Image tmp = st.GetLabelCornerImage();
-	// Save(tmp, "tmp.ppm");
+	Save(greyHC, string(argv[0]) + string("_hc.ppm"));
 
 	// save rgb picture
-	Save(marked, string(argv[0]) + string(thresString) + string("_marked.ppm"));
+	Save(marked, string(argv[0]) + string("_marked.ppm"));
+	*/
+	
+	// ------------------- b ----------------------
 
 	cout << "Fertig! " << endl;
 	

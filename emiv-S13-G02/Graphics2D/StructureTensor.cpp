@@ -142,9 +142,9 @@ void StructureTensor::HarrisCornerDetector(float thres, Image &imgCorners) {
 	HarrisCornerDetector(thres, corners);
 	
 	for(unsigned int i = 0; i < corners.size(); i++) {
-		imgCorners.SetPixel(corners[i].GetX(), corners[i].GetY(), 0, Color::blue().GetR());
-		imgCorners.SetPixel(corners[i].GetX(), corners[i].GetY(), 1, Color::blue().GetG());
-		imgCorners.SetPixel(corners[i].GetX(), corners[i].GetY(), 2, Color::blue().GetB());
+		imgCorners.SetPixel(corners[i].GetX(), corners[i].GetY(), 0, Color::red().GetR());
+		imgCorners.SetPixel(corners[i].GetX(), corners[i].GetY(), 1, Color::red().GetG());
+		imgCorners.SetPixel(corners[i].GetX(), corners[i].GetY(), 2, Color::red().GetB());
 	}
 }
 
