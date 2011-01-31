@@ -11,6 +11,7 @@ Matthias Boehm, 895778
 #include <cmath>
 #include <cstdlib>
 #include <map>
+#include <cassert>
 #include <Segmentation.hh>
 #include <Image.hh>
 #include <ColorConversion.hh>
@@ -74,6 +75,9 @@ int main(int argc, char *argv[]) {
 		cout << "Usage: borderDetection <input image>" << endl;
 		return 1;
 	}
+
+	// enables debugging messages
+	const bool debugging = true;
 
 	// set default (best) threshold
 	const float thres2 = 0.00005;
@@ -170,7 +174,9 @@ int main(int argc, char *argv[]) {
 			float dist = lines[j].Distance(corners[i]);
 
 			// print distance
-			cout << "Distance corner " << i << ", line " << j << ": " << dist << endl;
+			if(debugging) {
+				cout << "Distance corner " << i << ", line " << j << ": " << dist << endl;
+			}
 
 			if(dist < 10.0) {
 				// do association
@@ -183,22 +189,47 @@ int main(int argc, char *argv[]) {
 
 	}
 
-	// Print associations point -> line
-	cout << "associations: " << endl;
-	for(clines::iterator it = cornerLines.begin(); it != cornerLines.end(); it++) {
-		cout << "Point " << it->first << ": " << endl;
-		for(int i = 0; i < it->second.size(); i++) {
-			cout << "    Line: " << it->second[i] << endl;
+	if(debugging) {
+		// Print associations point -> line
+		cout << "associations: " << endl;
+		for(clines::iterator it = cornerLines.begin(); it != cornerLines.end(); it++) {
+			cout << "Point " << it->first << ": " << endl;
+			for(unsigned int i = 0; i < it->second.size(); i++) {
+				cout << "    Line: " << it->second[i] << endl;
+			}
+		}
+
+		cout << endl;
+		// Print associations line -> point
+		for(linesc::iterator it = lineCorners.begin(); it != lineCorners.end(); it++) {
+			cout << "Line " << it->first;
+			for(unsigned int i = 0; i < it->second.size(); i++) {
+				cout << "    Point: " << it->second[i] << endl;
+			}
 		}
 	}
 
-	cout << endl;
-	// Print associations line -> point
-	for(linesc::iterator it = lineCorners.begin(); it != lineCorners.end(); it++) {
-		cout << "Line " << it->first;
-		for(int i = 0; i < it->second.size(); i++) {
-			cout << "    Point: " << it->second[i] << endl;
+	// ------------------------- e -----------------------------
+
+	cout << "Kantenschnittpunkte: " << endl;
+	for(clines::iterator it = cornerLines.begin(); it != cornerLines.end(); it++) {
+		assert(it->second.size() == 2);
+
+		PrimitiveLine l1 = it->second[0];
+		PrimitiveLine l2 = it->second[1];
+		Coordinate c;
+
+		bool res = l1.Intersection(l2, c);
+
+		if(!res) {
+			cerr << "Warning! Lines are parallel! " << endl;
+		} else {
+			cout << "Intersection: " << c;
 		}
+
+		float distance = (it->first - c).length();
+
+		cout << "\tDistance to edge: " << distance << endl;
 	}
 
 	// ---------------------------------------------------------------------

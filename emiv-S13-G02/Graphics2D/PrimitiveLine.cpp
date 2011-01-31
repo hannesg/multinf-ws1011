@@ -137,7 +137,36 @@ float PrimitiveLine::Distance(const Coordinate &point) const {
 
 bool PrimitiveLine::Intersection(const PrimitiveLine &other, Coordinate &intersection) const {
 	
-	return false;
+	// compute "line vector"
+	Coordinate myP = points_[1]-points_[0];
+
+	// compute normal vector
+	Coordinate myN(-myP.GetYAsFloat(), myP.GetXAsFloat());
+
+	assert(myP*myN == 0);
+	
+	myN /= myP.length();
+
+	// get starting and ending point of other line
+	Coordinate r = other.GetStartingPoint();
+	Coordinate s = other.GetEndingPoint();
+
+	// are lines parallel?
+	float value = myN * (s-r);
+	if(-0.001 <= value && value <= 0.001) {
+		return false;
+	}
+	
+	// calculate "d"
+	float d = myN * GetStartingPoint();
+
+	// calculate parameter of intersection
+	float t = (d-myN*r)/(myN * (s-r));
+
+	// calculate intersection
+	intersection = r + t*(s-r);
+
+	return true;
 }
 
 ostream & operator << (ostream &out, const PrimitiveLine &p) {
