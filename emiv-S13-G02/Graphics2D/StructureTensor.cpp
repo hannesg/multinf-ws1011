@@ -297,8 +297,16 @@ void StructureTensor::HarrisCornerDetector(float thres, vector<Coordinate> &outC
 			
 			// check, whether corner is already in list
 			bool contained = false;
+
+			for(vector<Coordinate>::iterator it = outCorners.begin(); it != outCorners.end(); it++) {
+
+				if(*it == newCorner) {
+					contained = true;
+					break;
+				}
+			}
 			
-			if(!outCorners.contains(newCorner)) {
+			if(!contained) {
 				outCorners.push_back(newCorner);
 			}
 

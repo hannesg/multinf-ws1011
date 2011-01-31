@@ -44,11 +44,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	// set default (best) threshold
-	float thres2 = 0.00005;
-	/* if(argc > 2) {
-		thres2 = atof(argv[2]);
-	} */
-
+	const float thres2 = 0.00005;
 	cout << "Harris Corner Threshold: " << thres2 << endl;
 	
 	// Load image
@@ -88,7 +84,9 @@ int main(int argc, char *argv[]) {
 
 	cout << "Fertig Harris! " << endl;
 	
+	//-----------------------------------------------
 	// the following commented stuff is for debugging
+
 	/* Image label = st.GetLabelCornerImage();
 	
 	Save(label, "tmp_label.ppm");
@@ -101,10 +99,14 @@ int main(int argc, char *argv[]) {
 	hc.GetAsGreyImage(greyHC);
 
 	Save(greyHC, string(argv[0]) + string("_hc.ppm"));
+	*/
 
 	// save rgb picture
-	Save(marked, string(argv[0]) + string("_marked.ppm"));
+	/* Image marked = src;
+	st.HarrisCornerDetector(thres2, marked);
+	Save(marked, string(argv[0]) + string("_corners_marked.ppm")); *
 	*/
+	//-----------------------------------------------
 	
 	// ------------------- b ----------------------
 
