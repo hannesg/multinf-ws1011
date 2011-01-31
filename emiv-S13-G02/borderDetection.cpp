@@ -17,6 +17,7 @@ Matthias Boehm, 895778
 #include <ColorConversion.hh>
 #include <StructureTensor.hh>
 #include <HoughTransform.hh>
+#include <PrimitivePolygon.hh>
 
 using namespace std;
 using namespace Graphics2D;
@@ -77,7 +78,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	// enables debugging messages
-	const bool debugging = true;
+	const bool debugging = false;
 
 	// set default (best) threshold
 	const float thres2 = 0.00005;
@@ -185,7 +186,7 @@ int main(int argc, char *argv[]) {
 			}
 
 		}
-		cout << endl;
+		if(debugging) { cout << endl; }
 
 	}
 
@@ -219,18 +220,97 @@ int main(int argc, char *argv[]) {
 		PrimitiveLine l2 = it->second[1];
 		Coordinate c;
 
+		// calculate intersection
 		bool res = l1.Intersection(l2, c);
 
 		if(!res) {
 			cerr << "Warning! Lines are parallel! " << endl;
 		} else {
-			cout << "Intersection: " << c;
+			cout << "Intersection: " << c << endl;
 		}
 
+		// get the distance from the calculated intersection
+		// to the harris corner
 		float distance = (it->first - c).length();
 
-		cout << "\tDistance to edge: " << distance << endl;
+		cout << "\tDistance intersection point to harris corner: " << distance << endl;
 	}
+
+	// -------------------------- f --------------------------------
+
+	for(linesc::iterator it = lineCorners.begin(); it != lineCorners.end(); it++) {
+		assert(it->second.size() == 2);
+
+		Coordinate c1 = it->second[0];
+		Coordinate c2 = it->second[1];
+
+		// Paint the line in green
+		PrimitiveLine line(c1, c2);
+		line.SetColor(Color::green());
+
+		line.Draw(&src);
+	}
+
+	// ------------------------- g -------------------------------------
+
+	vector<Coordinate> points;
+	PrimitivePolygon thePolygon;
+
+	// start with one border
+	linesc::iterator itStart = lineCorners.begin();
+	Coordinate startPoint = itStart->second[0];
+
+	points.push_back(startPoint);
+
+	// set the current line
+	linesc::iterator currentIt = itStart;
+
+	do {
+
+		// search line that continues at the current point
+		linesc::iterator it;
+		for(it = lineCorners.begin(); it != lineCorners.end(); it++) {
+
+			// if it's the current line, skip
+			if(it == currentIt) {
+				continue;
+			}
+			// if the line has one corner that equals the last added corner, take the other corner 
+			// of the line
+			if(it->second[0] == points.back()) {
+				points.push_back(it->second[1]);
+				currentIt = it;
+				break;
+			} else if(it->second[1] == points.back()) {
+				points.push_back(it->second[0]);
+				currentIt = it;
+				break;
+			}
+			
+		}
+		assert(it != lineCorners.end() && currentIt != lineCorners.end());
+
+
+	} while(currentIt != itStart);
+
+	if(debugging) {
+		// print the points
+		for(unsigned int i = 0; i < points.size(); i++) {
+			cout << "Point " << i << ": " << points[i] << endl;
+		}
+	}
+
+	// create the polygon
+	thePolygon.SetCoordinates(points);
+
+	// paint the polygon
+	Image polygonImg;
+	polygonImg.Init(src.GetWidth(), src.GetHeight());
+
+	thePolygon.SetColor(Color::white());
+	thePolygon.Draw(&polygonImg);
+
+	Save(polygonImg, "polygon.ppm");
 
 	// ---------------------------------------------------------------------
 
