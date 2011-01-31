@@ -1,9 +1,9 @@
  
 /*
 Gruppe: 02
-Serie 11
-Matthias Boehm, 895778
+Serie 13
 Hannes Georg, 850360
+Matthias Boehm, 895778
 */
 
 #include <iostream>
@@ -14,6 +14,7 @@ Hannes Georg, 850360
 #include <Image.hh>
 #include <ColorConversion.hh>
 #include <StructureTensor.hh>
+#include <HoughTransform.hh>
 
 using namespace std;
 using namespace Graphics2D;
@@ -109,6 +110,18 @@ int main(int argc, char *argv[]) {
 	//-----------------------------------------------
 	
 	// ------------------- b ----------------------
+
+	HoughTransform ht;
+	vector<PrimitiveLine> lines;
+	ht.StandardHoughTransform(greySrc, 1, lines);
+
+	for(vector<PrimitiveLine>::iterator it = lines.begin(); it != lines.end(); it++) {
+		it->SetColor(Color::red());
+		it->Draw(&src);
+	}
+
+	// Save image
+	Save(src, string(argv[0]) + "_with_lines.ppm");
 
 	cout << "Fertig! " << endl;
 	

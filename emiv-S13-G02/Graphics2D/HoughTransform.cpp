@@ -28,9 +28,9 @@ void HoughTransform::StandardHoughTransform(const Image &input, const int resolu
 	// apply non maximum suppression
 	Filter::NonMaximumSuppression(houghspace_, houghspaceMax_, 250, 27);
 	// save houghimage for debugging (optional)
-	Image tmp;
-	houghspaceMax_.GetAsGreyImage(tmp);
-	tmp.SavePPM("tmp_houghspace_after_max_suppr.ppm");
+	// Image tmp;
+	// houghspaceMax_.GetAsGreyImage(tmp);
+	// tmp.SavePPM("tmp_houghspace_after_max_suppr.ppm");
 	
 	// call GetLines_
 	GetLines_(input.GetWidth(), input.GetHeight(), lines);
@@ -42,9 +42,9 @@ void HoughTransform::FastHoughTransform(const StructureTensor &input, const int 
 	// apply non maximum suppression
 	Filter::NonMaximumSuppression(houghspace_, houghspaceMax_, 30, 37);
 	// save hough image for debugging (optional)
-	Image tmp;
-	houghspaceMax_.GetAsGreyImage(tmp);
-	tmp.SavePPM("tmp_houghspace_after_max_suppr_fast.ppm");
+	// Image tmp;
+	// houghspaceMax_.GetAsGreyImage(tmp);
+	// tmp.SavePPM("tmp_houghspace_after_max_suppr_fast.ppm");
 
 	// call GetLines_ (extend StructureTensor class for getting width and height)
 	GetLines_(input.GetWidth(), input.GetHeight(), lines);
@@ -103,7 +103,7 @@ void HoughTransform::Create2DHistogram_(const Image &input, const int resolution
 	}
 	
 	// debugging
-	mask.SavePPM("tmp_mask1.ppm");
+	// mask.SavePPM("tmp_mask1.ppm");
 	
 }
 
@@ -171,7 +171,7 @@ void HoughTransform::Create2DHistogramFromStructureTensor_(const StructureTensor
 		}
 	}
 
-	mask.SavePPM("tmp_mask2.ppm");
+	// mask.SavePPM("tmp_mask2.ppm");
 
 	// save hough image for debugging
 }
