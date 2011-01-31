@@ -75,7 +75,10 @@ private:
 	/* Fuehrt die Ruecktransformation von durch den Bresenham-Algorithmus bestimmten Koordinaten durch */
 	Coordinate DrawLineTranslateCoordinates(const Coordinate &base, const int x , const int y ,const char orthant) const;
 
+	friend ostream & operator << (ostream &out, const PrimitiveLine &p);
 };
+
+ostream & operator << (ostream &out, const PrimitiveLine &p);
 
 }
 #endif

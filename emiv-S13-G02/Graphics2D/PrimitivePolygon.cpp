@@ -47,11 +47,11 @@ void PrimitivePolygon::Draw(ImageBase *img) const
 }
 
 // Hilfsfunktion, Ausgabeoperator fuer PrimitiveLine (fuers Debuggen)
-ostream &operator << (ostream &o, const PrimitiveLine &l) {
+/* ostream &operator << (ostream &o, const PrimitiveLine &l) {
 	o << "(" << l.GetStartingPoint().GetX() << ", " << l.GetStartingPoint().GetY() << 
 		"), (" << l.GetEndingPoint().GetX() << ", " << l.GetEndingPoint().GetY() << ")" << endl;
 	return o;
-}
+} */
 
 // Hilfsfunktion, gibt true zurueck, wenn Edge table leer
 bool isEmpty(vector<PrimitiveLine> *et, unsigned int count) 

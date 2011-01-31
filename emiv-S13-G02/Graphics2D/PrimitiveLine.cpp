@@ -140,4 +140,11 @@ bool PrimitiveLine::Intersection(const PrimitiveLine &other, Coordinate &interse
 	return false;
 }
 
+ostream & operator << (ostream &out, const PrimitiveLine &p) {
+
+	cout << p.points_[0] << " " << p.points_[1] << endl;
+
+	return out;
+}
+
 }
