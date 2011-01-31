@@ -10,6 +10,7 @@ Matthias Boehm, 895778
 #include <string>
 #include <cmath>
 #include <cstdlib>
+#include <map>
 #include <Segmentation.hh>
 #include <Image.hh>
 #include <ColorConversion.hh>
@@ -33,6 +34,36 @@ int Save(const Image &img, const string &filename) {
 
 	return 0;
 }
+
+// Hilfsklassen
+class lessCoordinate {
+
+public:
+	bool operator() (const Coordinate &c1, const Coordinate &c2) {
+
+		if(c1.GetYAsFloat() == c2.GetYAsFloat()) {
+			return c1.GetXAsFloat() < c2.GetXAsFloat();
+		} else {
+			return c1.GetYAsFloat() < c2.GetYAsFloat();
+		}
+	}
+};
+
+class lessLine {
+
+public:
+	bool operator () (const PrimitiveLine &l1, const PrimitiveLine &l2) {
+
+		lessCoordinate lc;
+
+		if(l1.GetStartingPoint() == l2.GetStartingPoint()) {
+			return lc (l1.GetEndingPoint(), l2.GetEndingPoint());
+		} else {
+			return lc (l1.GetStartingPoint(), l2.GetStartingPoint());
+		}
+	}
+
+};
 
 int main(int argc, char *argv[]) {
 
@@ -81,6 +112,10 @@ int main(int argc, char *argv[]) {
 	
 	for(unsigned int i = 0; i < corners.size(); i++) {
 		cout << "    (" << corners[i].GetX() << ", " << corners[i].GetY() << ")" << endl;
+		// Punkte blau faerben
+		src.SetPixel(corners[i].GetX(), corners[i].GetY(), 0, Color::blue().GetR());
+		src.SetPixel(corners[i].GetX(), corners[i].GetY(), 1, Color::blue().GetG());
+		src.SetPixel(corners[i].GetX(), corners[i].GetY(), 2, Color::blue().GetB());
 	}
 
 	cout << "Fertig Harris! " << endl;
@@ -120,23 +155,56 @@ int main(int argc, char *argv[]) {
 		it->Draw(&src);
 	}
 
-	// ------------------- c ----------------------
+	// ------------------- c + d ----------------------
 
-	for(int i = 0; i < corners.size(); i++) {
+	typedef map<Coordinate, vector<PrimitiveLine>, lessCoordinate > clines;
+	typedef map<PrimitiveLine, vector<Coordinate>, lessLine > linesc;
 
-		for(int j = 0; j < lines.size(); j++) {
+	clines cornerLines;
+	linesc lineCorners;
 
+	// Gehe alle Ecken und Linien durch
+	for(unsigned int i = 0; i < corners.size(); i++) {
+		for(unsigned int j = 0; j < lines.size(); j++) {
 
 			float dist = lines[j].Distance(corners[i]);
 
+			// print distance
 			cout << "Distance corner " << i << ", line " << j << ": " << dist << endl;
+
+			if(dist < 10.0) {
+				// do association
+				cornerLines[corners[i]].push_back(lines[j]);
+				lineCorners[lines[j]].push_back(corners[i]);
+			}
+
 		}
 		cout << endl;
 
 	}
 
+	// Print associations point -> line
+	cout << "associations: " << endl;
+	for(clines::iterator it = cornerLines.begin(); it != cornerLines.end(); it++) {
+		cout << "Point " << it->first << ": " << endl;
+		for(int i = 0; i < it->second.size(); i++) {
+			cout << "    Line: " << it->second[i] << endl;
+		}
+	}
+
+	cout << endl;
+	// Print associations line -> point
+	for(linesc::iterator it = lineCorners.begin(); it != lineCorners.end(); it++) {
+		cout << "Line " << it->first;
+		for(int i = 0; i < it->second.size(); i++) {
+			cout << "    Point: " << it->second[i] << endl;
+		}
+	}
+
+	// ---------------------------------------------------------------------
+
 	// Save image
-	Save(src, string(argv[0]) + "_with_lines.ppm");
+	Save(src, string(argv[0]) + "_new.ppm");
 
 	cout << "Fertig! " << endl;
 	
