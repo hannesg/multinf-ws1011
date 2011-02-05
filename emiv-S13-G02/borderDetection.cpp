@@ -117,13 +117,11 @@ int main(int argc, char *argv[]) {
 	
 	for(unsigned int i = 0; i < corners.size(); i++) {
 		cout << "    (" << corners[i].GetX() << ", " << corners[i].GetY() << ")" << endl;
-		// Punkte blau faerben
+		// Punkte blau faerben (zum Debuggen)
 		src.SetPixel(corners[i].GetX(), corners[i].GetY(), 0, Color::blue().GetR());
 		src.SetPixel(corners[i].GetX(), corners[i].GetY(), 1, Color::blue().GetG());
 		src.SetPixel(corners[i].GetX(), corners[i].GetY(), 2, Color::blue().GetB());
 	}
-
-	cout << "Fertig Harris! " << endl;
 	
 	//-----------------------------------------------
 	// the following commented stuff is for debugging
@@ -155,6 +153,7 @@ int main(int argc, char *argv[]) {
 	vector<PrimitiveLine> lines;
 	ht.StandardHoughTransform(greySrc, 1, lines);
 
+	// paint lines into image
 	for(vector<PrimitiveLine>::iterator it = lines.begin(); it != lines.end(); it++) {
 		it->SetColor(Color::red());
 		it->Draw(&src);
@@ -162,6 +161,7 @@ int main(int argc, char *argv[]) {
 
 	// ------------------- c + d ----------------------
 
+	// Abkuerzungen
 	typedef map<Coordinate, vector<PrimitiveLine>, lessCoordinate > clines;
 	typedef map<PrimitiveLine, vector<Coordinate>, lessLine > linesc;
 
