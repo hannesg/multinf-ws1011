@@ -306,6 +306,7 @@ int main(int argc, char *argv[]) {
 	// paint the polygon
 	Image polygonImg;
 	polygonImg.Init(src.GetWidth(), src.GetHeight());
+	polygonImg.FillZero();
 
 	thePolygon.SetColor(Color::white());
 	thePolygon.Draw(&polygonImg);
